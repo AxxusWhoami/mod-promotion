@@ -240,8 +240,8 @@ VALUES
   (80001, 'deDE', 'Sir Alistar',             'Aufstiegs-Meister',       0),
   (80001, 'zhCN', '阿里斯塔爵士',            '升级大师',                0),
   (80001, 'zhTW', '艾里斯塔爵士',            '升級大師',                0),
-  (80001, 'esES', 'Sir Alistar',             'Maestro de Niveles',      0),
-  (80001, 'esMX', 'Sir Alistar',             'Maestro de Niveles',      0),
+  (80001, 'esES', 'Sir Alistar',             'Maestro de subida de nivel',      0),
+  (80001, 'esMX', 'Sir Alistar',             'Maestro de subida de nivel',      0),
   (80001, 'ruRU', 'Сэр Алистар',            'Мастер Повышения',        0),
 
   -- Thormir Barbaferro (80002)
@@ -250,8 +250,8 @@ VALUES
   (80002, 'deDE', 'Thormir Eisenbart',       'Aufstiegs-Meister',       0),
   (80002, 'zhCN', '托尔米尔·铁须',           '升级大师',                0),
   (80002, 'zhTW', '托爾米爾·鐵鬚',           '升級大師',                0),
-  (80002, 'esES', 'Thormir Barbaferro',      'Maestro de Niveles',      0),
-  (80002, 'esMX', 'Thormir Barbaferro',      'Maestro de Niveles',      0),
+  (80002, 'esES', 'Thormir Barbaferro',      'Maestro de subida de nivel',      0),
+  (80002, 'esMX', 'Thormir Barbaferro',      'Maestro de subida de nivel',      0),
   (80002, 'ruRU', 'Тормир Железнобород',    'Мастер Повышения',        0),
 
   -- Chispas Tuercarrueda (80003)
@@ -260,8 +260,8 @@ VALUES
   (80003, 'deDE', 'Funken Zahnrad',          'Aufstiegs-Meister',       0),
   (80003, 'zhCN', '火花·齿轮',               '升级大师',                0),
   (80003, 'zhTW', '火花·齒輪',               '升級大師',                0),
-  (80003, 'esES', 'Chispas Tuercarrueda',    'Maestro de Niveles',      0),
-  (80003, 'esMX', 'Chispas Tuercarrueda',    'Maestro de Niveles',      0),
+  (80003, 'esES', 'Chispas Tuercarrueda',    'Maestro de subida de nivel',      0),
+  (80003, 'esMX', 'Chispas Tuercarrueda',    'Maestro de subida de nivel',      0),
   (80003, 'ruRU', 'Искра Шестерёнкин',      'Мастер Повышения',        0),
 
   -- Ilythien Cantoestelar (80004)
@@ -270,8 +270,8 @@ VALUES
   (80004, 'deDE', 'Ilythien Sternengesang', 'Aufstiegs-Meister',       0),
   (80004, 'zhCN', '伊莉希恩·星歌',           '升级大师',                0),
   (80004, 'zhTW', '伊莉希恩·星歌',           '升級大師',                0),
-  (80004, 'esES', 'Ilythien Cantoestelar',   'Maestro de Niveles',      0),
-  (80004, 'esMX', 'Ilythien Cantoestelar',   'Maestro de Niveles',      0),
+  (80004, 'esES', 'Ilythien Cantoestelar',   'Maestro de subida de nivel',      0),
+  (80004, 'esMX', 'Ilythien Cantoestelar',   'Maestro de subida de nivel',      0),
   (80004, 'ruRU', 'Илисьен Звёздная Песнь', 'Мастер Повышения',        0),
 
   -- Vindicador Kuros (80005)
@@ -280,8 +280,8 @@ VALUES
   (80005, 'deDE', 'Vindicator Kuros',        'Aufstiegs-Meister',       0),
   (80005, 'zhCN', '惩戒者库罗斯',            '升级大师',                0),
   (80005, 'zhTW', '懲戒者庫羅斯',            '升級大師',                0),
-  (80005, 'esES', 'Vindicador Kuros',        'Maestro de Niveles',      0),
-  (80005, 'esMX', 'Vindicador Kuros',        'Maestro de Niveles',      0),
+  (80005, 'esES', 'Vindicador Kuros',        'Maestro de subida de nivel',      0),
+  (80005, 'esMX', 'Vindicador Kuros',        'Maestro de subida de nivel',      0),
   (80005, 'ruRU', 'Карающий Курос',          'Мастер Повышения',        0),
 
   -- Gor'thak el Curtido (80006)
@@ -290,8 +290,8 @@ VALUES
   (80006, 'deDE', 'Gor\'thak der Abgehärtete', 'Aufstiegs-Meister',    0),
   (80006, 'zhCN', '戈尔塔克·老兵',           '升级大师',                0),
   (80006, 'zhTW', '戈爾塔克·老兵',           '升級大師',                0),
-  (80006, 'esES', 'Gor\'thak el Curtido',    'Maestro de Niveles',      0),
-  (80006, 'esMX', 'Gor\'thak el Curtido',    'Maestro de Niveles',      0),
+  (80006, 'esES', 'Gor\'thak el Curtido',    'Maestro de subida de nivel',      0),
+  (80006, 'esMX', 'Gor\'thak el Curtido',    'Maestro de subida de nivel',      0),
   (80006, 'ruRU', 'Гор\'так Закалённый',    'Мастер Повышения',        0),
 
   -- Jin'zaki (80007)
@@ -300,8 +300,8 @@ VALUES
   (80007, 'deDE', 'Jin\'zaki',               'Aufstiegs-Meister',       0),
   (80007, 'zhCN', '金扎基',                  '升级大师',                0),
   (80007, 'zhTW', '金扎基',                  '升級大師',                0),
-  (80007, 'esES', 'Jin\'zaki',               'Maestro de Niveles',      0),
-  (80007, 'esMX', 'Jin\'zaki',               'Maestro de Niveles',      0),
+  (80007, 'esES', 'Jin\'zaki',               'Maestro de subida de nivel',      0),
+  (80007, 'esMX', 'Jin\'zaki',               'Maestro de subida de nivel',      0),
   (80007, 'ruRU', 'Джин\'заки',             'Мастер Повышения',        0),
 
   -- Bramido Pezuñaferrea (80008)
@@ -310,8 +310,8 @@ VALUES
   (80008, 'deDE', 'Stampfer Eisenhufe',      'Aufstiegs-Meister',       0),
   (80008, 'zhCN', '铁蹄轰鸣',                '升级大师',                0),
   (80008, 'zhTW', '鐵蹄轟鳴',                '升級大師',                0),
-  (80008, 'esES', 'Bramido Pezuñaferrea',    'Maestro de Niveles',      0),
-  (80008, 'esMX', 'Bramido Pezuñaferrea',    'Maestro de Niveles',      0),
+  (80008, 'esES', 'Bramido Pezuñaferrea',    'Maestro de subida de nivel',      0),
+  (80008, 'esMX', 'Bramido Pezuñaferrea',    'Maestro de subida de nivel',      0),
   (80008, 'ruRU', 'Рёв Железнокоп',         'Мастер Повышения',        0),
 
   -- Despertador Mortis (80009)
@@ -320,8 +320,8 @@ VALUES
   (80009, 'deDE', 'Erwecker Mortis',         'Aufstiegs-Meister',       0),
   (80009, 'zhCN', '唤醒者莫提斯',            '升级大师',                0),
   (80009, 'zhTW', '喚醒者莫提斯',            '升級大師',                0),
-  (80009, 'esES', 'Despertador Mortis',      'Maestro de Niveles',      0),
-  (80009, 'esMX', 'Despertador Mortis',      'Maestro de Niveles',      0),
+  (80009, 'esES', 'Despertador Mortis',      'Maestro de subida de nivel',      0),
+  (80009, 'esMX', 'Despertador Mortis',      'Maestro de subida de nivel',      0),
   (80009, 'ruRU', 'Пробудитель Мортис',     'Мастер Повышения',        0),
 
   -- Magister Vael'thor (80010)
@@ -330,6 +330,6 @@ VALUES
   (80010, 'deDE', 'Magister Vael\'thor',     'Aufstiegs-Meister',       0),
   (80010, 'zhCN', '魔导师瓦尔托',            '升级大师',                0),
   (80010, 'zhTW', '魔導師瓦爾托',            '升級大師',                0),
-  (80010, 'esES', 'Magister Vael\'thor',     'Maestro de Niveles',      0),
-  (80010, 'esMX', 'Magister Vael\'thor',     'Maestro de Niveles',      0),
+  (80010, 'esES', 'Magister Vael\'thor',     'Maestro de subida de nivel',      0),
+  (80010, 'esMX', 'Magister Vael\'thor',     'Maestro de subida de nivel',      0),
   (80010, 'ruRU', 'Магистр Вэл\'тор',       'Мастер Повышения',        0);
