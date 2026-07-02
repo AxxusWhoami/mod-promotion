@@ -45,12 +45,12 @@ promotion.count = 1
 #     Description: Amount of promotion for character
 #
 #     Example: 10 - (10 cobber)
-#              25000000 - (1000 gold)
+#              25000000 - (2500 gold)
 #
-#     Default: 10000000
+#     Default: 25000000
 #
 
-MoneyRewardValue = 10000000
+MoneyRewardValue = 25000000
 
 #
 #
