@@ -8,47 +8,46 @@
 
 ## Descripción
 
-**mod-promotion** es un módulo de AzerothCore que permite a los personajes nuevos recibir un paquete de promoción único la primera vez que se conectan en nivel 1. El paquete se entrega a través de un NPC específico por raza ("Level Up Master") ubicado en cada zona de inicio. Los Caballeros de la Muerte están excluidos de la promoción.
+**mod-promotion** es un módulo de AzerothCore que otorga a los personajes nuevos un paquete de promoción único. El paquete se entrega a través de un NPC específico por raza ("Level Up Master") ubicado en cada zona de inicio. Cada cuenta solo puede reclamar la promoción una vez; el personal con acceso de Moderador o superior no tiene esa restricción.
 
 ### Qué incluye la promoción
 
-| Recompensa | Valor predeterminado | Configurable |
+| Recompensa | Predeterminado | Configurable |
 |---|---|---|
 | Nivel del personaje | 80 | Sí (`LevelForPromotion`) |
 | Oro | 1.000g (10.000.000 de cobre) | Sí (`MoneyRewardValue`) |
-| Hechizo de montura | Swift Spectral Tiger (42277) | Sí (`mountPromotion`) |
-| Mochilas (x4, equipadas automáticamente) | Frostweave Bag (41599) | Sí (`bagReward.Id`) |
-| Conjunto de equipo completo | Por clase y especialización (ilvl ~200) | Sí (por ranura en config) |
+| Montura terrestre por raza | Sí (según raza) | Sí (ID de hechizo por raza) |
+| Montura de vuelo por raza | No (desactivada por defecto) | Sí (ID de hechizo por raza) |
+| Mochilas × 4 (equipadas automáticamente) | Frostweave Bag (41599) | Sí (`bagReward.Id`) |
+| Conjunto de equipo completo | Por clase y especialización (~ilvl 200) | Sí (por ranura en config) |
 | Habilidades de arma | Máximas para la clase | No |
 | Habilidades de montar | Terrestre + vuelo (Artesano) | No |
+| Teletransporte a capital | Sí (Fortaleza de Tormenta / Orgrimmar) | Sí (`teleport.enable`) |
 
-El límite de promociones por cuenta es configurable (`promotion.count`, por defecto: 1).
+La promoción se limita a **una por cuenta** y solo puede usarse en un personaje de nivel inicial (nivel 1 para todas las clases; nivel 55 para los Caballeros de la Muerte). Las cuentas con seguridad de Moderador o superior pueden promover cualquier personaje independientemente del nivel o del historial previo.
 
 ### Conjuntos de equipo incluidos
 
-Se incluyen dos perfiles de equipo completos por clase/especialización:
-
-- **PvP** — Gladiator Salvaje Temporada 5 / equivalente (ilvl 200 PvP)
-- **PvE** — Naxxramas 10 jugadores, Tiers Heroicos nivel 7 (ilvl 200 PvE)
-
-Cada ranura (cabeza, cuello, hombros, espalda, pecho, muñecas, manos, cintura, piernas, pies, anillo x2, reliquia x2, mano principal, secundaria, a distancia) está cubierta para cada una de las siguientes especializaciones:
+Cada ranura (cabeza, cuello, hombros, espalda, pecho, muñecas, manos, cintura, piernas, pies, anillo × 2, reliquia × 2, mano principal, secundaria, a distancia) está cubierta para las siguientes especializaciones. Todos los IDs de objeto se leen del archivo de configuración y pueden modificarse sin recompilar.
 
 | Clase | Especializaciones |
 |---|---|
 | Guerrero | Tanque (Protección), DPS (Furia) |
 | Paladín | Tanque (Protección), Healer (Sagrado), DPS (Retribución) |
-| Cazador | DPS (Puntería / Supervivencia) |
-| Pícaro | DPS (Sutileza / Combate) |
-| Sacerdote | Healer (Sagrado / Disciplina), DPS (Sombras) |
-| Caballero de la Muerte | Excluido de la promoción |
+| Cazador | DPS (Puntería) |
+| Pícaro | DPS (Sutileza) |
+| Sacerdote | Healer (Disciplina), DPS (Sombras) |
+| Caballero de la Muerte | Tanque (Sangre), DPS (Escarcha/Profano) |
 | Chamán | Lanzador (Elemental), Healer (Restauración), Melee (Mejora) |
-| Mago | DPS (Escarcha / Arcano) |
+| Mago | DPS (Escarcha) |
 | Brujo | DPS (Destrucción) |
 | Druida | Tanque (Guardián), Healer (Restauración), Melee (Feral), Lanzador (Equilibrio) |
 
+Las ranuras sin objeto definido (p. ej., mano secundaria para cazadores) se omiten silenciosamente; no es necesario establecerlas en 0.
+
 ### NPCs de raza
 
-Un NPC por raza jugable comparte el nombre de script `npc_promotion`. Cada NPC tiene una apariencia temática acorde con su raza y zona de inicio.
+Un NPC por raza jugable utiliza el script `npc_promotion`. Cada NPC tiene una apariencia temática acorde con su raza y zona de inicio.
 
 | Raza | Nombre del NPC | Entry |
 |---|---|---|
@@ -70,7 +69,7 @@ Las traducciones de los NPCs (koKR, frFR, deDE, zhCN, zhTW, esES, esMX, ruRU) es
 ## Requisitos
 
 - AzerothCore (WotLK 3.3.5a, build 12340)
-- Base de datos world compatible con MySQL
+- Base de datos world **y** characters compatible con MySQL
 
 ---
 
@@ -79,8 +78,10 @@ Las traducciones de los NPCs (koKR, frFR, deDE, zhCN, zhTW, esES, esMX, ruRU) es
 ```
 1. Clona o copia este repositorio en el directorio modules/ de AzerothCore.
 2. Vuelve a ejecutar CMake y recompila el servidor.
-3. Importa los archivos SQL de data/sql/db-world/base/ en la base de datos `world`,
-   de forma manual o mediante db_assembler.sh (se incluye include.sh).
+3. Importa los archivos SQL en las bases de datos correspondientes:
+     data/sql/db-world/base/      → base de datos world
+     data/sql/db-characters/base/ → base de datos characters
+   Usa db_assembler.sh (se incluye include.sh) o impórtalos manualmente.
 4. Copia conf/mod_promotion.conf.dist a la carpeta de configuración del servidor
    y renómbralo como mod_promotion.conf. Edita los valores según necesites.
 5. Inicia el worldserver — el módulo se carga automáticamente.
@@ -97,29 +98,62 @@ Todas las opciones se encuentran en `mod_promotion.conf`. El archivo `.dist` inc
 | Opción | Tipo | Predeterminado | Descripción |
 |---|---|---|---|
 | `promotionEnable.enable` | bool | `true` | Activa o desactiva el módulo completo |
-| `promotion.count` | int | `1` | Número máximo de promociones por cuenta |
 | `LevelForPromotion` | int | `80` | Nivel otorgado al personaje |
-| `MoneyRewardValue` | int | `10000000` | Oro en cobre (10 000 000 = 1 000g) |
-| `mountEnable.enable` | bool | `true` | Incluir una montura en la promoción |
-| `mountPromotion` | int | `42277` | ID de hechizo de la montura a aprender |
+| `MoneyRewardValue` | int | `10000000` | Oro en cobre (10.000.000 = 1.000g) |
+| `teleport.enable` | bool | `true` | Teletransportar a la capital de facción tras la promoción |
+| `mountGround.enable` | bool | `true` | Otorgar una montura terrestre según la raza |
+| `mountFlying.enable` | bool | `false` | Otorgar una montura de vuelo según la raza |
 | `bagEnable.enable` | bool | `true` | Incluir mochilas en la promoción |
 | `equippedbags.enable` | bool | `true` | Equipar las mochilas automáticamente |
-| `bagReward.Id` | int | `41599` | ID del objeto de la mochila (x4) |
+| `bagReward.Id` | int | `41599` | ID del objeto de la mochila × 4 |
+
+### Anulación de monturas por raza
+
+Los IDs de hechizo de las monturas terrestres y de vuelo pueden modificarse por raza. Descomenta las líneas correspondientes en el archivo de configuración:
+
+```ini
+# mountGround.Human    = 470     # Caballo marrón
+# mountGround.Dwarf    = 6898    # Carnero marrón
+# mountGround.NightElf = 10789   # Frostsaber rayado
+# mountGround.Gnome    = 17453   # Mecano-andador azul
+# mountGround.Draenei  = 35710   # Elekk marrón
+# mountGround.BloodElf = 33660   # Halcón-jinete rojo
+# mountGround.Orc      = 5784    # Lobo marrón
+# mountGround.Undead   = 17463   # Caballo esquelético negro
+# mountGround.Tauren   = 18989   # Kodo gris
+# mountGround.Troll    = 10796   # Raptor esmeralda
+```
 
 ### IDs de objetos de equipo
 
-Cada ranura de equipo para cada clase y especialización puede sobreescribirse en el archivo de configuración. El formato de la clave es:
+Cada ranura de equipo para cada clase y especialización puede sobreescribirse. El formato de la clave es:
 
 ```
-EQUIPMENT_SLOT_<CLASE>_<SPEC>_<RANURA> = <id_objeto>   # PvP
-PVE_<CLASE>_<SPEC>_<RANURA>            = <id_objeto>   # PvE
+EQUIPMENT_SLOT_<CLASE>_<SPEC>_<RANURA> = <id_objeto>
 ```
 
-Ejemplo:
+Ejemplos:
 ```ini
-EQUIPMENT_SLOT_WARRIOR_TANK_HEAD = 41350
-PVE_WARRIOR_TANK_HEAD            = 40543
+EQUIPMENT_SLOT_WARRIOR_TANK_HEAD  = 41350
+EQUIPMENT_SLOT_WARRIOR_TANK_CHEST = 41353
+EQUIPMENT_SLOT_DK_TANK_MAINHAND   = 36984
+EQUIPMENT_SLOT_DK_DPS_MAINHAND    = 37108
 ```
+
+Las ranuras no definidas en la configuración (clave ausente o valor 0) se omiten. Esta es la forma correcta de dejar vacíos los slots opcionales (p. ej., mano secundaria para lanzadores).
+
+---
+
+## Elegibilidad para la promoción
+
+| Condición | Comportamiento |
+|---|---|
+| Módulo desactivado (`promotionEnable.enable = false`) | El NPC muestra "el período de promoción ha terminado" (`npc_text 80000`) |
+| El personaje no está en el nivel inicial | El NPC muestra un saludo genérico sin opciones |
+| La cuenta ya tiene una promoción registrada | El NPC muestra "ya reclamada" (`npc_text 80001`) |
+| La cuenta tiene seguridad de Moderador o superior | Omite la comprobación de nivel y el límite por cuenta |
+
+El límite por cuenta se registra en la tabla `mod_promotion_log` de la base de datos de personajes (clave primaria: `account_id`, por lo que solo puede existir una fila por cuenta).
 
 ---
 
@@ -128,15 +162,18 @@ PVE_WARRIOR_TANK_HEAD            = 40543
 ```
 mod-promotion/
 ├── conf/
-│   └── mod_promotion.conf.dist       # Plantilla de configuración
-├── data/sql/db-world/base/
-│   ├── promotion_race_npcs.sql       # Plantillas de NPCs de raza + locales
-│   └── text_npc.sql                  # Textos de gossip
+│   └── mod_promotion.conf.dist             # Plantilla de configuración
+├── data/
+│   ├── sql/db-world/base/
+│   │   ├── promotion_race_npcs.sql         # Plantillas de NPCs de raza + locales
+│   │   └── text_npc.sql                    # Textos de gossip (IDs 80000–80001)
+│   └── sql/db-characters/base/
+│       └── mod_promotion_log.sql           # Tabla de seguimiento de promociones por cuenta
 ├── src/
-│   ├── mod_promotion.cpp             # Lógica principal del módulo
-│   ├── mod_promotion.h               # Enumeraciones (hechizos, habilidades, ranuras)
-│   └── PAC_loader.cpp                # Registro de scripts de AzerothCore
-└── include.sh                        # Integración con db_assembler
+│   ├── mod_promotion.cpp                   # Lógica del módulo
+│   ├── mod_promotion.h                     # Enumeraciones (hechizos, habilidades, ranuras)
+│   └── PAC_loader.cpp                      # Registro de scripts de AzerothCore
+└── include.sh                              # Integración con db_assembler
 ```
 
 ---
