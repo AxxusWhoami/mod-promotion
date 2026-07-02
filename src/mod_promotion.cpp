@@ -41,54 +41,37 @@ public:
         case CLASS_WARRIOR:
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Furia", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Tanque - Proteccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE DPS - Furia", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 18);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE Tanque - Proteccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 19);
             break;
         case CLASS_WARLOCK:
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Destruccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE DPS - Destruccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 20);
             break;
         case CLASS_DRUID:
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Tanque - Guardian", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Healer - Restauracion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Equilibrio", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE Tanque - Guardian", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 21);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE Healer - Restauracion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 22);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE DPS - Equilibrio", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 23);
             break;
         case CLASS_HUNTER:
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Punteria", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 7);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE DPS - Supervivencia", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 24);
             break;
         case CLASS_MAGE:
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Escarcha", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 8);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE DPS - Arcano", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 25);
             break;
         case CLASS_ROGUE:
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Sutileza", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 9);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE DPS - Combate", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 26);
             break;
         case CLASS_PRIEST:
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Healer - Disciplina", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 10);
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Sombras", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 11);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE Healer - Sagrado", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 27);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE DPS - Sombras", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 28);
             break;
         case CLASS_PALADIN:
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Tanque - Proteccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 12);
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Healer - Sagrado", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 13);
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Retribucion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE Tanque - Proteccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 29);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE Healer - Sagrado", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 30);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE DPS - Retribucion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 31);
             break;
         case CLASS_SHAMAN:
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Elemental", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 15);
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Healer - Restauracion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 16);
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Mejora", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 17);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE DPS - Elemental", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 32);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE Healer - Restauracion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 33);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvE DPS - Mejora", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 34);
             break;
         default:
             break;
@@ -620,57 +603,6 @@ public:
                 case 1017:
                     ShamanPromotionMelee(player);
                     break;
-                case 1018:
-                    WarriorPvEPromotionDps(player);
-                    break;
-                case 1019:
-                    WarriorPvEPromotionTank(player);
-                    break;
-                case 1020:
-                    WarlockPvEPromotionDps(player);
-                    break;
-                case 1021:
-                    DruidPvEPromotionTank(player);
-                    break;
-                case 1022:
-                    DruidPvEPromotionHeal(player);
-                    break;
-                case 1023:
-                    DruidPvEPromotionBalance(player);
-                    break;
-                case 1024:
-                    HunterPvEPromotion(player);
-                    break;
-                case 1025:
-                    MagePvEPromotionDps(player);
-                    break;
-                case 1026:
-                    RoguePvEPromotion(player);
-                    break;
-                case 1027:
-                    PriestPvEPromotionHeal(player);
-                    break;
-                case 1028:
-                    PriestPvEPromotionShadow(player);
-                    break;
-                case 1029:
-                    PaladinPvEPromotionTank(player);
-                    break;
-                case 1030:
-                    PaladinPvEPromotionHeal(player);
-                    break;
-                case 1031:
-                    PaladinPvEPromotionDps(player);
-                    break;
-                case 1032:
-                    ShamanPvEPromotionElemental(player);
-                    break;
-                case 1033:
-                    ShamanPvEPromotionResto(player);
-                    break;
-                case 1034:
-                    ShamanPvEPromotionEnhancement(player);
-                    break;
                 default:
                     break;
             }
@@ -686,379 +618,6 @@ public:
         return true;
     }
 
-    // ==================== PvE PROMOTION FUNCTIONS ====================
-
-    // --- WARRIOR PvE ---
-
-    void WarriorPvEPromotionDps(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_HEAD",     37237)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_NECK",     37397)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_SHOULDERS",37814)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_BACK",     37647)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_CHEST",    37612)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_WRISTS",   37853)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_HANDS",    37363)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_WAIST",    37171)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_LEGS",     37193)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_FEET",     37150)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_FINGER1",  37642)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_FINGER2",  37151)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_TRINKET1", 37166)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_TRINKET2", 37390)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_MAINHAND", 37852)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_OFFHAND",  36962)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_DPS_RANGED",   36981)), true);
-    }
-
-    void WarriorPvEPromotionTank(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_HEAD",     37633)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_NECK",     43282)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_SHOULDERS",37814)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_BACK",     37728)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_CHEST",    37658)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_WRISTS",   37620)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_HANDS",    37645)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_WAIST",    37241)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_LEGS",     43500)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_FEET",     37082)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_FINGER1",  37784)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_FINGER2",  37186)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_TRINKET1", 37220)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_TRINKET2", 36993)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_MAINHAND", 37401)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_OFFHAND",  43085)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_WARRIOR_TANK_RANGED",   36981)), true);
-    }
-
-    // --- WARLOCK PvE ---
-
-    void WarlockPvEPromotionDps(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_HEAD",     37109)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_NECK",     37179)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_SHOULDERS",37357)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_BACK",     37667)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_CHEST",    37189)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_WRISTS",   37230)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_HANDS",    37358)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_WAIST",    37060)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_LEGS",     37360)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_FEET",     37361)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_FINGER1",  37182)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_FINGER2",  37624)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_TRINKET1", 37559)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_TRINKET2", 37390)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_MAINHAND", 37234)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_OFFHAND",  37134)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_WARLOCK_DPS_RANGED",   37038)), true);
-    }
-
-    // --- DRUID PvE ---
-
-    void DruidPvEPromotionTank(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_HEAD",     37298)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_NECK",     43282)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_SHOULDERS",37647)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_BACK",     37735)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_CHEST",    37290)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_WRISTS",   37311)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_HANDS",    37362)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_WAIST",    37241)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_LEGS",     37309)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_FEET",     37310)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_FINGER1",  37784)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_FINGER2",  37186)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_TRINKET1", 37220)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_TRINKET2", 36993)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_MAINHAND", 37574)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_DRUID_TANK_RANGED",   38365)), true);
-    }
-
-    void DruidPvEPromotionHeal(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_HEAD",     37295)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_NECK",     37179)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_SHOULDERS",37357)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_BACK",     37735)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_CHEST",    37291)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_WRISTS",   37230)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_HANDS",    37358)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_WAIST",    37060)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_LEGS",     37360)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_FEET",     37361)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_FINGER1",  37182)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_FINGER2",  37624)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_TRINKET1", 37559)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_TRINKET2", 37111)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_MAINHAND", 37234)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_OFFHAND",  37718)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_DRUID_HEAL_RANGED",   38366)), true);
-    }
-
-    void DruidPvEPromotionBalance(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_HEAD",     37295)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_NECK",     37179)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_SHOULDERS",37357)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_BACK",     37667)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_CHEST",    37291)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_WRISTS",   37230)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_HANDS",    37358)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_WAIST",    37060)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_LEGS",     37360)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_FEET",     37361)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_FINGER1",  37182)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_FINGER2",  37624)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_TRINKET1", 37559)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_TRINKET2", 37390)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_MAINHAND", 37234)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_OFFHAND",  37134)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_DRUID_BALANCE_RANGED",   38360)), true);
-    }
-
-    // --- HUNTER PvE ---
-
-    void HunterPvEPromotion(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_HUNTER_HEAD",     37168)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_HUNTER_NECK",     37397)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_HUNTER_SHOULDERS",37301)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_HUNTER_BACK",     37647)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_HUNTER_CHEST",    37219)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_HUNTER_WRISTS",   37367)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_HUNTER_HANDS",    37302)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_HUNTER_WAIST",    37371)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_HUNTER_LEGS",     37218)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_HUNTER_FEET",     37303)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_HUNTER_FINGER1",  37642)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_HUNTER_FINGER2",  37151)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_HUNTER_TRINKET1", 37166)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_HUNTER_TRINKET2", 37390)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_HUNTER_MAINHAND", 37574)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_HUNTER_RANGED",   37050)), true);
-    }
-
-    // --- MAGE PvE ---
-
-    void MagePvEPromotionDps(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_HEAD",     37109)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_NECK",     37179)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_SHOULDERS",37357)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_BACK",     37667)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_CHEST",    37189)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_WRISTS",   37230)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_HANDS",    37358)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_WAIST",    37060)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_LEGS",     37360)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_FEET",     37361)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_FINGER1",  37182)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_FINGER2",  37624)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_TRINKET1", 37559)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_TRINKET2", 37390)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_MAINHAND", 37234)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_OFFHAND",  37134)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_MAGE_DPS_RANGED",   37038)), true);
-    }
-
-    // --- ROGUE PvE ---
-
-    void RoguePvEPromotion(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_ROGUE_HEAD",     37298)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_ROGUE_NECK",     37397)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_ROGUE_SHOULDERS",37301)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_ROGUE_BACK",     37647)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_ROGUE_CHEST",    37290)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_ROGUE_WRISTS",   37311)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_ROGUE_HANDS",    37302)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_ROGUE_WAIST",    37171)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_ROGUE_LEGS",     37193)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_ROGUE_FEET",     37303)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_ROGUE_FINGER1",  37642)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_ROGUE_FINGER2",  37151)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_ROGUE_TRINKET1", 37166)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_ROGUE_TRINKET2", 37390)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_ROGUE_MAINHAND", 37852)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_ROGUE_OFFHAND",  37037)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_ROGUE_RANGED",   36981)), true);
-    }
-
-    // --- PRIEST PvE ---
-
-    void PriestPvEPromotionHeal(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_HEAD",     37109)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_NECK",     37179)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_SHOULDERS",37357)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_BACK",     37735)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_CHEST",    37189)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_WRISTS",   37230)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_HANDS",    37358)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_WAIST",    37060)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_LEGS",     37360)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_FEET",     37361)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_FINGER1",  37182)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_FINGER2",  37624)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_TRINKET1", 37559)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_TRINKET2", 37111)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_MAINHAND", 37234)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_OFFHAND",  37718)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_PRIEST_HEAL_RANGED",   37038)), true);
-    }
-
-    void PriestPvEPromotionShadow(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_HEAD",     37109)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_NECK",     37179)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_SHOULDERS",37357)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_BACK",     37667)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_CHEST",    37189)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_WRISTS",   37230)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_HANDS",    37358)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_WAIST",    37060)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_LEGS",     37360)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_FEET",     37361)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_FINGER1",  37182)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_FINGER2",  37624)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_TRINKET1", 37559)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_TRINKET2", 37390)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_MAINHAND", 37234)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_OFFHAND",  37134)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_PRIEST_SHADOW_RANGED",   37038)), true);
-    }
-
-    // --- PALADIN PvE ---
-
-    void PaladinPvEPromotionTank(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_HEAD",     37633)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_NECK",     43282)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_SHOULDERS",37814)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_BACK",     37728)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_CHEST",    37658)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_WRISTS",   37620)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_HANDS",    37645)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_WAIST",    37241)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_LEGS",     43500)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_FEET",     37082)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_FINGER1",  37784)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_FINGER2",  37186)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_TRINKET1", 37220)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_TRINKET2", 36993)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_MAINHAND", 37401)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_OFFHAND",  43085)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_PALADIN_TANK_RANGED",   38363)), true);
-    }
-
-    void PaladinPvEPromotionHeal(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_HEAD",     37295)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_NECK",     37179)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_SHOULDERS",37357)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_BACK",     37735)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_CHEST",    37291)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_WRISTS",   37230)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_HANDS",    37358)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_WAIST",    37060)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_LEGS",     37360)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_FEET",     37361)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_FINGER1",  37182)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_FINGER2",  37624)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_TRINKET1", 37559)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_TRINKET2", 37111)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_MAINHAND", 37401)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_OFFHAND",  37061)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_PALADIN_HEAL_RANGED",   38364)), true);
-    }
-
-    void PaladinPvEPromotionDps(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_HEAD",     37237)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_NECK",     37397)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_SHOULDERS",37814)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_BACK",     37647)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_CHEST",    37612)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_WRISTS",   37853)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_HANDS",    37363)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_WAIST",    37241)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_LEGS",     43500)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_FEET",     37150)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_FINGER1",  37642)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_FINGER2",  37151)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_TRINKET1", 37166)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_TRINKET2", 37390)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_MAINHAND", 37852)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_PALADIN_DPS_RANGED",   38362)), true);
-    }
-
-    // --- SHAMAN PvE ---
-
-    void ShamanPvEPromotionElemental(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_HEAD",     37215)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_NECK",     37179)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_SHOULDERS",37357)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_BACK",     37667)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_CHEST",    37217)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_WRISTS",   37230)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_HANDS",    37358)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_WAIST",    37060)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_LEGS",     37360)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_FEET",     37361)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_FINGER1",  37182)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_FINGER2",  37624)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_TRINKET1", 37559)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_TRINKET2", 37390)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_MAINHAND", 37112)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_OFFHAND",  37134)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ELEMENTAL_RANGED",   38361)), true);
-    }
-
-    void ShamanPvEPromotionResto(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_HEAD",     37215)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_NECK",     37179)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_SHOULDERS",37357)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_BACK",     37735)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_CHEST",    37217)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_WRISTS",   37230)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_HANDS",    37358)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_WAIST",    37060)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_LEGS",     37360)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_FEET",     37361)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_FINGER1",  37182)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_FINGER2",  37624)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_TRINKET1", 37559)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_TRINKET2", 37111)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_MAINHAND", 37112)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_OFFHAND",  37718)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_RESTO_RANGED",   38368)), true);
-    }
-
-    void ShamanPvEPromotionEnhancement(Player* player)
-    {
-        player->EquipNewItem(EQUIPMENT_SLOT_HEAD,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_HEAD",     37168)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_NECK,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_NECK",     37397)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_SHOULDERS, (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_SHOULDERS",37301)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_BACK,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_BACK",     37647)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_CHEST,     (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_CHEST",    37219)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WRISTS,    (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_WRISTS",   37367)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_HANDS,     (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_HANDS",    37302)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_WAIST,     (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_WAIST",    37371)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_LEGS,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_LEGS",     37218)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FEET,      (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_FEET",     37303)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER1,   (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_FINGER1",  37642)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_FINGER2,   (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_FINGER2",  37151)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET1,  (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_TRINKET1", 37166)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_TRINKET2,  (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_TRINKET2", 37390)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_MAINHAND,  (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_MAINHAND", 37852)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_OFFHAND,   (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_OFFHAND",  37037)), true);
-        player->EquipNewItem(EQUIPMENT_SLOT_RANGED,    (sConfigMgr->GetOption<uint32>("PVE_SHAMAN_ENHANCE_RANGED",   38367)), true);
-    }
 };
 
 class mod_promotion_conf : public WorldScript
