@@ -4,8 +4,8 @@ INSERT INTO `npc_text` (`ID`, `text0_0`, `text0_1`, `BroadcastTextID0`, `lang0`,
 -- Locales esES / esMX
 INSERT INTO `broadcast_text_locale` (`ID`, `locale`, `MaleText`, `FemaleText`, `VerifiedBuild`)
 VALUES
-  (80000, 'esES', 'Nuestro período de promoción ha terminado. Muchas gracias por jugar en los reinos de CoRe Legacy.', 'Próximamente..', 0),
-  (80000, 'esMX', 'Nuestro período de promoción ha terminado. Muchas gracias por jugar en los reinos de CoRe Legacy.', 'Próximamente..', 0);
+  (80000, 'esES', 'Nuestro período de promoción ha terminado. Muchas gracias por jugar en los reinos de CoRe Legacy.', 'Nuestro período de promoción ha terminado. Muchas gracias por jugar en los reinos de CoRe Legacy.', 0),
+  (80000, 'esMX', 'Nuestro período de promoción ha terminado. Muchas gracias por jugar en los reinos de CoRe Legacy.', 'Nuestro período de promoción ha terminado. Muchas gracias por jugar en los reinos de CoRe Legacy.', 0);
 
 INSERT INTO `npc_text_locale` (`ID`, `Locale`, `text0_0`, `text0_1`, `text1_0`, `text1_1`, `text2_0`, `text2_1`, `text3_0`, `text3_1`, `text4_0`, `text4_1`, `text5_0`, `text5_1`, `text6_0`, `text6_1`, `text7_0`, `text7_1`)
 VALUES
