@@ -1,5 +1,5 @@
 DELETE FROM `broadcast_text` WHERE `ID` = 80000;
-INSERT INTO `broadcast_text` (`ID`, `LanguageID`, `MaleText`, `FemaleText`, `EmoteID0`, `EmoteID1`, `EmoteID2`, `EmoteDelay0`, `EmoteDelay1`, `EmoteDelay2`, `SoundEntriesID`, `EmotesID`, `Flags`, `VerifiedBuild`)
+INSERT INTO `broadcast_text` (`ID`, `LanguageID`, `MaleText`, `FemaleText`, `EmoteID1`, `EmoteID2`, `EmoteID3`, `EmoteDelay1`, `EmoteDelay2`, `EmoteDelay3`, `SoundEntriesID`, `EmotesID`, `Flags`, `VerifiedBuild`)
 VALUES (80000, 0, 'Our promotion period is over. Thank you very much for play on CoRe Legacy Realms.', 'Our promotion period is over. Thank you very much for play on CoRe Legacy Realms.', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 DELETE FROM `npc_text` WHERE `ID` = 80000;
