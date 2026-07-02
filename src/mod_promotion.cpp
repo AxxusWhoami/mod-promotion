@@ -15,8 +15,8 @@
 #include "World.h"
 #include "WorldSession.h"
 
-static bool promotionEnable, mountEnable, bagEnable, equippedbags;
-static int promotionCount, moneyRewardConst, mountPromotion, bagReward;
+static bool promotionEnable, mountGround, mountFlying, bagEnable, equippedbags;
+static int promotionCount, moneyRewardConst, bagReward;
 static int classConfArmor, LevelForPromotion;
 
 class npc_promotion : public CreatureScript
@@ -509,8 +509,47 @@ public:
 
             creature->Whisper("You Got Your Promotion!", LANG_UNIVERSAL, player);
 
-            if (mountEnable)
-                player->learnSpell(sConfigMgr->GetOption<uint32>("mountPromotion", 42777)); //Swift Spectral Tiger
+            if (mountGround)
+            {
+                uint32 groundMount = 0;
+                switch (player->getRace())
+                {
+                    case RACE_HUMAN:        groundMount = sConfigMgr->GetOption<uint32>("mountGround.Human",    470);   break;
+                    case RACE_DWARF:        groundMount = sConfigMgr->GetOption<uint32>("mountGround.Dwarf",    6898);  break;
+                    case RACE_NIGHTELF:     groundMount = sConfigMgr->GetOption<uint32>("mountGround.NightElf", 10789); break;
+                    case RACE_GNOME:        groundMount = sConfigMgr->GetOption<uint32>("mountGround.Gnome",    17453); break;
+                    case RACE_DRAENEI:      groundMount = sConfigMgr->GetOption<uint32>("mountGround.Draenei",  35710); break;
+                    case RACE_BLOODELF:     groundMount = sConfigMgr->GetOption<uint32>("mountGround.BloodElf", 33660); break;
+                    case RACE_ORC:          groundMount = sConfigMgr->GetOption<uint32>("mountGround.Orc",      5784);  break;
+                    case RACE_UNDEAD_PLAYER:groundMount = sConfigMgr->GetOption<uint32>("mountGround.Undead",   17463); break;
+                    case RACE_TAUREN:       groundMount = sConfigMgr->GetOption<uint32>("mountGround.Tauren",   18989); break;
+                    case RACE_TROLL:        groundMount = sConfigMgr->GetOption<uint32>("mountGround.Troll",    10796); break;
+                    default: break;
+                }
+                if (groundMount)
+                    player->learnSpell(groundMount);
+            }
+
+            if (mountFlying)
+            {
+                uint32 flyingMount = 0;
+                switch (player->getRace())
+                {
+                    case RACE_HUMAN:        flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Human",    34767); break;
+                    case RACE_DWARF:        flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Dwarf",    34769); break;
+                    case RACE_NIGHTELF:     flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.NightElf", 41513); break;
+                    case RACE_GNOME:        flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Gnome",    34768); break;
+                    case RACE_DRAENEI:      flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Draenei",  34769); break;
+                    case RACE_BLOODELF:     flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.BloodElf", 40192); break;
+                    case RACE_ORC:          flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Orc",      40193); break;
+                    case RACE_UNDEAD_PLAYER:flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Undead",   40194); break;
+                    case RACE_TAUREN:       flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Tauren",   40195); break;
+                    case RACE_TROLL:        flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Troll",    40192); break;
+                    default: break;
+                }
+                if (flyingMount)
+                    player->learnSpell(flyingMount);
+            }
         
             //Bags
             if (bagEnable)
@@ -1038,8 +1077,8 @@ public:
             promotionCount = sConfigMgr->GetOption<uint32>("promotion.count", 1);
             moneyRewardConst = sConfigMgr->GetOption<uint32>("MoneyRewardValue", 10000000);
             LevelForPromotion = sConfigMgr->GetOption<uint32>("LevelForPromotion", 80);
-            mountPromotion = sConfigMgr->GetOption<uint32>("mountPromotion", 42277);
-            mountEnable = sConfigMgr->GetOption<bool>("mountEnable.enable", true);
+            mountGround = sConfigMgr->GetOption<bool>("mountGround.enable", true);
+            mountFlying = sConfigMgr->GetOption<bool>("mountFlying.enable", false);
             bagEnable = sConfigMgr->GetOption<bool>("bagEnable.enable", true);
             equippedbags = sConfigMgr->GetOption<bool>("equippedbags.enable", true);
             bagReward = sConfigMgr->GetOption<uint32>("bagReward.Id", 14156);

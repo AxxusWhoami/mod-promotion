@@ -70,17 +70,66 @@ LevelForPromotion = 80
 #
 #     MountPromotion
 #
-#     Description: Here You Put The Spells Of The Promotion Mounts
+#     Description: Grant a race-specific ground mount and/or flying mount on promotion.
 #
-#     Example: 42277 - ( Swift Spectral Tiger - ID SPELL)
-#              37015 - ( Swift Nether Drake - ID SPELL)
+#     mountGround.enable
+#         true  - give the race-appropriate ground mount (default)
+#         false - skip ground mount
 #
-#     Default: mountPromotion = 42277
-#     Default: mountEnable.enable = true (Mounts Enabled In The Promotion)
+#     mountFlying.enable
+#         true  - give the race-appropriate flying mount
+#         false - skip flying mount (default)
+#
+#     Per-race ground mount spell IDs (override if desired):
+#         mountGround.Human    = 470     (Brown Horse)
+#         mountGround.Dwarf    = 6898    (Brown Ram)
+#         mountGround.NightElf = 10789   (Striped Frostsaber)
+#         mountGround.Gnome    = 17453   (Blue Mechanostrider)
+#         mountGround.Draenei  = 35710   (Brown Elekk)
+#         mountGround.BloodElf = 33660   (Red Hawkstrider)
+#         mountGround.Orc      = 5784    (Brown Wolf)
+#         mountGround.Undead   = 17463   (Black Skeletal Horse)
+#         mountGround.Tauren   = 18989   (Gray Kodo)
+#         mountGround.Troll    = 10796   (Emerald Raptor)
+#
+#     Per-race flying mount spell IDs (override if desired):
+#         mountFlying.Human    = 34767   (Swift Green Gryphon)
+#         mountFlying.Dwarf    = 34769   (Swift Blue Gryphon)
+#         mountFlying.NightElf = 41513   (Swift Purple Hippogryph)
+#         mountFlying.Gnome    = 34768   (Swift Red Gryphon)
+#         mountFlying.Draenei  = 34769   (Swift Blue Gryphon)
+#         mountFlying.BloodElf = 40192   (Swift Purple Wind Rider)
+#         mountFlying.Orc      = 40193   (Swift Yellow Wind Rider)
+#         mountFlying.Undead   = 40194   (Swift Red Wind Rider)
+#         mountFlying.Tauren   = 40195   (Swift White Wind Rider)
+#         mountFlying.Troll    = 40192   (Swift Purple Wind Rider)
 #
 
-c
-mountPromotion = 42277
+mountGround.enable = true
+mountFlying.enable = false
+
+# Uncomment and change values to override per-race mounts:
+# mountGround.Human    = 470
+# mountGround.Dwarf    = 6898
+# mountGround.NightElf = 10789
+# mountGround.Gnome    = 17453
+# mountGround.Draenei  = 35710
+# mountGround.BloodElf = 33660
+# mountGround.Orc      = 5784
+# mountGround.Undead   = 17463
+# mountGround.Tauren   = 18989
+# mountGround.Troll    = 10796
+
+# mountFlying.Human    = 34767
+# mountFlying.Dwarf    = 34769
+# mountFlying.NightElf = 41513
+# mountFlying.Gnome    = 34768
+# mountFlying.Draenei  = 34769
+# mountFlying.BloodElf = 40192
+# mountFlying.Orc      = 40193
+# mountFlying.Undead   = 40194
+# mountFlying.Tauren   = 40195
+# mountFlying.Troll    = 40192
 
 #
 #
