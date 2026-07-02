@@ -79,7 +79,7 @@ LevelForPromotion = 80
 #     Default: mountEnable.enable = true (Mounts Enabled In The Promotion)
 #
 
-mountEnable.enable = true
+c
 mountPromotion = 42277
 
 #
