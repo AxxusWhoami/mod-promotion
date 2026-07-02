@@ -39,39 +39,39 @@ public:
         switch (player->getClass())
         {
         case CLASS_WARRIOR:
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Furia", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Tanque - Proteccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "DPS - Furia", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Tanque - Proteccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
             break;
         case CLASS_WARLOCK:
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Destruccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "DPS - Destruccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
             break;
         case CLASS_DRUID:
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Tanque - Guardian", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Healer - Restauracion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Equilibrio", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Tanque - Guardian", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Healer - Restauracion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "DPS - Equilibrio", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
             break;
         case CLASS_HUNTER:
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Punteria", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 7);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "DPS - Punteria", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 7);
             break;
         case CLASS_MAGE:
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Escarcha", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 8);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "DPS - Escarcha", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 8);
             break;
         case CLASS_ROGUE:
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Sutileza", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 9);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "DPS - Sutileza", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 9);
             break;
         case CLASS_PRIEST:
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Healer - Disciplina", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 10);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Sombras", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 11);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Healer - Disciplina", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 10);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "DPS - Sombras", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 11);
             break;
         case CLASS_PALADIN:
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Tanque - Proteccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 12);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Healer - Sagrado", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 13);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Retribucion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Tanque - Proteccion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 12);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Healer - Sagrado", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 13);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "DPS - Retribucion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
             break;
         case CLASS_SHAMAN:
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Elemental", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 15);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP Healer - Restauracion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 16);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "PvP DPS - Mejora", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 17);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "DPS - Elemental", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 15);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Healer - Restauracion", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 16);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "DPS - Mejora", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 17);
             break;
         default:
             break;
