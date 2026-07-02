@@ -19,19 +19,6 @@ static bool promotionEnable, mountEnable, bagEnable, equippedbags;
 static int promotionCount, moneyRewardConst, mountPromotion, bagReward;
 static int classConfArmor, LevelForPromotion;
 
-class announce_module : public PlayerScript
-{
-public:
-    announce_module() : PlayerScript("announce_module", {
-        PLAYERHOOK_ON_LOGIN
-    }) { }
-
-    void OnPlayerLogin(Player* player) override
-    {
-
-    }
-};
-
 class npc_promotion : public CreatureScript
 {
 public:
@@ -914,7 +901,6 @@ public:
 
 void AddSC_npc_promotion()
 {
-    new announce_module();
     new npc_promotion();
     new mod_promotion_conf();
 }
