@@ -484,7 +484,16 @@ public:
         if (promotionEnable && ((int)pjts <= promotionCount || player->GetSession()->GetSecurity() >= SEC_MODERATOR))
         {
             if (action > GOSSIP_ACTION_INFO_DEF && action <= 1034)
-                player->GiveLevel(sConfigMgr->GetOption<uint32>("LevelForPromotion", 80)); // Level
+            {
+                uint32 targetLevel = sConfigMgr->GetOption<uint32>("LevelForPromotion", 80);
+                // Use SetLevel to avoid triggering "First in the Realm" achievements
+                player->SetLevel(targetLevel);
+                player->InitStatsForLevel(true);
+                player->InitTaxiNodesForLevel();
+                player->InitGlyphsForLevel();
+                player->InitTalentForLevel();
+                player->SetUInt32Value(PLAYER_XP, 0);
+            }
 
             //Money 2,5k
             MoneyReward(player);
