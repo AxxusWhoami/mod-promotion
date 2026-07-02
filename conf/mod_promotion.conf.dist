@@ -27,19 +27,6 @@ promotionEnable.enable=true
 
 #
 #
-#	    Promotion.count
-#
-#		Description:	Amount of promotion per account.
-#
-#			Example:	1 - (One)
-#						2 - (Two)
-#
-#        Default:     1
-
-promotion.count = 1
-
-#
-#
 #     MoneyRewardPromotion
 #
 #     Description: Amount of promotion for character
@@ -146,6 +133,20 @@ mountFlying.enable = false
 bagEnable.enable = true
 equippedbags.enable = true
 bagReward.Id = 41599
+
+#
+#
+#     TeleportOnPromotion
+#
+#     Description: Teleport the character to their faction capital after the promotion is granted.
+#
+#     Example: true  - (teleport enabled, default)
+#              false - (stay in place)
+#
+#     Default: teleport.enable = true
+#
+
+teleport.enable = true
 
 ###################################################################################################
 
@@ -506,5 +507,45 @@ EQUIPMENT_SLOT_DRUID_CASTER_TRINKET2 = 38358
 EQUIPMENT_SLOT_DRUID_CASTER_BACK = 45810
 EQUIPMENT_SLOT_DRUID_CASTER_MAINHAND = 36975
 EQUIPMENT_SLOT_DRUID_CASTER_RANGED = 38360
+
+###################################################################################################
+#   DEATH KNIGHT CLASS
+###################################################################################################
+
+EQUIPMENT_SLOT_DK_TANK_HEAD = 41350
+EQUIPMENT_SLOT_DK_TANK_NECK = 45812
+EQUIPMENT_SLOT_DK_TANK_SHOULDERS = 41351
+EQUIPMENT_SLOT_DK_TANK_CHEST = 41353
+EQUIPMENT_SLOT_DK_TANK_WAIST = 41352
+EQUIPMENT_SLOT_DK_TANK_LEGS = 41347
+EQUIPMENT_SLOT_DK_TANK_FEET = 41348
+EQUIPMENT_SLOT_DK_TANK_WRISTS = 41354
+EQUIPMENT_SLOT_DK_TANK_HANDS = 41349
+EQUIPMENT_SLOT_DK_TANK_FINGER1 = 45809
+EQUIPMENT_SLOT_DK_TANK_FINGER2 = 45809
+EQUIPMENT_SLOT_DK_TANK_TRINKET1 = 36993
+EQUIPMENT_SLOT_DK_TANK_TRINKET2 = 38359
+EQUIPMENT_SLOT_DK_TANK_BACK = 45811
+EQUIPMENT_SLOT_DK_TANK_MAINHAND = 36984
+EQUIPMENT_SLOT_DK_TANK_RANGED = 40867
+
+EQUIPMENT_SLOT_DK_DPS_HEAD = 41350
+EQUIPMENT_SLOT_DK_DPS_NECK = 45812
+EQUIPMENT_SLOT_DK_DPS_SHOULDERS = 41351
+EQUIPMENT_SLOT_DK_DPS_CHEST = 41353
+EQUIPMENT_SLOT_DK_DPS_WAIST = 41352
+EQUIPMENT_SLOT_DK_DPS_LEGS = 41347
+EQUIPMENT_SLOT_DK_DPS_FEET = 41348
+EQUIPMENT_SLOT_DK_DPS_WRISTS = 41354
+EQUIPMENT_SLOT_DK_DPS_HANDS = 41349
+EQUIPMENT_SLOT_DK_DPS_FINGER1 = 45809
+EQUIPMENT_SLOT_DK_DPS_FINGER2 = 45809
+EQUIPMENT_SLOT_DK_DPS_TRINKET1 = 37064
+EQUIPMENT_SLOT_DK_DPS_TRINKET2 = 38359
+EQUIPMENT_SLOT_DK_DPS_BACK = 45811
+EQUIPMENT_SLOT_DK_DPS_MAINHAND = 37108
+EQUIPMENT_SLOT_DK_DPS_RANGED = 40867
+
+###################################################################################################
 
 ###################################################################################################
