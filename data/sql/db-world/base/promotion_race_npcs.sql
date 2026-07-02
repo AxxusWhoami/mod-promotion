@@ -9,7 +9,7 @@
 --   26047 = Dwarf male Ironforge Mountaineer (mail + rifle)
 --   20039 = Gnome male Gnomeregan Explorer (light armor + scout gear)
 --   22490 = Night Elf female sentinel/druid (leather + staff)
---   21267 = Draenei male Vindicator (crystal plate + hammer)
+--   18937 = Draenei male Exodar Explorer (light armor / traveler)
 --    3890 = Orc male Orgrimmar Grunt (red/black plate + axe)
 --    9528 = Troll male Witch Doctor (voodoo mask + lances)
 --    3975 = Tauren male warrior/shaman (heavy plate + totem)
@@ -113,7 +113,7 @@ SET @ENTRY_DRAE     := 80005;
 SET @NAME_DRAE      := 'Vindicador Kuros';
 SET @SUBNAME_DRAE   := 'Level Up Master';
 SET @GOSSIP_DRAE    := 80005;
-SET @MODEL_DRAE     := 21267;
+SET @MODEL_DRAE     := 18937;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_DRAE;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
