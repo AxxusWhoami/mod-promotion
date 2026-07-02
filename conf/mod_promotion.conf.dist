@@ -164,6 +164,25 @@ bagReward.Id = 41599
 
 teleport.enable = true
 
+#
+#     Teleport destination coordinates (used when teleport.enable = true).
+#     Override these to send players to a custom capital or hub.
+#
+#     Default: Stormwind Keep (Alliance) and Valley of Strength in Orgrimmar (Horde).
+#
+#     teleport.Alliance.MapId = 0
+#     teleport.Alliance.X     = -8888.54
+#     teleport.Alliance.Y     =   573.119
+#     teleport.Alliance.Z     =    92.621
+#     teleport.Alliance.O     =     0.732
+#
+#     teleport.Horde.MapId    = 1
+#     teleport.Horde.X        =  1136.16
+#     teleport.Horde.Y        = -4385.84
+#     teleport.Horde.Z        =   30.206
+#     teleport.Horde.O        =    3.063
+#
+
 ###################################################################################################
 
 ###################################################################################################

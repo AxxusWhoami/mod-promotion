@@ -52,7 +52,7 @@ public:
 
         if (!isModerator && player->GetLevel() != startLevel)
         {
-            SendGossipMenuFor(player, 68, creature);
+            SendGossipMenuFor(player, 80002, creature);
             return true;
         }
 
@@ -106,7 +106,7 @@ public:
             default:
                 break;
         }
-        SendGossipMenuFor(player, 68, creature);
+        SendGossipMenuFor(player, 80002, creature);
         return true;
     }
 
@@ -203,12 +203,21 @@ public:
             uint32 const bagId = sConfigMgr->GetOption<uint32>("bagReward.Id", 14156);
             if (equippedbags)
             {
+                // Only destroy a bag if it is completely empty to avoid data loss.
                 for (int slot = INVENTORY_SLOT_BAG_START; slot < INVENTORY_SLOT_BAG_END; ++slot)
-                    if (Item* bag = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
+                {
+                    if (Item* item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
+                    {
+                        if (Bag* bag = item->ToBag())
+                            if (bag->GetFreeSlots() < bag->GetBagSize())
+                                continue;
                         player->DestroyItem(INVENTORY_SLOT_BAG_0, slot, true);
-
+                    }
+                }
+                // Equip in every slot that is now free.
                 for (int slot = INVENTORY_SLOT_BAG_START; slot < INVENTORY_SLOT_BAG_END; ++slot)
-                    player->EquipNewItem(slot, bagId, true);
+                    if (!player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
+                        player->EquipNewItem(slot, bagId, true);
             }
             else
                 player->AddItem(bagId, 4);
@@ -245,6 +254,14 @@ public:
             }
         }
 
+        if (player->getClass() == CLASS_SHAMAN)
+        {
+            static const uint32 kTotems[] = { 5175, 5176, 5177, 5178 };
+            for (uint32 totem : kTotems)
+                if (!player->HasItemCount(totem))
+                    player->AddItem(totem, 1);
+        }
+
         if (!isModerator)
         {
             uint32 const accountId = player->GetSession()->GetAccountId();
@@ -258,11 +275,22 @@ public:
         if (teleportOnPromotion)
         {
             if (player->GetTeamId() == TEAM_ALLIANCE)
-                player->TeleportTo(0, -8888.54f, 573.119f, 92.6213f, 0.731558f);
+                player->TeleportTo(
+                    sConfigMgr->GetOption<uint32>("teleport.Alliance.MapId", 0),
+                    sConfigMgr->GetOption<float> ("teleport.Alliance.X",    -8888.54f),
+                    sConfigMgr->GetOption<float> ("teleport.Alliance.Y",     573.119f),
+                    sConfigMgr->GetOption<float> ("teleport.Alliance.Z",     92.6213f),
+                    sConfigMgr->GetOption<float> ("teleport.Alliance.O",     0.731558f));
             else
-                player->TeleportTo(1, 1136.16f, -4385.84f, 30.2056f, 3.06327f);
+                player->TeleportTo(
+                    sConfigMgr->GetOption<uint32>("teleport.Horde.MapId",  1),
+                    sConfigMgr->GetOption<float> ("teleport.Horde.X",      1136.16f),
+                    sConfigMgr->GetOption<float> ("teleport.Horde.Y",     -4385.84f),
+                    sConfigMgr->GetOption<float> ("teleport.Horde.Z",      30.2056f),
+                    sConfigMgr->GetOption<float> ("teleport.Horde.O",      3.06327f));
         }
 
+        player->SaveToDB();
         CloseGossipMenuFor(player);
         return true;
     }
