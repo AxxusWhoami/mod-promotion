@@ -1,6 +1,6 @@
 void AddSC_npc_promotion();
 
-void Addmod_promotion_azerothcoreScripts()
+void Addmod_promotionScripts()
 {
     AddSC_npc_promotion();
 }
