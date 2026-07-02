@@ -41,7 +41,7 @@ Every slot (head, neck, shoulders, back, chest, wrists, hands, waist, legs, feet
 | Shaman | Caster (Elemental), Healer (Restoration), Melee (Enhancement) |
 | Mage | DPS (Frost) |
 | Warlock | DPS (Destruction) |
-| Druid | Tank (Guardian), Healer (Restoration), Melee (Feral), Caster (Balance) |
+| Druid | Tank (Guardian), Healer (Restoration), Caster (Balance) |
 
 Slots with no item defined (e.g. off-hand for Hunter) are silently skipped — no need to set them to 0.
 

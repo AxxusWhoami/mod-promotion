@@ -18,6 +18,8 @@
 #include "ScriptMgr.h"
 #include "World.h"
 #include "WorldSession.h"
+#include <algorithm>
+#include <unordered_set>
 
 static bool promotionEnable;
 static bool mountGround;
@@ -26,6 +28,10 @@ static bool bagEnable;
 static bool equippedbags;
 static bool learnSpells;
 static bool teleportOnPromotion;
+
+// Accounts that have already claimed their promotion (loaded at startup).
+// All gossip handling runs on the world thread — no mutex needed.
+static std::unordered_set<uint32> s_promotedAccounts;
 
 class npc_promotion : public CreatureScript
 {
@@ -122,6 +128,13 @@ public:
             return true;
         }
 
+        // Reject actions that don't belong to the player's class.
+        if (!IsValidActionForClass(player->getClass(), action))
+        {
+            CloseGossipMenuFor(player);
+            return true;
+        }
+
         uint32 const targetLevel = sConfigMgr->GetOption<uint32>("LevelForPromotion", 80);
         player->SetLevel(targetLevel);
         player->InitStatsForLevel(true);
@@ -141,7 +154,7 @@ public:
         player->learnSpell(SKILL_RIDING_FLYING);
         player->learnSpell(SKILL_RIDING_ARTISING);
 
-        creature->Whisper("You Got Your Promotion!", LANG_UNIVERSAL, player);
+        creature->Whisper("¡Felicidades! Tu Promocion ha sido concedida.", LANG_UNIVERSAL, player);
 
         if (mountGround)
         {
@@ -233,10 +246,14 @@ public:
         }
 
         if (!isModerator)
+        {
+            uint32 const accountId = player->GetSession()->GetAccountId();
             CharacterDatabase.Execute(
                 "INSERT IGNORE INTO mod_promotion_log (account_id, character_guid, timestamp) VALUES ({}, {}, UNIX_TIMESTAMP())",
-                player->GetSession()->GetAccountId(),
+                accountId,
                 player->GetGUID().GetCounter());
+            s_promotedAccounts.insert(accountId);
+        }
 
         if (teleportOnPromotion)
         {
@@ -246,15 +263,34 @@ public:
                 player->TeleportTo(1, 1136.16f, -4385.84f, 30.2056f, 3.06327f);
         }
 
+        CloseGossipMenuFor(player);
         return true;
     }
 
 private:
     static bool HasUsedPromotion(uint32 accountId)
     {
-        QueryResult result = CharacterDatabase.Query(
-            "SELECT COUNT(*) FROM mod_promotion_log WHERE account_id = {}", accountId);
-        return result && result->Fetch()[0].Get<uint32>() > 0;
+        return s_promotedAccounts.count(accountId) > 0;
+    }
+
+    static bool IsValidActionForClass(uint8 cls, uint32 action)
+    {
+        static const std::unordered_map<uint8, std::vector<uint32>> kClassActions = {
+            {CLASS_WARRIOR,      {GOSSIP_ACTION_INFO_DEF +  1, GOSSIP_ACTION_INFO_DEF +  2}},
+            {CLASS_WARLOCK,      {GOSSIP_ACTION_INFO_DEF +  3}},
+            {CLASS_DRUID,        {GOSSIP_ACTION_INFO_DEF +  4, GOSSIP_ACTION_INFO_DEF +  5, GOSSIP_ACTION_INFO_DEF +  6}},
+            {CLASS_HUNTER,       {GOSSIP_ACTION_INFO_DEF +  7}},
+            {CLASS_MAGE,         {GOSSIP_ACTION_INFO_DEF +  8}},
+            {CLASS_ROGUE,        {GOSSIP_ACTION_INFO_DEF +  9}},
+            {CLASS_PRIEST,       {GOSSIP_ACTION_INFO_DEF + 10, GOSSIP_ACTION_INFO_DEF + 11}},
+            {CLASS_PALADIN,      {GOSSIP_ACTION_INFO_DEF + 12, GOSSIP_ACTION_INFO_DEF + 13, GOSSIP_ACTION_INFO_DEF + 14}},
+            {CLASS_SHAMAN,       {GOSSIP_ACTION_INFO_DEF + 15, GOSSIP_ACTION_INFO_DEF + 16, GOSSIP_ACTION_INFO_DEF + 17}},
+            {CLASS_DEATH_KNIGHT, {GOSSIP_ACTION_INFO_DEF + 18, GOSSIP_ACTION_INFO_DEF + 19}},
+        };
+        auto it = kClassActions.find(cls);
+        if (it == kClassActions.end())
+            return false;
+        return std::find(it->second.begin(), it->second.end(), action) != it->second.end();
     }
 
     static void EquipGearSet(Player* player, std::string const& prefix)
@@ -293,8 +329,22 @@ class mod_promotion_conf : public WorldScript
 {
 public:
     mod_promotion_conf() : WorldScript("mod_promotion.conf", {
-        WORLDHOOK_ON_BEFORE_CONFIG_LOAD
+        WORLDHOOK_ON_BEFORE_CONFIG_LOAD,
+        WORLDHOOK_ON_STARTUP
     }) { }
+
+    void OnStartup() override
+    {
+        // Populate the in-memory set from existing log rows.
+        QueryResult result = CharacterDatabase.Query(
+            "SELECT DISTINCT account_id FROM mod_promotion_log");
+        if (result)
+            do { s_promotedAccounts.insert(result->Fetch()[0].Get<uint32>()); }
+            while (result->NextRow());
+
+        // Pre-build the per-family spell index used by LearnAllClassSpells.
+        InitSpellCache();
+    }
 
     void OnBeforeConfigLoad(bool /*reload*/) override
     {

@@ -7,6 +7,14 @@
 
 enum SpellsMount
 {
+    SKILL_RIDING_75       = 33388,
+    SKILL_RIDING_100      = 33391,
+    SKILL_RIDING_FLYING   = 34090,
+    SKILL_RIDING_ARTISING = 34091,
+};
+
+enum SpellsMount
+{
     SKILL_RIDING_75 = 33388, // Rinding 75
     SKILL_RIDING_100 = 33391, // Rinding 100
     SKILL_RIDING_FLYING = 34090,

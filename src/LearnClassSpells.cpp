@@ -160,66 +160,90 @@ static void ApplyExtrasForLevel(Player* player, uint32 family, uint8 level)
     }
 }
 
+// ---------------------------------------------------------------------------
+// Per-family spell cache (built once at server startup by InitSpellCache).
+// Stores only spells that passed the static checks so LearnAllClassSpells
+// iterates a small per-class list instead of all ~80 000 spell IDs.
+// ---------------------------------------------------------------------------
+struct CachedSpell
+{
+    SpellInfo const* info;
+    SpellInfo const* prevRank; // null when spell is rank 1
+    bool             isValid;  // sSpellMgr->IsSpellValid result
+    bool             isTalent; // has a TalentSpellPos entry
+};
+static std::unordered_map<uint32 /*SpellFamilyName*/, std::vector<CachedSpell>> s_spellCache;
+
+void InitSpellCache()
+{
+    s_spellCache.clear();
+    for (uint32 i = 0; i < sSpellMgr->GetSpellInfoStoreSize(); ++i)
+    {
+        SpellInfo const* spell = sSpellMgr->GetSpellInfo(i);
+        if (!spell || spell->SpellFamilyName == SPELLFAMILY_GENERIC)
+            continue;
+        if (s_ignoreSpells.count(spell->Id) || spell->PowerType == POWER_FOCUS)
+            continue;
+
+        bool hasValidSLA = false;
+        SkillLineAbilityMapBounds bounds = sSpellMgr->GetSkillLineAbilityMapBounds(spell->Id);
+        for (auto itr = bounds.first; itr != bounds.second; ++itr)
+        {
+            if (itr->second->Spell == spell->Id &&
+                itr->second->RaceMask == 0 &&
+                itr->second->AcquireMethod == 0)
+            {
+                hasValidSLA = true;
+                break;
+            }
+        }
+        if (!hasValidSLA)
+            continue;
+
+        CachedSpell cs;
+        cs.info     = spell;
+        cs.prevRank = spell->GetPrevRankSpell();
+        cs.isValid  = sSpellMgr->IsSpellValid(spell);
+        cs.isTalent = GetTalentSpellPos(spell->Id) != nullptr;
+        s_spellCache[spell->SpellFamilyName].push_back(cs);
+    }
+}
+
 void LearnAllClassSpells(Player* player)
 {
-    uint32 const family    = GetSpellFamily(player);
-    uint8  const toLevel   = player->GetLevel();
+    uint32 const family  = GetSpellFamily(player);
+    uint8  const toLevel = player->GetLevel();
+
+    auto cacheIt = s_spellCache.find(family);
 
     for (uint8 level = 1; level <= toLevel; ++level)
     {
         ApplyExtrasForLevel(player, family, level);
 
-        for (uint32 i = 0; i < sSpellMgr->GetSpellInfoStoreSize(); ++i)
-        {
-            SpellInfo const* spell = sSpellMgr->GetSpellInfo(i);
-            if (!spell)
-                continue;
+        if (cacheIt == s_spellCache.end())
+            continue;
 
-            if (spell->SpellFamilyName != family)
+        for (CachedSpell const& cs : cacheIt->second)
+        {
+            SpellInfo const* spell = cs.info;
+
+            if (spell->BaseLevel != uint32(level) && cs.isValid)
                 continue;
 
             if ((spell->AttributesEx7 & SPELL_ATTR7_ALLIANCE_SPECIFIC_SPELL && player->GetTeamId() != TEAM_ALLIANCE) ||
                 (spell->AttributesEx7 & SPELL_ATTR7_HORDE_SPECIFIC_SPELL   && player->GetTeamId() != TEAM_HORDE))
                 continue;
 
-            if (spell->PowerType == POWER_FOCUS)
-                continue;
-
-            if (s_ignoreSpells.count(spell->Id))
-                continue;
-
             if (DisableMgr::IsDisabledFor(DISABLE_TYPE_SPELL, spell->Id, player))
                 continue;
 
-            if (spell->BaseLevel != uint32(level) && sSpellMgr->IsSpellValid(spell))
+            if (cs.prevRank && !player->HasSpell(cs.prevRank->Id))
                 continue;
 
-            bool valid = false;
-            SkillLineAbilityMapBounds bounds = sSpellMgr->GetSkillLineAbilityMapBounds(spell->Id);
-            for (auto itr = bounds.first; itr != bounds.second; ++itr)
-            {
-                if (itr->second->Spell != spell->Id)
-                    continue;
-                if (itr->second->RaceMask != 0 || itr->second->AcquireMethod != 0)
-                    continue;
+            if (cs.isTalent && (!cs.prevRank || !player->HasSpell(cs.prevRank->Id) || spell->GetRank() == 1))
+                continue;
 
-                valid = true;
-                SpellInfo const* prev = spell->GetPrevRankSpell();
-                if (prev && !player->HasSpell(prev->Id))
-                {
-                    valid = false;
-                    break;
-                }
-
-                if (GetTalentSpellPos(itr->second->Spell))
-                    if (!prev || !player->HasSpell(prev->Id) || spell->GetRank() == 1)
-                        valid = false;
-
-                break;
-            }
-
-            if (valid)
-                player->learnSpell(spell->Id);
+            player->learnSpell(spell->Id);
         }
     }
 }

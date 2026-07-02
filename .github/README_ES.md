@@ -41,7 +41,7 @@ Cada ranura (cabeza, cuello, hombros, espalda, pecho, muñecas, manos, cintura, 
 | Chamán | Lanzador (Elemental), Healer (Restauración), Melee (Mejora) |
 | Mago | DPS (Escarcha) |
 | Brujo | DPS (Destrucción) |
-| Druida | Tanque (Guardián), Healer (Restauración), Melee (Feral), Lanzador (Equilibrio) |
+| Druida | Tanque (Guardián), Healer (Restauración), Lanzador (Equilibrio) |
 
 Las ranuras sin objeto definido (p. ej., mano secundaria para cazadores) se omiten silenciosamente; no es necesario establecerlas en 0.
 
