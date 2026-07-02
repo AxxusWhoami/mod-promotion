@@ -19,19 +19,97 @@
 #include "World.h"
 #include "WorldSession.h"
 #include <algorithm>
+#include <array>
+#include <unordered_map>
 #include <unordered_set>
 
-static bool promotionEnable;
-static bool mountGround;
-static bool mountFlying;
-static bool bagEnable;
-static bool equippedbags;
-static bool learnSpells;
-static bool teleportOnPromotion;
+// ---------------------------------------------------------------------------
+// Tables that are stable across the lifetime of the process.
+// Placed at module scope so OnAfterConfigLoad can iterate them for pre-loading.
+// ---------------------------------------------------------------------------
+
+static const std::pair<uint32, const char*> kGearSets[] =
+{
+    { GOSSIP_ACTION_INFO_DEF +  1, "WARRIOR_DPS"   },
+    { GOSSIP_ACTION_INFO_DEF +  2, "WARRIOR_TANK"  },
+    { GOSSIP_ACTION_INFO_DEF +  3, "WARLOCK"       },
+    { GOSSIP_ACTION_INFO_DEF +  4, "DRUID_TANK"    },
+    { GOSSIP_ACTION_INFO_DEF +  5, "DRUID_HEAL"    },
+    { GOSSIP_ACTION_INFO_DEF +  6, "DRUID_CASTER"  },
+    { GOSSIP_ACTION_INFO_DEF +  7, "HUNTER"        },
+    { GOSSIP_ACTION_INFO_DEF +  8, "MAGE"          },
+    { GOSSIP_ACTION_INFO_DEF +  9, "ROGUE"         },
+    { GOSSIP_ACTION_INFO_DEF + 10, "PRIEST_HEAL"   },
+    { GOSSIP_ACTION_INFO_DEF + 11, "PRIEST_SHADOW" },
+    { GOSSIP_ACTION_INFO_DEF + 12, "PALADIN_TANK"  },
+    { GOSSIP_ACTION_INFO_DEF + 13, "PALADIN_HEAL"  },
+    { GOSSIP_ACTION_INFO_DEF + 14, "PALADIN_DPS"   },
+    { GOSSIP_ACTION_INFO_DEF + 15, "SHAMAN_CASTER" },
+    { GOSSIP_ACTION_INFO_DEF + 16, "SHAMAN_HEAL"   },
+    { GOSSIP_ACTION_INFO_DEF + 17, "SHAMAN_MELEE"  },
+    { GOSSIP_ACTION_INFO_DEF + 18, "DK_TANK"       },
+    { GOSSIP_ACTION_INFO_DEF + 19, "DK_DPS"        },
+};
+
+static const std::pair<EquipmentSlots, const char*> kEquipSlots[] =
+{
+    { EQUIPMENT_SLOT_HEAD,      "HEAD"      },
+    { EQUIPMENT_SLOT_NECK,      "NECK"      },
+    { EQUIPMENT_SLOT_SHOULDERS, "SHOULDERS" },
+    { EQUIPMENT_SLOT_CHEST,     "CHEST"     },
+    { EQUIPMENT_SLOT_WAIST,     "WAIST"     },
+    { EQUIPMENT_SLOT_LEGS,      "LEGS"      },
+    { EQUIPMENT_SLOT_FEET,      "FEET"      },
+    { EQUIPMENT_SLOT_WRISTS,    "WRISTS"    },
+    { EQUIPMENT_SLOT_HANDS,     "HANDS"     },
+    { EQUIPMENT_SLOT_FINGER1,   "FINGER1"   },
+    { EQUIPMENT_SLOT_FINGER2,   "FINGER2"   },
+    { EQUIPMENT_SLOT_TRINKET1,  "TRINKET1"  },
+    { EQUIPMENT_SLOT_TRINKET2,  "TRINKET2"  },
+    { EQUIPMENT_SLOT_BACK,      "BACK"      },
+    { EQUIPMENT_SLOT_MAINHAND,  "MAINHAND"  },
+    { EQUIPMENT_SLOT_OFFHAND,   "OFFHAND"   },
+    { EQUIPMENT_SLOT_RANGED,    "RANGED"    },
+};
+static constexpr size_t kEquipSlotCount = 17;
+
+// ---------------------------------------------------------------------------
+// Cached config values — refreshed in OnAfterConfigLoad on every load/reload.
+// ---------------------------------------------------------------------------
+
+static bool   s_promotionEnable;
+static bool   s_mountGround;
+static bool   s_mountFlying;
+static bool   s_bagEnable;
+static bool   s_equippedbags;
+static bool   s_learnSpells;
+static bool   s_teleportOnPromotion;
+
+static uint32 s_targetLevel;
+static int32  s_moneyReward;
+static uint32 s_bagId;
+
+static uint32 s_allianceMapId;
+static float  s_allianceX, s_allianceY, s_allianceZ, s_allianceO;
+static uint32 s_hordeMapId;
+static float  s_hordeX, s_hordeY, s_hordeZ, s_hordeO;
+
+// Indexed by RACE_* constants (max value = RACE_DRAENEI = 11). Index 0 and 9 are unused.
+static uint32 s_groundMount[12];
+static uint32 s_flyingMount[12];
+
+// Pre-loaded gear items: config prefix -> per-slot item IDs (parallel to kEquipSlots).
+static std::unordered_map<std::string, std::array<uint32, kEquipSlotCount>> s_gearItems;
+
+// ---------------------------------------------------------------------------
+// Runtime state
+// ---------------------------------------------------------------------------
 
 // Accounts that have already claimed their promotion (loaded at startup).
 // All gossip handling runs on the world thread — no mutex needed.
 static std::unordered_set<uint32> s_promotedAccounts;
+
+// ---------------------------------------------------------------------------
 
 class npc_promotion : public CreatureScript
 {
@@ -40,26 +118,14 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature) override
     {
-        if (!promotionEnable)
-        {
-            SendGossipMenuFor(player, 80000, creature);
-            return true;
-        }
-
         bool const isModerator = player->GetSession()->GetSecurity() >= SEC_MODERATOR;
-        bool const isDK        = player->getClass() == CLASS_DEATH_KNIGHT;
-        uint8 const startLevel = isDK ? 55 : 1;
 
-        if (!isModerator && player->GetLevel() != startLevel)
+        switch (CheckEligibility(player, isModerator))
         {
-            SendGossipMenuFor(player, 80002, creature);
-            return true;
-        }
-
-        if (!isModerator && HasUsedPromotion(player->GetSession()->GetAccountId()))
-        {
-            SendGossipMenuFor(player, 80001, creature);
-            return true;
+            case PromotionCheck::Disabled:    SendGossipMenuFor(player, 80000, creature); return true;
+            case PromotionCheck::WrongLevel:  SendGossipMenuFor(player, 80003, creature); return true;
+            case PromotionCheck::AlreadyUsed: SendGossipMenuFor(player, 80001, creature); return true;
+            case PromotionCheck::Ok:          break;
         }
 
         switch (player->getClass())
@@ -114,18 +180,15 @@ public:
     {
         ClearGossipMenuFor(player);
 
-        if (!promotionEnable)
-        {
-            SendGossipMenuFor(player, 80000, creature);
-            return true;
-        }
-
         bool const isModerator = player->GetSession()->GetSecurity() >= SEC_MODERATOR;
 
-        if (!isModerator && HasUsedPromotion(player->GetSession()->GetAccountId()))
+        // Guard against forged packets and edge cases that bypass OnGossipHello.
+        switch (CheckEligibility(player, isModerator))
         {
-            SendGossipMenuFor(player, 80001, creature);
-            return true;
+            case PromotionCheck::Disabled:    SendGossipMenuFor(player, 80000, creature); return true;
+            case PromotionCheck::WrongLevel:  CloseGossipMenuFor(player);                 return true;
+            case PromotionCheck::AlreadyUsed: SendGossipMenuFor(player, 80001, creature); return true;
+            case PromotionCheck::Ok:          break;
         }
 
         // Reject actions that don't belong to the player's class.
@@ -135,18 +198,17 @@ public:
             return true;
         }
 
-        uint32 const targetLevel = sConfigMgr->GetOption<uint32>("LevelForPromotion", 80);
-        player->SetLevel(targetLevel);
+        player->SetLevel(s_targetLevel);
         player->InitStatsForLevel(true);
         player->InitTaxiNodesForLevel();
         player->InitGlyphsForLevel();
         player->InitTalentForLevel();
         player->SetUInt32Value(PLAYER_XP, 0);
 
-        player->ModifyMoney(sConfigMgr->GetOption<int32>("MoneyRewardValue", 10000000));
+        player->ModifyMoney(s_moneyReward);
         player->UpdateSkillsToMaxSkillsForLevel();
 
-        if (learnSpells)
+        if (s_learnSpells)
             LearnAllClassSpells(player);
 
         player->learnSpell(SKILL_RIDING_75);
@@ -156,52 +218,25 @@ public:
 
         creature->Whisper("¡Felicidades! Tu Promocion ha sido concedida.", LANG_UNIVERSAL, player);
 
-        if (mountGround)
+        if (s_mountGround)
         {
-            uint32 groundMount = 0;
-            switch (player->getRace())
-            {
-                case RACE_HUMAN:         groundMount = sConfigMgr->GetOption<uint32>("mountGround.Human",    470);   break;
-                case RACE_DWARF:         groundMount = sConfigMgr->GetOption<uint32>("mountGround.Dwarf",    6898);  break;
-                case RACE_NIGHTELF:      groundMount = sConfigMgr->GetOption<uint32>("mountGround.NightElf", 10789); break;
-                case RACE_GNOME:         groundMount = sConfigMgr->GetOption<uint32>("mountGround.Gnome",    17453); break;
-                case RACE_DRAENEI:       groundMount = sConfigMgr->GetOption<uint32>("mountGround.Draenei",  35710); break;
-                case RACE_BLOODELF:      groundMount = sConfigMgr->GetOption<uint32>("mountGround.BloodElf", 33660); break;
-                case RACE_ORC:           groundMount = sConfigMgr->GetOption<uint32>("mountGround.Orc",      5784);  break;
-                case RACE_UNDEAD_PLAYER: groundMount = sConfigMgr->GetOption<uint32>("mountGround.Undead",   17463); break;
-                case RACE_TAUREN:        groundMount = sConfigMgr->GetOption<uint32>("mountGround.Tauren",   18989); break;
-                case RACE_TROLL:         groundMount = sConfigMgr->GetOption<uint32>("mountGround.Troll",    10796); break;
-                default: break;
-            }
-            if (groundMount)
-                player->learnSpell(groundMount);
+            uint8 const race  = player->getRace();
+            uint32 const spell = (race < std::size(s_groundMount)) ? s_groundMount[race] : 0;
+            if (spell)
+                player->learnSpell(spell);
         }
 
-        if (mountFlying)
+        if (s_mountFlying)
         {
-            uint32 flyingMount = 0;
-            switch (player->getRace())
-            {
-                case RACE_HUMAN:         flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Human",    34767); break;
-                case RACE_DWARF:         flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Dwarf",    34769); break;
-                case RACE_NIGHTELF:      flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.NightElf", 41513); break;
-                case RACE_GNOME:         flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Gnome",    34768); break;
-                case RACE_DRAENEI:       flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Draenei",  34769); break;
-                case RACE_BLOODELF:      flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.BloodElf", 40192); break;
-                case RACE_ORC:           flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Orc",      40193); break;
-                case RACE_UNDEAD_PLAYER: flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Undead",   40194); break;
-                case RACE_TAUREN:        flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Tauren",   40195); break;
-                case RACE_TROLL:         flyingMount = sConfigMgr->GetOption<uint32>("mountFlying.Troll",    40192); break;
-                default: break;
-            }
-            if (flyingMount)
-                player->learnSpell(flyingMount);
+            uint8 const race  = player->getRace();
+            uint32 const spell = (race < std::size(s_flyingMount)) ? s_flyingMount[race] : 0;
+            if (spell)
+                player->learnSpell(spell);
         }
 
-        if (bagEnable)
+        if (s_bagEnable)
         {
-            uint32 const bagId = sConfigMgr->GetOption<uint32>("bagReward.Id", 14156);
-            if (equippedbags)
+            if (s_equippedbags)
             {
                 // Only destroy a bag if it is completely empty to avoid data loss.
                 for (int slot = INVENTORY_SLOT_BAG_START; slot < INVENTORY_SLOT_BAG_END; ++slot)
@@ -217,39 +252,17 @@ public:
                 // Equip in every slot that is now free.
                 for (int slot = INVENTORY_SLOT_BAG_START; slot < INVENTORY_SLOT_BAG_END; ++slot)
                     if (!player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
-                        player->EquipNewItem(slot, bagId, true);
+                        player->EquipNewItem(slot, s_bagId, true);
             }
             else
-                player->AddItem(bagId, 4);
+                player->AddItem(s_bagId, 4);
         }
-
-        static const std::pair<uint32, const char*> kGearSets[] = {
-            { GOSSIP_ACTION_INFO_DEF +  1, "WARRIOR_DPS"   },
-            { GOSSIP_ACTION_INFO_DEF +  2, "WARRIOR_TANK"  },
-            { GOSSIP_ACTION_INFO_DEF +  3, "WARLOCK"       },
-            { GOSSIP_ACTION_INFO_DEF +  4, "DRUID_TANK"    },
-            { GOSSIP_ACTION_INFO_DEF +  5, "DRUID_HEAL"    },
-            { GOSSIP_ACTION_INFO_DEF +  6, "DRUID_CASTER"  },
-            { GOSSIP_ACTION_INFO_DEF +  7, "HUNTER"        },
-            { GOSSIP_ACTION_INFO_DEF +  8, "MAGE"          },
-            { GOSSIP_ACTION_INFO_DEF +  9, "ROGUE"         },
-            { GOSSIP_ACTION_INFO_DEF + 10, "PRIEST_HEAL"   },
-            { GOSSIP_ACTION_INFO_DEF + 11, "PRIEST_SHADOW" },
-            { GOSSIP_ACTION_INFO_DEF + 12, "PALADIN_TANK"  },
-            { GOSSIP_ACTION_INFO_DEF + 13, "PALADIN_HEAL"  },
-            { GOSSIP_ACTION_INFO_DEF + 14, "PALADIN_DPS"   },
-            { GOSSIP_ACTION_INFO_DEF + 15, "SHAMAN_CASTER" },
-            { GOSSIP_ACTION_INFO_DEF + 16, "SHAMAN_HEAL"   },
-            { GOSSIP_ACTION_INFO_DEF + 17, "SHAMAN_MELEE"  },
-            { GOSSIP_ACTION_INFO_DEF + 18, "DK_TANK"       },
-            { GOSSIP_ACTION_INFO_DEF + 19, "DK_DPS"        },
-        };
 
         for (auto const& gs : kGearSets)
         {
             if (action == gs.first)
             {
-                EquipGearSet(player, gs.second);
+                EquipGearSet(player, creature, gs.second);
                 break;
             }
         }
@@ -272,22 +285,12 @@ public:
             s_promotedAccounts.insert(accountId);
         }
 
-        if (teleportOnPromotion)
+        if (s_teleportOnPromotion)
         {
             if (player->GetTeamId() == TEAM_ALLIANCE)
-                player->TeleportTo(
-                    sConfigMgr->GetOption<uint32>("teleport.Alliance.MapId", 0),
-                    sConfigMgr->GetOption<float> ("teleport.Alliance.X",    -8888.54f),
-                    sConfigMgr->GetOption<float> ("teleport.Alliance.Y",     573.119f),
-                    sConfigMgr->GetOption<float> ("teleport.Alliance.Z",     92.6213f),
-                    sConfigMgr->GetOption<float> ("teleport.Alliance.O",     0.731558f));
+                player->TeleportTo(s_allianceMapId, s_allianceX, s_allianceY, s_allianceZ, s_allianceO);
             else
-                player->TeleportTo(
-                    sConfigMgr->GetOption<uint32>("teleport.Horde.MapId",  1),
-                    sConfigMgr->GetOption<float> ("teleport.Horde.X",      1136.16f),
-                    sConfigMgr->GetOption<float> ("teleport.Horde.Y",     -4385.84f),
-                    sConfigMgr->GetOption<float> ("teleport.Horde.Z",      30.2056f),
-                    sConfigMgr->GetOption<float> ("teleport.Horde.O",      3.06327f));
+                player->TeleportTo(s_hordeMapId, s_hordeX, s_hordeY, s_hordeZ, s_hordeO);
         }
 
         player->SaveToDB();
@@ -296,6 +299,25 @@ public:
     }
 
 private:
+    enum class PromotionCheck { Ok, Disabled, WrongLevel, AlreadyUsed };
+
+    static PromotionCheck CheckEligibility(Player* player, bool isModerator)
+    {
+        if (!s_promotionEnable)
+            return PromotionCheck::Disabled;
+        if (isModerator)
+            return PromotionCheck::Ok;
+
+        bool const isDK = player->getClass() == CLASS_DEATH_KNIGHT;
+        if (player->GetLevel() != (isDK ? 55u : 1u))
+            return PromotionCheck::WrongLevel;
+
+        if (HasUsedPromotion(player->GetSession()->GetAccountId()))
+            return PromotionCheck::AlreadyUsed;
+
+        return PromotionCheck::Ok;
+    }
+
     static bool HasUsedPromotion(uint32 accountId)
     {
         return s_promotedAccounts.count(accountId) > 0;
@@ -303,7 +325,8 @@ private:
 
     static bool IsValidActionForClass(uint8 cls, uint32 action)
     {
-        static const std::unordered_map<uint8, std::vector<uint32>> kClassActions = {
+        static const std::unordered_map<uint8, std::vector<uint32>> kClassActions =
+        {
             {CLASS_WARRIOR,      {GOSSIP_ACTION_INFO_DEF +  1, GOSSIP_ACTION_INFO_DEF +  2}},
             {CLASS_WARLOCK,      {GOSSIP_ACTION_INFO_DEF +  3}},
             {CLASS_DRUID,        {GOSSIP_ACTION_INFO_DEF +  4, GOSSIP_ACTION_INFO_DEF +  5, GOSSIP_ACTION_INFO_DEF +  6}},
@@ -321,35 +344,26 @@ private:
         return std::find(it->second.begin(), it->second.end(), action) != it->second.end();
     }
 
-    static void EquipGearSet(Player* player, std::string const& prefix)
+    // Equips the pre-loaded gear set for the given config prefix.
+    // Whispers the player if any slot could not be filled (e.g. Unique-Equipped conflict).
+    static void EquipGearSet(Player* player, Creature* creature, const char* prefix)
     {
-        static const std::pair<EquipmentSlots, const char*> kSlots[] = {
-            { EQUIPMENT_SLOT_HEAD,      "HEAD"      },
-            { EQUIPMENT_SLOT_NECK,      "NECK"      },
-            { EQUIPMENT_SLOT_SHOULDERS, "SHOULDERS" },
-            { EQUIPMENT_SLOT_CHEST,     "CHEST"     },
-            { EQUIPMENT_SLOT_WAIST,     "WAIST"     },
-            { EQUIPMENT_SLOT_LEGS,      "LEGS"      },
-            { EQUIPMENT_SLOT_FEET,      "FEET"      },
-            { EQUIPMENT_SLOT_WRISTS,    "WRISTS"    },
-            { EQUIPMENT_SLOT_HANDS,     "HANDS"     },
-            { EQUIPMENT_SLOT_FINGER1,   "FINGER1"   },
-            { EQUIPMENT_SLOT_FINGER2,   "FINGER2"   },
-            { EQUIPMENT_SLOT_TRINKET1,  "TRINKET1"  },
-            { EQUIPMENT_SLOT_TRINKET2,  "TRINKET2"  },
-            { EQUIPMENT_SLOT_BACK,      "BACK"      },
-            { EQUIPMENT_SLOT_MAINHAND,  "MAINHAND"  },
-            { EQUIPMENT_SLOT_OFFHAND,   "OFFHAND"   },
-            { EQUIPMENT_SLOT_RANGED,    "RANGED"    },
-        };
+        auto it = s_gearItems.find(prefix);
+        if (it == s_gearItems.end())
+            return;
 
-        for (auto const& s : kSlots)
+        bool anyFailed = false;
+        for (size_t i = 0; i < kEquipSlotCount; ++i)
         {
-            std::string const key = "EQUIPMENT_SLOT_" + prefix + "_" + s.second;
-            uint32 const itemId = sConfigMgr->GetOption<uint32>(key, 0);
-            if (itemId)
-                player->EquipNewItem(s.first, itemId, true);
+            uint32 const itemId = it->second[i];
+            if (!itemId)
+                continue;
+            if (!player->EquipNewItem(kEquipSlots[i].first, itemId, true))
+                anyFailed = true;
         }
+
+        if (anyFailed)
+            creature->Whisper("Algunos objetos no pudieron ser equipados. Notifica a un administrador.", LANG_UNIVERSAL, player);
     }
 };
 
@@ -357,7 +371,7 @@ class mod_promotion_conf : public WorldScript
 {
 public:
     mod_promotion_conf() : WorldScript("mod_promotion.conf", {
-        WORLDHOOK_ON_BEFORE_CONFIG_LOAD,
+        WORLDHOOK_ON_AFTER_CONFIG_LOAD,
         WORLDHOOK_ON_STARTUP
     }) { }
 
@@ -374,15 +388,66 @@ public:
         InitSpellCache();
     }
 
-    void OnBeforeConfigLoad(bool /*reload*/) override
+    void OnAfterConfigLoad(bool /*reload*/) override
     {
-        promotionEnable     = sConfigMgr->GetOption<bool>("promotionEnable.enable", true);
-        mountGround         = sConfigMgr->GetOption<bool>("mountGround.enable",     true);
-        mountFlying         = sConfigMgr->GetOption<bool>("mountFlying.enable",     false);
-        bagEnable           = sConfigMgr->GetOption<bool>("bagEnable.enable",       true);
-        equippedbags        = sConfigMgr->GetOption<bool>("equippedbags.enable",    true);
-        teleportOnPromotion = sConfigMgr->GetOption<bool>("teleport.enable",        true);
-        learnSpells         = sConfigMgr->GetOption<bool>("learnSpells.enable",     true);
+        s_promotionEnable     = sConfigMgr->GetOption<bool>("promotionEnable.enable", true);
+        s_mountGround         = sConfigMgr->GetOption<bool>("mountGround.enable",     true);
+        s_mountFlying         = sConfigMgr->GetOption<bool>("mountFlying.enable",     false);
+        s_bagEnable           = sConfigMgr->GetOption<bool>("bagEnable.enable",       true);
+        s_equippedbags        = sConfigMgr->GetOption<bool>("equippedbags.enable",    true);
+        s_teleportOnPromotion = sConfigMgr->GetOption<bool>("teleport.enable",        true);
+        s_learnSpells         = sConfigMgr->GetOption<bool>("learnSpells.enable",     true);
+
+        s_targetLevel = sConfigMgr->GetOption<uint32>("LevelForPromotion", 80);
+        s_moneyReward = sConfigMgr->GetOption<int32> ("MoneyRewardValue",  10000000);
+        s_bagId       = sConfigMgr->GetOption<uint32>("bagReward.Id",      14156);
+
+        s_allianceMapId = sConfigMgr->GetOption<uint32>("teleport.Alliance.MapId", 0);
+        s_allianceX     = sConfigMgr->GetOption<float> ("teleport.Alliance.X",    -8888.54f);
+        s_allianceY     = sConfigMgr->GetOption<float> ("teleport.Alliance.Y",     573.119f);
+        s_allianceZ     = sConfigMgr->GetOption<float> ("teleport.Alliance.Z",     92.6213f);
+        s_allianceO     = sConfigMgr->GetOption<float> ("teleport.Alliance.O",     0.731558f);
+
+        s_hordeMapId = sConfigMgr->GetOption<uint32>("teleport.Horde.MapId",  1);
+        s_hordeX     = sConfigMgr->GetOption<float> ("teleport.Horde.X",      1136.16f);
+        s_hordeY     = sConfigMgr->GetOption<float> ("teleport.Horde.Y",     -4385.84f);
+        s_hordeZ     = sConfigMgr->GetOption<float> ("teleport.Horde.Z",      30.2056f);
+        s_hordeO     = sConfigMgr->GetOption<float> ("teleport.Horde.O",      3.06327f);
+
+        s_groundMount[RACE_HUMAN]         = sConfigMgr->GetOption<uint32>("mountGround.Human",    470);
+        s_groundMount[RACE_DWARF]         = sConfigMgr->GetOption<uint32>("mountGround.Dwarf",    6898);
+        s_groundMount[RACE_NIGHTELF]      = sConfigMgr->GetOption<uint32>("mountGround.NightElf", 10789);
+        s_groundMount[RACE_GNOME]         = sConfigMgr->GetOption<uint32>("mountGround.Gnome",    17453);
+        s_groundMount[RACE_DRAENEI]       = sConfigMgr->GetOption<uint32>("mountGround.Draenei",  35710);
+        s_groundMount[RACE_BLOODELF]      = sConfigMgr->GetOption<uint32>("mountGround.BloodElf", 33660);
+        s_groundMount[RACE_ORC]           = sConfigMgr->GetOption<uint32>("mountGround.Orc",      5784);
+        s_groundMount[RACE_UNDEAD_PLAYER] = sConfigMgr->GetOption<uint32>("mountGround.Undead",   17463);
+        s_groundMount[RACE_TAUREN]        = sConfigMgr->GetOption<uint32>("mountGround.Tauren",   18989);
+        s_groundMount[RACE_TROLL]         = sConfigMgr->GetOption<uint32>("mountGround.Troll",    10796);
+
+        s_flyingMount[RACE_HUMAN]         = sConfigMgr->GetOption<uint32>("mountFlying.Human",    34767);
+        s_flyingMount[RACE_DWARF]         = sConfigMgr->GetOption<uint32>("mountFlying.Dwarf",    34769);
+        s_flyingMount[RACE_NIGHTELF]      = sConfigMgr->GetOption<uint32>("mountFlying.NightElf", 41513);
+        s_flyingMount[RACE_GNOME]         = sConfigMgr->GetOption<uint32>("mountFlying.Gnome",    34768);
+        s_flyingMount[RACE_DRAENEI]       = sConfigMgr->GetOption<uint32>("mountFlying.Draenei",  34769);
+        s_flyingMount[RACE_BLOODELF]      = sConfigMgr->GetOption<uint32>("mountFlying.BloodElf", 40192);
+        s_flyingMount[RACE_ORC]           = sConfigMgr->GetOption<uint32>("mountFlying.Orc",      40193);
+        s_flyingMount[RACE_UNDEAD_PLAYER] = sConfigMgr->GetOption<uint32>("mountFlying.Undead",   40194);
+        s_flyingMount[RACE_TAUREN]        = sConfigMgr->GetOption<uint32>("mountFlying.Tauren",   40195);
+        s_flyingMount[RACE_TROLL]         = sConfigMgr->GetOption<uint32>("mountFlying.Troll",    40192);
+
+        // Pre-load all gear set items from config to avoid string construction during promotion.
+        s_gearItems.clear();
+        for (auto const& gs : kGearSets)
+        {
+            std::array<uint32, kEquipSlotCount> items{};
+            for (size_t i = 0; i < kEquipSlotCount; ++i)
+            {
+                std::string const key = std::string("EQUIPMENT_SLOT_") + gs.second + "_" + kEquipSlots[i].second;
+                items[i] = sConfigMgr->GetOption<uint32>(key, 0);
+            }
+            s_gearItems[gs.second] = items;
+        }
     }
 };
 
