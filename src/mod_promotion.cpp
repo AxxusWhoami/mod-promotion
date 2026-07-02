@@ -635,6 +635,11 @@ public:
                 default:
                     break;
             }
+
+            if (player->GetTeamId() == TEAM_ALLIANCE)
+                player->TeleportTo(0, -8888.54f, 573.119f, 92.6213f, 0.731558f);
+            else
+                player->TeleportTo(1, 1136.16f, -4385.84f, 30.2056f, 3.06327f);
         }
         else
             SendGossipMenuFor(player, 80000, creature);
