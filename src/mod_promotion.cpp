@@ -481,7 +481,7 @@ public:
 
         ClearGossipMenuFor(player);
 
-        if (promotionEnable && ((int)pjts <= promotionCount))
+        if (promotionEnable && ((int)pjts <= promotionCount || player->GetSession()->GetSecurity() >= SEC_MODERATOR))
         {
             if (action > GOSSIP_ACTION_INFO_DEF && action <= 1034)
                 player->GiveLevel(sConfigMgr->GetOption<uint32>("LevelForPromotion", 80)); // Level
