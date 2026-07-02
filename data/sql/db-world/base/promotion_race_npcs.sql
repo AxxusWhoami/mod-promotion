@@ -1,8 +1,9 @@
 -- ============================================================
 -- Promotion Race NPCs - WoW 3.3.5a (build 12340)
--- One NPC per playable race (except Death Knight)
+-- One NPC per playable race + one for Death Knight (class-specific)
 -- Alliance: Human, Dwarf, Gnome, Night Elf, Draenei
 -- Horde:    Orc, Troll, Tauren, Undead, Blood Elf
+-- Neutral:  Death Knight (Skip el Velocista, Acherus)
 -- ============================================================
 -- Display IDs reference:
 --    2664 = Human male Stormwind Knight (silver plate + Alliance shield)
@@ -15,6 +16,7 @@
 --    3897 = Tauren male High Chieftain (ceremonial chief, Cairne-type)
 --    2842 = Forsaken male hooded robe (Shadow Priest Sarvis-type)
 --   15394 = Blood Elf male Arcanist (arcane robes, Sunstrider Isle)
+--   25278 = Death Knight (Acherus dark plate armor)
 -- Equipment item IDs:
 --   40408 = Claymore of the Prophet (2H sword, Naxx25)
 --   39388 = Dwarven Blunderbuss variant (1H axe)
@@ -227,11 +229,35 @@ INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`,
 VALUES (@ENTRY_BELF, 1, 34065, 0, 0);
 
 -- ----------------------------
+-- NEUTRAL (Death Knight)
+-- ----------------------------
+
+-- Death Knight: Skip el Velocista (Acherus: El Levante de los Caballeros de la Muerte)
+-- Faction 35 = Friendly to all, accessible by DKs of any race/faction.
+SET @ENTRY_DK       := 80011;
+SET @NAME_DK        := 'Skip el Velocista';
+SET @SUBNAME_DK     := 'Level Up Master';
+SET @GOSSIP_DK      := 80011;
+SET @MODEL_DK       := 25278;
+
+DELETE FROM `creature_template` WHERE `entry` = @ENTRY_DK;
+INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
+VALUES (@ENTRY_DK, 0, 0, 0, 0, 0, @NAME_DK, @SUBNAME_DK, NULL, @GOSSIP_DK, 83, 83, 0, 35, 1, 1, 1, 0, 0, 20, 0, 0, 0, 0, 0, 1, 1, 1, 768, 2048, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 'npc_promotion', 12340);
+
+DELETE FROM `creature_template_model` WHERE `CreatureID` = @ENTRY_DK;
+INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`, `DisplayScale`, `Probability`, `VerifiedBuild`)
+VALUES (@ENTRY_DK, 0, @MODEL_DK, 1, 1, 0);
+
+DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_DK;
+INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
+VALUES (@ENTRY_DK, 1, 37108, 0, 0);
+
+-- ----------------------------
 -- LOCALES: koKR, frFR, deDE, zhCN, zhTW, esES, esMX, ruRU
 -- Name  = localized NPC name
 -- Title = localized subname (always "Level Up Master")
 -- ----------------------------
-DELETE FROM `creature_template_locale` WHERE `entry` IN (80001, 80002, 80003, 80004, 80005, 80006, 80007, 80008, 80009, 80010);
+DELETE FROM `creature_template_locale` WHERE `entry` IN (80001, 80002, 80003, 80004, 80005, 80006, 80007, 80008, 80009, 80010, 80011);
 INSERT INTO `creature_template_locale` (`entry`, `locale`, `Name`, `Title`, `VerifiedBuild`)
 VALUES
   -- Sir Alistar (80001)
@@ -332,4 +358,14 @@ VALUES
   (80010, 'zhTW', '魔導師瓦爾托',            '升級大師',                0),
   (80010, 'esES', 'Magister Vael\'thor',     'Maestro de subida de nivel',      0),
   (80010, 'esMX', 'Magister Vael\'thor',     'Maestro de subida de nivel',      0),
-  (80010, 'ruRU', 'Магистр Вэл\'тор',       'Мастер Повышения',        0);
+  (80010, 'ruRU', 'Магистр Вэл\'тор',       'Мастер Повышения',        0),
+
+  -- Skip el Velocista (80011)
+  (80011, 'koKR', '스킵 질주자',             '레벨업 마스터',           0),
+  (80011, 'frFR', 'Skip le Vélociste',       'Maître de Niveau',        0),
+  (80011, 'deDE', 'Skip der Schnellläufer',  'Aufstiegs-Meister',       0),
+  (80011, 'zhCN', '快腿·斯基普',             '升级大师',                0),
+  (80011, 'zhTW', '快腿·斯基普',             '升級大師',                0),
+  (80011, 'esES', 'Skip el Velocista',       'Maestro de subida de nivel',      0),
+  (80011, 'esMX', 'Skip el Velocista',       'Maestro de subida de nivel',      0),
+  (80011, 'ruRU', 'Скип Быстроног',         'Мастер Повышения',        0);

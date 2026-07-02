@@ -61,6 +61,7 @@ One NPC per playable race uses the `npc_promotion` script. Each NPC has a themat
 | Tauren | Bramido Pezuñaferrea | 80008 |
 | Undead | Despertador Mortis | 80009 |
 | Blood Elf | Magister Vael'thor | 80010 |
+| Death Knight (all races) | Skip el Velocista | 80011 |
 
 NPC locale translations (koKR, frFR, deDE, zhCN, zhTW, esES, esMX, ruRU) are included in `promotion_race_npcs.sql`.
 

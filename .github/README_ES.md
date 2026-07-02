@@ -61,6 +61,7 @@ Un NPC por raza jugable utiliza el script `npc_promotion`. Cada NPC tiene una ap
 | Tauren | Bramido Pezuñaferrea | 80008 |
 | No-muerto | Despertador Mortis | 80009 |
 | Elfo de Sangre | Magister Vael'thor | 80010 |
+| Caballero de la Muerte (todas las razas) | Skip el Velocista | 80011 |
 
 Las traducciones de los NPCs (koKR, frFR, deDE, zhCN, zhTW, esES, esMX, ruRU) están incluidas en `promotion_race_npcs.sql`.
 
