@@ -99,7 +99,7 @@ public:
 
     void MoneyReward(Player* player)
     {
-        player->ModifyMoney(sConfigMgr->GetOption<uint32>("MoneyRewardValue", 25000000));
+        player->ModifyMoney(sConfigMgr->GetOption<uint32>("MoneyRewardValue", 10000000));
     }
 
     void WarriorPromotionDps(Player* player)
@@ -1015,7 +1015,7 @@ public:
             // Config For Module
             promotionEnable = sConfigMgr->GetOption<bool>("promotionEnable.enable", true);
             promotionCount = sConfigMgr->GetOption<uint32>("promotion.count", 1);
-            moneyRewardConst = sConfigMgr->GetOption<uint32>("MoneyRewardValue", 25000000);
+            moneyRewardConst = sConfigMgr->GetOption<uint32>("MoneyRewardValue", 10000000);
             LevelForPromotion = sConfigMgr->GetOption<uint32>("LevelForPromotion", 80);
             mountPromotion = sConfigMgr->GetOption<uint32>("mountPromotion", 42277);
             mountEnable = sConfigMgr->GetOption<bool>("mountEnable.enable", true);
