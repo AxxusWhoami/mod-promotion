@@ -7,7 +7,7 @@
 -- Display IDs reference:
 --    2664 = Human male Stormwind Knight (silver plate + Alliance shield)
 --   26047 = Dwarf male Ironforge Mountaineer (mail + rifle)
---   20469 = Gnome male engineer (work clothes + goggles)
+--   20039 = Gnome male Gnomeregan Explorer (light armor + scout gear)
 --   22490 = Night Elf female sentinel/druid (leather + staff)
 --   21267 = Draenei male Vindicator (crystal plate + hammer)
 --    3890 = Orc male Orgrimmar Grunt (red/black plate + axe)
@@ -75,7 +75,7 @@ SET @ENTRY_GNOME    := 80003;
 SET @NAME_GNOME     := 'Chispas Tuercarrueda';
 SET @SUBNAME_GNOME  := 'Level Up Master';
 SET @GOSSIP_GNOME   := 80003;
-SET @MODEL_GNOME    := 20469;
+SET @MODEL_GNOME    := 20039;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_GNOME;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
