@@ -1,5 +1,5 @@
 SET @ENTRY:=100042;
-SET @NAME:="AzerothCore";
+SET @NAME:="CoRe Legacy";
 SET @SUBNAME:="Promotion";
 SET @GOSSIP:=62000;
 SET @MODELID1:=22234;
