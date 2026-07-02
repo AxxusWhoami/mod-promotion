@@ -28,10 +28,7 @@ public:
 
     void OnPlayerLogin(Player* player) override
     {
-        if (sConfigMgr->GetOption<bool>("announce_module.enableHelloWorld", true))
-            ChatHandler(player->GetSession()).SendSysMessage("Hello World from Promotion-Module! - By Asmadeuxx");
-        else
-            ChatHandler(player->GetSession()).SendSysMessage("Hello World from Promotion-Module! - By Asmadeuxx");
+
     }
 };
 
