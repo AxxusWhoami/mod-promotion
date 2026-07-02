@@ -461,3 +461,374 @@ EQUIPMENT_SLOT_DRUID_CASTER_RANGED = 38360
 ###################################################################################################
 
 ###################################################################################################
+#
+#  PvE CLASS CONFIG (Naxxramas 10-man, ilvl 200)
+#
+#  Tier 7 (Heroes' sets) + non-tier Naxxramas drops
+#  All item IDs can be verified and replaced via this config.
+#
+###################################################################################################
+# PvE WARRIOR DPS (Fury) - Heroes' Dreadnaught's Battlegear
+###################################################################################################
+
+PVE_WARRIOR_DPS_HEAD      = 40543
+PVE_WARRIOR_DPS_NECK      = 40679
+PVE_WARRIOR_DPS_SHOULDERS = 40544
+PVE_WARRIOR_DPS_BACK      = 40524
+PVE_WARRIOR_DPS_CHEST     = 40545
+PVE_WARRIOR_DPS_WRISTS    = 40327
+PVE_WARRIOR_DPS_HANDS     = 40541
+PVE_WARRIOR_DPS_WAIST     = 40324
+PVE_WARRIOR_DPS_LEGS      = 40542
+PVE_WARRIOR_DPS_FEET      = 40300
+PVE_WARRIOR_DPS_FINGER1   = 39401
+PVE_WARRIOR_DPS_FINGER2   = 40718
+PVE_WARRIOR_DPS_TRINKET1  = 40256
+PVE_WARRIOR_DPS_TRINKET2  = 40431
+PVE_WARRIOR_DPS_MAINHAND  = 40402
+PVE_WARRIOR_DPS_RANGED    = 40323
+
+###################################################################################################
+# PvE WARRIOR TANK (Protection) - Heroes' Dreadnaught's Battleplate
+###################################################################################################
+
+PVE_WARRIOR_TANK_HEAD      = 40543
+PVE_WARRIOR_TANK_NECK      = 40679
+PVE_WARRIOR_TANK_SHOULDERS = 40544
+PVE_WARRIOR_TANK_BACK      = 40525
+PVE_WARRIOR_TANK_CHEST     = 40545
+PVE_WARRIOR_TANK_WRISTS    = 40328
+PVE_WARRIOR_TANK_HANDS     = 40541
+PVE_WARRIOR_TANK_WAIST     = 40325
+PVE_WARRIOR_TANK_LEGS      = 40542
+PVE_WARRIOR_TANK_FEET      = 40421
+PVE_WARRIOR_TANK_FINGER1   = 39401
+PVE_WARRIOR_TANK_FINGER2   = 40718
+PVE_WARRIOR_TANK_TRINKET1  = 40257
+PVE_WARRIOR_TANK_TRINKET2  = 40254
+PVE_WARRIOR_TANK_MAINHAND  = 40189
+PVE_WARRIOR_TANK_OFFHAND   = 37107
+PVE_WARRIOR_TANK_RANGED    = 36981
+
+###################################################################################################
+# PvE WARLOCK DPS (Destruction) - Heroes' Plagueheart Raiment
+###################################################################################################
+
+PVE_WARLOCK_DPS_HEAD      = 40479
+PVE_WARLOCK_DPS_NECK      = 40396
+PVE_WARLOCK_DPS_SHOULDERS = 40481
+PVE_WARLOCK_DPS_BACK      = 40603
+PVE_WARLOCK_DPS_CHEST     = 40478
+PVE_WARLOCK_DPS_WRISTS    = 40260
+PVE_WARLOCK_DPS_HANDS     = 40480
+PVE_WARLOCK_DPS_WAIST     = 40483
+PVE_WARLOCK_DPS_LEGS      = 40482
+PVE_WARLOCK_DPS_FEET      = 40484
+PVE_WARLOCK_DPS_FINGER1   = 40423
+PVE_WARLOCK_DPS_FINGER2   = 40034
+PVE_WARLOCK_DPS_TRINKET1  = 40432
+PVE_WARLOCK_DPS_TRINKET2  = 39229
+PVE_WARLOCK_DPS_MAINHAND  = 40194
+PVE_WARLOCK_DPS_RANGED    = 37038
+
+###################################################################################################
+# PvE DRUID TANK (Guardian) - Heroes' Dreamwalker's Battlegear
+###################################################################################################
+
+PVE_DRUID_TANK_HEAD      = 40460
+PVE_DRUID_TANK_NECK      = 40679
+PVE_DRUID_TANK_SHOULDERS = 40462
+PVE_DRUID_TANK_BACK      = 40524
+PVE_DRUID_TANK_CHEST     = 40461
+PVE_DRUID_TANK_WRISTS    = 40465
+PVE_DRUID_TANK_HANDS     = 40458
+PVE_DRUID_TANK_WAIST     = 40474
+PVE_DRUID_TANK_LEGS      = 40463
+PVE_DRUID_TANK_FEET      = 40464
+PVE_DRUID_TANK_FINGER1   = 39401
+PVE_DRUID_TANK_FINGER2   = 40718
+PVE_DRUID_TANK_TRINKET1  = 40257
+PVE_DRUID_TANK_TRINKET2  = 40254
+PVE_DRUID_TANK_MAINHAND  = 36980
+PVE_DRUID_TANK_RANGED    = 38365
+
+###################################################################################################
+# PvE DRUID HEAL (Restoration) - Heroes' Dreamwalker's Garb
+###################################################################################################
+
+PVE_DRUID_HEAL_HEAD      = 40466
+PVE_DRUID_HEAL_NECK      = 40396
+PVE_DRUID_HEAL_SHOULDERS = 40468
+PVE_DRUID_HEAL_BACK      = 40604
+PVE_DRUID_HEAL_CHEST     = 40467
+PVE_DRUID_HEAL_WRISTS    = 40465
+PVE_DRUID_HEAL_HANDS     = 40469
+PVE_DRUID_HEAL_WAIST     = 40475
+PVE_DRUID_HEAL_LEGS      = 40470
+PVE_DRUID_HEAL_FEET      = 40471
+PVE_DRUID_HEAL_FINGER1   = 40107
+PVE_DRUID_HEAL_FINGER2   = 40423
+PVE_DRUID_HEAL_TRINKET1  = 40432
+PVE_DRUID_HEAL_TRINKET2  = 37111
+PVE_DRUID_HEAL_MAINHAND  = 40258
+PVE_DRUID_HEAL_RANGED    = 38366
+
+###################################################################################################
+# PvE DRUID BALANCE (Equilibrio) - Heroes' Dreamwalker's Garb
+###################################################################################################
+
+PVE_DRUID_BALANCE_HEAD      = 40466
+PVE_DRUID_BALANCE_NECK      = 40396
+PVE_DRUID_BALANCE_SHOULDERS = 40468
+PVE_DRUID_BALANCE_BACK      = 40603
+PVE_DRUID_BALANCE_CHEST     = 40467
+PVE_DRUID_BALANCE_WRISTS    = 40465
+PVE_DRUID_BALANCE_HANDS     = 40469
+PVE_DRUID_BALANCE_WAIST     = 40483
+PVE_DRUID_BALANCE_LEGS      = 40470
+PVE_DRUID_BALANCE_FEET      = 40471
+PVE_DRUID_BALANCE_FINGER1   = 40423
+PVE_DRUID_BALANCE_FINGER2   = 40034
+PVE_DRUID_BALANCE_TRINKET1  = 40432
+PVE_DRUID_BALANCE_TRINKET2  = 39229
+PVE_DRUID_BALANCE_MAINHAND  = 39753
+PVE_DRUID_BALANCE_RANGED    = 38360
+
+###################################################################################################
+# PvE HUNTER (Supervivencia) - Heroes' Cryptstalker Battlegear
+###################################################################################################
+
+PVE_HUNTER_HEAD      = 40504
+PVE_HUNTER_NECK      = 40679
+PVE_HUNTER_SHOULDERS = 40506
+PVE_HUNTER_BACK      = 40524
+PVE_HUNTER_CHEST     = 40503
+PVE_HUNTER_WRISTS    = 40515
+PVE_HUNTER_HANDS     = 40502
+PVE_HUNTER_WAIST     = 40516
+PVE_HUNTER_LEGS      = 40505
+PVE_HUNTER_FEET      = 40517
+PVE_HUNTER_FINGER1   = 39401
+PVE_HUNTER_FINGER2   = 40718
+PVE_HUNTER_TRINKET1  = 40256
+PVE_HUNTER_TRINKET2  = 40431
+PVE_HUNTER_MAINHAND  = 36980
+PVE_HUNTER_RANGED    = 40345
+
+###################################################################################################
+# PvE MAGE DPS (Arcano) - Heroes' Frostfire Regalia
+###################################################################################################
+
+PVE_MAGE_DPS_HEAD      = 40470
+PVE_MAGE_DPS_NECK      = 40396
+PVE_MAGE_DPS_SHOULDERS = 40472
+PVE_MAGE_DPS_BACK      = 40603
+PVE_MAGE_DPS_CHEST     = 40469
+PVE_MAGE_DPS_WRISTS    = 40260
+PVE_MAGE_DPS_HANDS     = 40471
+PVE_MAGE_DPS_WAIST     = 40483
+PVE_MAGE_DPS_LEGS      = 40473
+PVE_MAGE_DPS_FEET      = 40484
+PVE_MAGE_DPS_FINGER1   = 40423
+PVE_MAGE_DPS_FINGER2   = 40034
+PVE_MAGE_DPS_TRINKET1  = 40432
+PVE_MAGE_DPS_TRINKET2  = 39229
+PVE_MAGE_DPS_MAINHAND  = 40194
+PVE_MAGE_DPS_RANGED    = 37038
+
+###################################################################################################
+# PvE ROGUE (Combate) - Heroes' Bonescythe Armor
+###################################################################################################
+
+PVE_ROGUE_HEAD      = 40489
+PVE_ROGUE_NECK      = 40679
+PVE_ROGUE_SHOULDERS = 40490
+PVE_ROGUE_BACK      = 40524
+PVE_ROGUE_CHEST     = 40488
+PVE_ROGUE_WRISTS    = 40465
+PVE_ROGUE_HANDS     = 40492
+PVE_ROGUE_WAIST     = 40474
+PVE_ROGUE_LEGS      = 40491
+PVE_ROGUE_FEET      = 40464
+PVE_ROGUE_FINGER1   = 39401
+PVE_ROGUE_FINGER2   = 40107
+PVE_ROGUE_TRINKET1  = 40256
+PVE_ROGUE_TRINKET2  = 40431
+PVE_ROGUE_MAINHAND  = 39714
+PVE_ROGUE_OFFHAND   = 39715
+PVE_ROGUE_RANGED    = 36981
+
+###################################################################################################
+# PvE PRIEST HEAL (Sagrado) - Heroes' Regalia of Faith
+###################################################################################################
+
+PVE_PRIEST_HEAL_HEAD      = 40456
+PVE_PRIEST_HEAL_NECK      = 40396
+PVE_PRIEST_HEAL_SHOULDERS = 40457
+PVE_PRIEST_HEAL_BACK      = 40604
+PVE_PRIEST_HEAL_CHEST     = 40455
+PVE_PRIEST_HEAL_WRISTS    = 40260
+PVE_PRIEST_HEAL_HANDS     = 40453
+PVE_PRIEST_HEAL_WAIST     = 40485
+PVE_PRIEST_HEAL_LEGS      = 40454
+PVE_PRIEST_HEAL_FEET      = 40486
+PVE_PRIEST_HEAL_FINGER1   = 40107
+PVE_PRIEST_HEAL_FINGER2   = 40423
+PVE_PRIEST_HEAL_TRINKET1  = 40432
+PVE_PRIEST_HEAL_TRINKET2  = 37111
+PVE_PRIEST_HEAL_MAINHAND  = 40258
+PVE_PRIEST_HEAL_RANGED    = 40275
+
+###################################################################################################
+# PvE PRIEST SHADOW (Sombras) - Heroes' Valorous Vestments
+###################################################################################################
+
+PVE_PRIEST_SHADOW_HEAD      = 40456
+PVE_PRIEST_SHADOW_NECK      = 40396
+PVE_PRIEST_SHADOW_SHOULDERS = 40457
+PVE_PRIEST_SHADOW_BACK      = 40603
+PVE_PRIEST_SHADOW_CHEST     = 40455
+PVE_PRIEST_SHADOW_WRISTS    = 40260
+PVE_PRIEST_SHADOW_HANDS     = 40453
+PVE_PRIEST_SHADOW_WAIST     = 40483
+PVE_PRIEST_SHADOW_LEGS      = 40454
+PVE_PRIEST_SHADOW_FEET      = 40484
+PVE_PRIEST_SHADOW_FINGER1   = 40423
+PVE_PRIEST_SHADOW_FINGER2   = 40034
+PVE_PRIEST_SHADOW_TRINKET1  = 40432
+PVE_PRIEST_SHADOW_TRINKET2  = 39229
+PVE_PRIEST_SHADOW_MAINHAND  = 40194
+PVE_PRIEST_SHADOW_RANGED    = 40275
+
+###################################################################################################
+# PvE PALADIN TANK (Proteccion) - Heroes' Redemption Battleplate
+###################################################################################################
+
+PVE_PALADIN_TANK_HEAD      = 40568
+PVE_PALADIN_TANK_NECK      = 40679
+PVE_PALADIN_TANK_SHOULDERS = 40569
+PVE_PALADIN_TANK_BACK      = 40525
+PVE_PALADIN_TANK_CHEST     = 40570
+PVE_PALADIN_TANK_WRISTS    = 40328
+PVE_PALADIN_TANK_HANDS     = 40566
+PVE_PALADIN_TANK_WAIST     = 40325
+PVE_PALADIN_TANK_LEGS      = 40567
+PVE_PALADIN_TANK_FEET      = 40421
+PVE_PALADIN_TANK_FINGER1   = 39401
+PVE_PALADIN_TANK_FINGER2   = 40718
+PVE_PALADIN_TANK_TRINKET1  = 40257
+PVE_PALADIN_TANK_TRINKET2  = 40254
+PVE_PALADIN_TANK_MAINHAND  = 40189
+PVE_PALADIN_TANK_OFFHAND   = 37107
+PVE_PALADIN_TANK_RANGED    = 38363
+
+###################################################################################################
+# PvE PALADIN HEAL (Sagrado) - Heroes' Redemption Regalia
+###################################################################################################
+
+PVE_PALADIN_HEAL_HEAD      = 40568
+PVE_PALADIN_HEAL_NECK      = 40396
+PVE_PALADIN_HEAL_SHOULDERS = 40569
+PVE_PALADIN_HEAL_BACK      = 40604
+PVE_PALADIN_HEAL_CHEST     = 40570
+PVE_PALADIN_HEAL_WRISTS    = 40328
+PVE_PALADIN_HEAL_HANDS     = 40566
+PVE_PALADIN_HEAL_WAIST     = 40487
+PVE_PALADIN_HEAL_LEGS      = 40567
+PVE_PALADIN_HEAL_FEET      = 40488
+PVE_PALADIN_HEAL_FINGER1   = 40107
+PVE_PALADIN_HEAL_FINGER2   = 40423
+PVE_PALADIN_HEAL_TRINKET1  = 40432
+PVE_PALADIN_HEAL_TRINKET2  = 37111
+PVE_PALADIN_HEAL_MAINHAND  = 40258
+PVE_PALADIN_HEAL_OFFHAND   = 37061
+PVE_PALADIN_HEAL_RANGED    = 38364
+
+###################################################################################################
+# PvE PALADIN DPS (Retribucion) - Heroes' Redemption Battleplate
+###################################################################################################
+
+PVE_PALADIN_DPS_HEAD      = 40568
+PVE_PALADIN_DPS_NECK      = 40679
+PVE_PALADIN_DPS_SHOULDERS = 40569
+PVE_PALADIN_DPS_BACK      = 40524
+PVE_PALADIN_DPS_CHEST     = 40570
+PVE_PALADIN_DPS_WRISTS    = 40327
+PVE_PALADIN_DPS_HANDS     = 40566
+PVE_PALADIN_DPS_WAIST     = 40324
+PVE_PALADIN_DPS_LEGS      = 40567
+PVE_PALADIN_DPS_FEET      = 40300
+PVE_PALADIN_DPS_FINGER1   = 39401
+PVE_PALADIN_DPS_FINGER2   = 40718
+PVE_PALADIN_DPS_TRINKET1  = 40256
+PVE_PALADIN_DPS_TRINKET2  = 40431
+PVE_PALADIN_DPS_MAINHAND  = 40402
+PVE_PALADIN_DPS_RANGED    = 38362
+
+###################################################################################################
+# PvE SHAMAN ELEMENTAL - Heroes' Earthshatter Regalia
+###################################################################################################
+
+PVE_SHAMAN_ELEMENTAL_HEAD      = 40508
+PVE_SHAMAN_ELEMENTAL_NECK      = 40396
+PVE_SHAMAN_ELEMENTAL_SHOULDERS = 40510
+PVE_SHAMAN_ELEMENTAL_BACK      = 40603
+PVE_SHAMAN_ELEMENTAL_CHEST     = 40507
+PVE_SHAMAN_ELEMENTAL_WRISTS    = 40515
+PVE_SHAMAN_ELEMENTAL_HANDS     = 40509
+PVE_SHAMAN_ELEMENTAL_WAIST     = 40516
+PVE_SHAMAN_ELEMENTAL_LEGS      = 40511
+PVE_SHAMAN_ELEMENTAL_FEET      = 40517
+PVE_SHAMAN_ELEMENTAL_FINGER1   = 40423
+PVE_SHAMAN_ELEMENTAL_FINGER2   = 40034
+PVE_SHAMAN_ELEMENTAL_TRINKET1  = 40432
+PVE_SHAMAN_ELEMENTAL_TRINKET2  = 39229
+PVE_SHAMAN_ELEMENTAL_MAINHAND  = 40258
+PVE_SHAMAN_ELEMENTAL_OFFHAND   = 37061
+PVE_SHAMAN_ELEMENTAL_RANGED    = 38361
+
+###################################################################################################
+# PvE SHAMAN HEAL (Restauracion) - Heroes' Earthshatter Regalia
+###################################################################################################
+
+PVE_SHAMAN_RESTO_HEAD      = 40508
+PVE_SHAMAN_RESTO_NECK      = 40396
+PVE_SHAMAN_RESTO_SHOULDERS = 40510
+PVE_SHAMAN_RESTO_BACK      = 40604
+PVE_SHAMAN_RESTO_CHEST     = 40507
+PVE_SHAMAN_RESTO_WRISTS    = 40515
+PVE_SHAMAN_RESTO_HANDS     = 40509
+PVE_SHAMAN_RESTO_WAIST     = 40516
+PVE_SHAMAN_RESTO_LEGS      = 40511
+PVE_SHAMAN_RESTO_FEET      = 40517
+PVE_SHAMAN_RESTO_FINGER1   = 40107
+PVE_SHAMAN_RESTO_FINGER2   = 40423
+PVE_SHAMAN_RESTO_TRINKET1  = 40432
+PVE_SHAMAN_RESTO_TRINKET2  = 37111
+PVE_SHAMAN_RESTO_MAINHAND  = 40258
+PVE_SHAMAN_RESTO_OFFHAND   = 37061
+PVE_SHAMAN_RESTO_RANGED    = 38368
+
+###################################################################################################
+# PvE SHAMAN ENHANCE (Mejora) - Heroes' Earthshatter Battlegear
+###################################################################################################
+
+PVE_SHAMAN_ENHANCE_HEAD      = 40508
+PVE_SHAMAN_ENHANCE_NECK      = 40679
+PVE_SHAMAN_ENHANCE_SHOULDERS = 40510
+PVE_SHAMAN_ENHANCE_BACK      = 40524
+PVE_SHAMAN_ENHANCE_CHEST     = 40507
+PVE_SHAMAN_ENHANCE_WRISTS    = 40515
+PVE_SHAMAN_ENHANCE_HANDS     = 40509
+PVE_SHAMAN_ENHANCE_WAIST     = 40516
+PVE_SHAMAN_ENHANCE_LEGS      = 40511
+PVE_SHAMAN_ENHANCE_FEET      = 40517
+PVE_SHAMAN_ENHANCE_FINGER1   = 39401
+PVE_SHAMAN_ENHANCE_FINGER2   = 40718
+PVE_SHAMAN_ENHANCE_TRINKET1  = 40256
+PVE_SHAMAN_ENHANCE_TRINKET2  = 40431
+PVE_SHAMAN_ENHANCE_MAINHAND  = 39714
+PVE_SHAMAN_ENHANCE_OFFHAND   = 39715
+PVE_SHAMAN_ENHANCE_RANGED    = 38367
+
+###################################################################################################
