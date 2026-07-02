@@ -14,7 +14,7 @@
 --    9528 = Troll male Witch Doctor (voodoo mask + lances)
 --    3897 = Tauren male High Chieftain (ceremonial chief, Cairne-type)
 --     905 = Forsaken male Deathguard (dark armor)
---   17827 = Blood Elf male Magister (crimson robes/mail)
+--   15826 = Blood Elf male Magister (arcane robes)
 -- Equipment item IDs:
 --   40408 = Claymore of the Prophet (2H sword, Naxx25)
 --   39388 = Dwarven Blunderbuss variant (1H axe)
@@ -212,7 +212,7 @@ SET @ENTRY_BELF     := 80010;
 SET @NAME_BELF      := 'Magister Vael\'thor';
 SET @SUBNAME_BELF   := 'Level Up Master';
 SET @GOSSIP_BELF    := 80010;
-SET @MODEL_BELF     := 17827;
+SET @MODEL_BELF     := 15826;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_BELF;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
