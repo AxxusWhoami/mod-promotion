@@ -27,6 +27,22 @@ promotionEnable.enable=true
 
 #
 #
+#     LearnSpells
+#
+#     Description: Teach all trainable class spells (up to LevelForPromotion) during the promotion.
+#                  Mirrors the logic of mod-learn-spells. Includes faction-specific extras
+#                  (racial mounts, Mage portals/teleports, Paladin seals, etc.).
+#
+#     Example: true  - (teach all class spells, default)
+#              false - (skip spell teaching)
+#
+#     Default: learnSpells.enable = true
+#
+
+learnSpells.enable = true
+
+#
+#
 #     MoneyRewardPromotion
 #
 #     Description: Amount of promotion for character

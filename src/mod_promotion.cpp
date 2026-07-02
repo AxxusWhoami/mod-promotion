@@ -10,6 +10,7 @@
 #include "DatabaseEnv.h"
 #include "GossipDef.h"
 #include "Language.h"
+#include "LearnClassSpells.h"
 #include "mod_promotion.h"
 #include "Player.h"
 #include "ScriptedCreature.h"
@@ -23,6 +24,7 @@ static bool mountGround;
 static bool mountFlying;
 static bool bagEnable;
 static bool equippedbags;
+static bool learnSpells;
 static bool teleportOnPromotion;
 
 class npc_promotion : public CreatureScript
@@ -130,6 +132,9 @@ public:
 
         player->ModifyMoney(sConfigMgr->GetOption<int32>("MoneyRewardValue", 10000000));
         player->UpdateSkillsToMaxSkillsForLevel();
+
+        if (learnSpells)
+            LearnAllClassSpells(player);
 
         player->learnSpell(SKILL_RIDING_75);
         player->learnSpell(SKILL_RIDING_100);
@@ -299,6 +304,7 @@ public:
         bagEnable           = sConfigMgr->GetOption<bool>("bagEnable.enable",       true);
         equippedbags        = sConfigMgr->GetOption<bool>("equippedbags.enable",    true);
         teleportOnPromotion = sConfigMgr->GetOption<bool>("teleport.enable",        true);
+        learnSpells         = sConfigMgr->GetOption<bool>("learnSpells.enable",     true);
     }
 };
 
