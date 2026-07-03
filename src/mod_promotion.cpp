@@ -18,7 +18,6 @@
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
 #include "ScriptMgr.h"
-#include "World.h"
 #include "WorldSession.h"
 #ifdef MODULE_PLAYERBOTS
 #include "PlayerbotAI.h"
@@ -419,7 +418,7 @@ public:
         if (s_announceToWorld)
         {
             std::string msg = "|cffFFD700[Promocion]|r " + playerName + " ha obtenido la Promocion de Nivel!";
-            sWorld->SendServerMessage(SERVER_MSG_STRING, msg.c_str());
+            ChatHandler(nullptr).SendGlobalSysMessage(msg.c_str());
         }
 
         // ---- Teleport & homebind ------------------------------------------
@@ -527,22 +526,20 @@ public:
 
     static bool HandlePromotionReset(ChatHandler* handler, std::string const& playerName)
     {
-        // Resolve player name to account ID — works whether or not the player is online.
-        ObjectGuid const guid = sObjectMgr->GetPlayerGUIDByName(playerName);
-        if (guid.IsEmpty())
+        std::string safeName = playerName;
+        CharacterDatabase.EscapeString(safeName);
+
+        QueryResult result = CharacterDatabase.Query(
+            "SELECT account FROM characters WHERE name = '{}'", safeName);
+
+        if (!result)
         {
             handler->PSendSysMessage("Character '{}' not found.", playerName);
             handler->SetSentErrorMessage(true);
             return false;
         }
 
-        uint32 const accountId = sObjectMgr->GetPlayerAccountIdByGUID(guid);
-        if (!accountId)
-        {
-            handler->PSendSysMessage("Could not resolve account for character '{}'.", playerName);
-            handler->SetSentErrorMessage(true);
-            return false;
-        }
+        uint32 const accountId = result->Fetch()[0].Get<uint32>();
 
         CharacterDatabase.Execute(
             "DELETE FROM mod_promotion_log WHERE account_id = {}", accountId);
