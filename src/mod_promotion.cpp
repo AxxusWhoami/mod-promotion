@@ -14,6 +14,7 @@
 #include "LearnClassSpells.h"
 #include "mod_promotion.h"
 #include "ObjectMgr.h"
+#include "TerrainMgr.h"
 #include "Player.h"
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
@@ -427,14 +428,16 @@ public:
             if (player->GetTeamId() == TEAM_ALLIANCE)
             {
                 WorldLocation loc(s_allianceMapId, s_allianceX, s_allianceY, s_allianceZ, s_allianceO);
-                player->SetHomebind(loc, player->GetAreaId());
-                player->TeleportTo(loc);
+                uint32 const areaId = sTerrainMgr.GetAreaId(s_allianceMapId, s_allianceX, s_allianceY, s_allianceZ);
+                player->SetHomebind(loc, areaId);
+                player->TeleportTo(s_allianceMapId, s_allianceX, s_allianceY, s_allianceZ, s_allianceO);
             }
             else
             {
                 WorldLocation loc(s_hordeMapId, s_hordeX, s_hordeY, s_hordeZ, s_hordeO);
-                player->SetHomebind(loc, player->GetAreaId());
-                player->TeleportTo(loc);
+                uint32 const areaId = sTerrainMgr.GetAreaId(s_hordeMapId, s_hordeX, s_hordeY, s_hordeZ);
+                player->SetHomebind(loc, areaId);
+                player->TeleportTo(s_hordeMapId, s_hordeX, s_hordeY, s_hordeZ, s_hordeO);
             }
         }
 
@@ -526,15 +529,15 @@ public:
     static bool HandlePromotionReset(ChatHandler* handler, std::string const& playerName)
     {
         // Resolve player name to account ID — works whether or not the player is online.
-        uint64 guid = sObjectMgr->GetPlayerGUIDByName(playerName);
-        if (!guid)
+        ObjectGuid const guid = sObjectMgr->GetPlayerGUIDByName(playerName);
+        if (guid.IsEmpty())
         {
             handler->PSendSysMessage("Character '{}' not found.", playerName);
             handler->SetSentErrorMessage(true);
             return false;
         }
 
-        uint32 const accountId = sObjectMgr->GetPlayerAccountIdByGUID(ObjectGuid(HighGuid::Player, uint32(guid)));
+        uint32 const accountId = sObjectMgr->GetPlayerAccountIdByGUID(guid);
         if (!accountId)
         {
             handler->PSendSysMessage("Could not resolve account for character '{}'.", playerName);
@@ -601,7 +604,7 @@ public:
         s_targetLevel     = sConfigMgr->GetOption<uint32>("LevelForPromotion",         80);
         s_dkRequiredLevel = sConfigMgr->GetOption<uint32>("Promotion.DKRequiredLevel", 55);
         s_minAccountAge   = sConfigMgr->GetOption<uint32>("Promotion.MinAccountAge",    0);
-        s_moneyReward     = sConfigMgr->GetOption<int64> ("MoneyRewardValue",    10000000);
+        s_moneyReward     = sConfigMgr->GetOption<int32> ("MoneyRewardValue",    10000000);
         s_bagId           = sConfigMgr->GetOption<uint32>("bagReward.Id",           14156);
 
         // Clamp values to the valid WotLK level range to prevent silent overflows.
