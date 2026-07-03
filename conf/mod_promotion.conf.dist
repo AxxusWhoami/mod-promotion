@@ -71,6 +71,22 @@ LevelForPromotion = 80
 
 #
 #
+#     Promotion.RequiredLevel
+#
+#     Description: Exact level a non-Death-Knight character must be to claim the promotion.
+#                  Useful on servers that want players to level a few times before promoting.
+#                  Death Knights use Promotion.DKRequiredLevel instead.
+#
+#     Example: 1  - any freshly created character can promote (default)
+#              10 - character must reach level 10 first
+#
+#     Default: Promotion.RequiredLevel = 1
+#
+
+Promotion.RequiredLevel = 1
+
+#
+#
 #     Promotion.DKRequiredLevel
 #
 #     Description: Exact level a Death Knight must be to receive the promotion.

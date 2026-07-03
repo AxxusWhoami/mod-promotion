@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <array>
 #include <ctime>
+#include <string_view>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -119,6 +120,7 @@ static bool   s_confirmationStep;
 static bool   s_announceToWorld;
 
 static uint32 s_targetLevel;
+static uint32 s_requiredLevel;
 static uint32 s_dkRequiredLevel;
 static uint32 s_minAccountAge;
 static int32  s_moneyReward;
@@ -486,7 +488,7 @@ private:
             return PromotionCheck::Ok;
 
         bool const isDK = player->getClass() == CLASS_DEATH_KNIGHT;
-        if (player->GetLevel() != (isDK ? s_dkRequiredLevel : 1u))
+        if (player->GetLevel() != (isDK ? s_dkRequiredLevel : s_requiredLevel))
             return PromotionCheck::WrongLevel;
 
         if (s_promotedAccounts.count(player->GetSession()->GetAccountId()))
@@ -528,7 +530,11 @@ private:
     {
         auto it = s_gearItems.find(prefix);
         if (it == s_gearItems.end())
+        {
+            LOG_ERROR("module", "mod_promotion: EquipGearSet — gear set prefix '{}' not found in cache. Check OnAfterConfigLoad.", prefix);
+            creature->Whisper("Algunos objetos no pudieron ser equipados. Notifica a un administrador.", LANG_UNIVERSAL, player);
             return;
+        }
 
         bool anyFailed = false;
         for (size_t i = 0; i < kEquipSlotCount; ++i)
@@ -691,8 +697,9 @@ public:
         s_confirmationStep    = sConfigMgr->GetOption<bool>("Promotion.ConfirmationStep",  false);
         s_announceToWorld     = sConfigMgr->GetOption<bool>("Promotion.AnnounceToWorld",   false);
 
-        s_targetLevel     = sConfigMgr->GetOption<uint32>("LevelForPromotion",         80);
-        s_dkRequiredLevel = sConfigMgr->GetOption<uint32>("Promotion.DKRequiredLevel", 55);
+        s_targetLevel     = sConfigMgr->GetOption<uint32>("LevelForPromotion",           80);
+        s_requiredLevel   = sConfigMgr->GetOption<uint32>("Promotion.RequiredLevel",       1);
+        s_dkRequiredLevel = sConfigMgr->GetOption<uint32>("Promotion.DKRequiredLevel",    55);
         s_minAccountAge   = sConfigMgr->GetOption<uint32>("Promotion.MinAccountAge",    0);
         s_moneyReward     = sConfigMgr->GetOption<int32> ("MoneyRewardValue",    10000000);
         s_bagId           = sConfigMgr->GetOption<uint32>("bagReward.Id",           14156);
@@ -703,6 +710,13 @@ public:
             LOG_ERROR("module", "mod_promotion: LevelForPromotion {} is out of range [1-80]; using 80.", s_targetLevel);
             s_targetLevel = 80;
         }
+        if (s_requiredLevel == 0 || s_requiredLevel > 80)
+        {
+            LOG_ERROR("module", "mod_promotion: Promotion.RequiredLevel {} is out of range [1-80]; using 1.", s_requiredLevel);
+            s_requiredLevel = 1;
+        }
+        if (s_requiredLevel >= s_targetLevel)
+            LOG_WARN("module", "mod_promotion: Promotion.RequiredLevel ({}) >= LevelForPromotion ({}) — non-DK players can never claim a promotion with this config.", s_requiredLevel, s_targetLevel);
         if (s_dkRequiredLevel == 0 || s_dkRequiredLevel > 80)
         {
             LOG_ERROR("module", "mod_promotion: Promotion.DKRequiredLevel {} is out of range [1-80]; using 55.", s_dkRequiredLevel);
