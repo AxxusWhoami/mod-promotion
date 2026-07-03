@@ -176,28 +176,27 @@ Promotion.AnnounceToWorld = false
 mountGround.enable = true
 mountFlying.enable = false
 
-# Uncomment and change values to override per-race mounts:
-# mountGround.Human    = 470
-# mountGround.Dwarf    = 6898
-# mountGround.NightElf = 10789
-# mountGround.Gnome    = 17453
-# mountGround.Draenei  = 35710
-# mountGround.BloodElf = 33660
-# mountGround.Orc      = 5784
-# mountGround.Undead   = 17463
-# mountGround.Tauren   = 18989
-# mountGround.Troll    = 10796
+mountGround.Human    = 470
+mountGround.Dwarf    = 6898
+mountGround.NightElf = 10789
+mountGround.Gnome    = 17453
+mountGround.Draenei  = 35710
+mountGround.BloodElf = 33660
+mountGround.Orc      = 5784
+mountGround.Undead   = 17463
+mountGround.Tauren   = 18989
+mountGround.Troll    = 10796
 
-# mountFlying.Human    = 34767
-# mountFlying.Dwarf    = 34769
-# mountFlying.NightElf = 41513
-# mountFlying.Gnome    = 34768
-# mountFlying.Draenei  = 34769
-# mountFlying.BloodElf = 40192
-# mountFlying.Orc      = 40193
-# mountFlying.Undead   = 40194
-# mountFlying.Tauren   = 40195
-# mountFlying.Troll    = 40192
+mountFlying.Human    = 34767
+mountFlying.Dwarf    = 34769
+mountFlying.NightElf = 41513
+mountFlying.Gnome    = 34768
+mountFlying.Draenei  = 34769
+mountFlying.BloodElf = 40192
+mountFlying.Orc      = 40193
+mountFlying.Undead   = 40194
+mountFlying.Tauren   = 40195
+mountFlying.Troll    = 40192
 
 #
 #
@@ -229,26 +228,19 @@ bagReward.Id = 41599
 
 teleport.enable = true
 
-#
-#     Teleport destination coordinates (used when teleport.enable = true).
-#     Override these to send players to a custom capital or hub.
-#
-#     Default: Stormwind Keep (Alliance) and Valley of Strength in Orgrimmar (Horde).
-#
-#     teleport.Alliance.MapId  = 0
-#     teleport.Alliance.AreaId = 1519
-#     teleport.Alliance.X      = -8888.54
-#     teleport.Alliance.Y      =   573.119
-#     teleport.Alliance.Z      =    92.621
-#     teleport.Alliance.O      =     0.732
-#
-#     teleport.Horde.MapId     = 1
-#     teleport.Horde.AreaId    = 1637
-#     teleport.Horde.X         =  1136.16
-#     teleport.Horde.Y        = -4385.84
-#     teleport.Horde.Z        =   30.206
-#     teleport.Horde.O        =    3.063
-#
+teleport.Alliance.MapId  = 0
+teleport.Alliance.AreaId = 1519
+teleport.Alliance.X      = -8888.54
+teleport.Alliance.Y      =   573.119
+teleport.Alliance.Z      =    92.621
+teleport.Alliance.O      =     0.732
+
+teleport.Horde.MapId     = 1
+teleport.Horde.AreaId    = 1637
+teleport.Horde.X         =  1136.16
+teleport.Horde.Y         = -4385.84
+teleport.Horde.Z         =    30.206
+teleport.Horde.O         =     3.063
 
 ###################################################################################################
 
@@ -361,7 +353,8 @@ EQUIPMENT_SLOT_PALADIN_DPS_TRINKET1 = 37064
 EQUIPMENT_SLOT_PALADIN_DPS_TRINKET2 = 38359
 EQUIPMENT_SLOT_PALADIN_DPS_BACK = 45811
 EQUIPMENT_SLOT_PALADIN_DPS_MAINHAND = 37108
-EQUIPMENT_SLOT_PALADIN_DPS_RANGED = 38362
+EQUIPMENT_SLOT_PALADIN_DPS_OFFHAND  = 0
+EQUIPMENT_SLOT_PALADIN_DPS_RANGED   = 38362
 
 ###################################################################################################
 #   CLASS HUNTER
@@ -382,7 +375,8 @@ EQUIPMENT_SLOT_HUNTER_TRINKET1 = 37064
 EQUIPMENT_SLOT_HUNTER_TRINKET2 = 38359
 EQUIPMENT_SLOT_HUNTER_BACK = 45811
 EQUIPMENT_SLOT_HUNTER_MAINHAND = 36980
-EQUIPMENT_SLOT_HUNTER_RANGED = 37050
+EQUIPMENT_SLOT_HUNTER_OFFHAND  = 0
+EQUIPMENT_SLOT_HUNTER_RANGED   = 37050
 
 ###################################################################################################
 #   CLASS ROGUE
@@ -425,7 +419,8 @@ EQUIPMENT_SLOT_PRIEST_HEAL_TRINKET1 = 36972
 EQUIPMENT_SLOT_PRIEST_HEAL_TRINKET2 = 37111
 EQUIPMENT_SLOT_PRIEST_HEAL_BACK = 45810
 EQUIPMENT_SLOT_PRIEST_HEAL_MAINHAND = 36975
-EQUIPMENT_SLOT_PRIEST_HEAL_RANGED = 37038
+EQUIPMENT_SLOT_PRIEST_HEAL_OFFHAND  = 0
+EQUIPMENT_SLOT_PRIEST_HEAL_RANGED   = 37038
 
 EQUIPMENT_SLOT_PRIEST_SHADOW_HEAD = 43971
 EQUIPMENT_SLOT_PRIEST_SHADOW_NECK = 45813
@@ -442,7 +437,8 @@ EQUIPMENT_SLOT_PRIEST_SHADOW_TRINKET1 = 36972
 EQUIPMENT_SLOT_PRIEST_SHADOW_TRINKET2 = 38358
 EQUIPMENT_SLOT_PRIEST_SHADOW_BACK = 45810
 EQUIPMENT_SLOT_PRIEST_SHADOW_MAINHAND = 36975
-EQUIPMENT_SLOT_PRIEST_SHADOW_RANGED = 37038
+EQUIPMENT_SLOT_PRIEST_SHADOW_OFFHAND  = 0
+EQUIPMENT_SLOT_PRIEST_SHADOW_RANGED   = 37038
 
 ###################################################################################################
 #   SHAMAN CLASS
@@ -521,7 +517,8 @@ EQUIPMENT_SLOT_MAGE_TRINKET1 = 36972
 EQUIPMENT_SLOT_MAGE_TRINKET2 = 38358
 EQUIPMENT_SLOT_MAGE_BACK = 45810
 EQUIPMENT_SLOT_MAGE_MAINHAND = 36975
-EQUIPMENT_SLOT_MAGE_RANGED = 37038
+EQUIPMENT_SLOT_MAGE_OFFHAND  = 0
+EQUIPMENT_SLOT_MAGE_RANGED   = 37038
 
 ###################################################################################################
 #   WARLOCK CLASS
@@ -542,7 +539,8 @@ EQUIPMENT_SLOT_WARLOCK_TRINKET1 = 36972
 EQUIPMENT_SLOT_WARLOCK_TRINKET2 = 38358
 EQUIPMENT_SLOT_WARLOCK_BACK = 45810
 EQUIPMENT_SLOT_WARLOCK_MAINHAND = 36975
-EQUIPMENT_SLOT_WARLOCK_RANGED = 37038
+EQUIPMENT_SLOT_WARLOCK_OFFHAND  = 0
+EQUIPMENT_SLOT_WARLOCK_RANGED   = 37038
 
 ###################################################################################################
 #   DRUID CLASS
@@ -563,7 +561,8 @@ EQUIPMENT_SLOT_DRUID_TANK_TRINKET1 = 37064
 EQUIPMENT_SLOT_DRUID_TANK_TRINKET2 = 38359
 EQUIPMENT_SLOT_DRUID_TANK_BACK = 45811
 EQUIPMENT_SLOT_DRUID_TANK_MAINHAND = 36980
-EQUIPMENT_SLOT_DRUID_TANK_RANGED = 38365
+EQUIPMENT_SLOT_DRUID_TANK_OFFHAND  = 0
+EQUIPMENT_SLOT_DRUID_TANK_RANGED   = 38365
 
 EQUIPMENT_SLOT_DRUID_HEAL_HEAD = 43261
 EQUIPMENT_SLOT_DRUID_HEAL_NECK = 45813
@@ -580,7 +579,8 @@ EQUIPMENT_SLOT_DRUID_HEAL_TRINKET1 = 36972
 EQUIPMENT_SLOT_DRUID_HEAL_TRINKET2 = 37111
 EQUIPMENT_SLOT_DRUID_HEAL_BACK = 45810
 EQUIPMENT_SLOT_DRUID_HEAL_MAINHAND = 36975
-EQUIPMENT_SLOT_DRUID_HEAL_RANGED = 38366
+EQUIPMENT_SLOT_DRUID_HEAL_OFFHAND  = 0
+EQUIPMENT_SLOT_DRUID_HEAL_RANGED   = 38366
 
 EQUIPMENT_SLOT_DRUID_CASTER_HEAD = 43261
 EQUIPMENT_SLOT_DRUID_CASTER_NECK = 45813
@@ -597,7 +597,8 @@ EQUIPMENT_SLOT_DRUID_CASTER_TRINKET1 = 36972
 EQUIPMENT_SLOT_DRUID_CASTER_TRINKET2 = 38358
 EQUIPMENT_SLOT_DRUID_CASTER_BACK = 45810
 EQUIPMENT_SLOT_DRUID_CASTER_MAINHAND = 36975
-EQUIPMENT_SLOT_DRUID_CASTER_RANGED = 38360
+EQUIPMENT_SLOT_DRUID_CASTER_OFFHAND  = 0
+EQUIPMENT_SLOT_DRUID_CASTER_RANGED   = 38360
 
 ###################################################################################################
 #   DEATH KNIGHT CLASS
@@ -618,7 +619,8 @@ EQUIPMENT_SLOT_DK_TANK_TRINKET1 = 36993
 EQUIPMENT_SLOT_DK_TANK_TRINKET2 = 38359
 EQUIPMENT_SLOT_DK_TANK_BACK = 45811
 EQUIPMENT_SLOT_DK_TANK_MAINHAND = 36984
-EQUIPMENT_SLOT_DK_TANK_RANGED = 40867
+EQUIPMENT_SLOT_DK_TANK_OFFHAND  = 0
+EQUIPMENT_SLOT_DK_TANK_RANGED   = 40867
 
 EQUIPMENT_SLOT_DK_DPS_HEAD = 41350
 EQUIPMENT_SLOT_DK_DPS_NECK = 45812
@@ -635,7 +637,8 @@ EQUIPMENT_SLOT_DK_DPS_TRINKET1 = 37064
 EQUIPMENT_SLOT_DK_DPS_TRINKET2 = 38359
 EQUIPMENT_SLOT_DK_DPS_BACK = 45811
 EQUIPMENT_SLOT_DK_DPS_MAINHAND = 37108
-EQUIPMENT_SLOT_DK_DPS_RANGED = 40867
+EQUIPMENT_SLOT_DK_DPS_OFFHAND  = 0
+EQUIPMENT_SLOT_DK_DPS_RANGED   = 40867
 
 ###################################################################################################
 
