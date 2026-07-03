@@ -253,10 +253,10 @@ teleport.Alliance.O      =     0.732
 
 teleport.Horde.MapId     = 1
 teleport.Horde.AreaId    = 1637
-teleport.Horde.X         =  1136.16
-teleport.Horde.Y         = -4385.84
-teleport.Horde.Z         =    30.206
-teleport.Horde.O         =     3.063
+teleport.Horde.X         =  1494.28
+teleport.Horde.Y         = -4415.92
+teleport.Horde.Z         =    23.164
+teleport.Horde.O         =     0.415424
 
 ###################################################################################################
 
