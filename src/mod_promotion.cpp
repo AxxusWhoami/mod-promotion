@@ -121,7 +121,7 @@ static bool   s_announceToWorld;
 static uint32 s_targetLevel;
 static uint32 s_dkRequiredLevel;
 static uint32 s_minAccountAge;
-static int64  s_moneyReward;
+static int32  s_moneyReward;
 static uint32 s_bagId;
 
 static uint32 s_allianceMapId;
@@ -146,6 +146,10 @@ static std::unordered_map<std::string, std::array<uint32, kEquipSlotCount>> s_ge
 // All gossip handling runs on the world thread — no mutex needed.
 static std::unordered_set<uint32> s_promotedAccounts;
 
+// Cached account join dates: account_id -> UNIX timestamp of joindate.
+// Populated on first gossip open; never changes, so no eviction needed.
+static std::unordered_map<uint32, uint32> s_accountJoinDates;
+
 // ---------------------------------------------------------------------------
 
 static bool IsValidActionForClass(uint8 cls, uint32 action)
@@ -154,6 +158,33 @@ static bool IsValidActionForClass(uint8 cls, uint32 action)
     if (it == kClassActions.end())
         return false;
     return std::find(it->second.begin(), it->second.end(), action) != it->second.end();
+}
+
+static std::string_view SpecLabel(uint32 action)
+{
+    switch (action)
+    {
+        case GOSSIP_ACTION_INFO_DEF +  1: return "Guerrero - Furia";
+        case GOSSIP_ACTION_INFO_DEF +  2: return "Guerrero - Proteccion";
+        case GOSSIP_ACTION_INFO_DEF +  3: return "Brujo - Destruccion";
+        case GOSSIP_ACTION_INFO_DEF +  4: return "Druida - Guardian";
+        case GOSSIP_ACTION_INFO_DEF +  5: return "Druida - Restauracion";
+        case GOSSIP_ACTION_INFO_DEF +  6: return "Druida - Equilibrio";
+        case GOSSIP_ACTION_INFO_DEF +  7: return "Cazador - Punteria";
+        case GOSSIP_ACTION_INFO_DEF +  8: return "Mago - Escarcha";
+        case GOSSIP_ACTION_INFO_DEF +  9: return "Picaro - Sutileza";
+        case GOSSIP_ACTION_INFO_DEF + 10: return "Sacerdote - Disciplina";
+        case GOSSIP_ACTION_INFO_DEF + 11: return "Sacerdote - Sombras";
+        case GOSSIP_ACTION_INFO_DEF + 12: return "Paladin - Proteccion";
+        case GOSSIP_ACTION_INFO_DEF + 13: return "Paladin - Sagrado";
+        case GOSSIP_ACTION_INFO_DEF + 14: return "Paladin - Retribucion";
+        case GOSSIP_ACTION_INFO_DEF + 15: return "Shaman - Elemental";
+        case GOSSIP_ACTION_INFO_DEF + 16: return "Shaman - Restauracion";
+        case GOSSIP_ACTION_INFO_DEF + 17: return "Shaman - Mejora";
+        case GOSSIP_ACTION_INFO_DEF + 18: return "Caballero de la Muerte - Sangre";
+        case GOSSIP_ACTION_INFO_DEF + 19: return "Caballero de la Muerte - Escarcha";
+        default:                          return "Desconocido";
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -417,7 +448,7 @@ public:
 
         if (s_announceToWorld)
         {
-            std::string msg = "|cffFFD700[Promocion]|r " + playerName + " ha obtenido la Promocion de Nivel!";
+            std::string msg = "|cffFFD700[Promocion]|r " + playerName + " (" + std::string(SpecLabel(action)) + ") ha obtenido la Promocion de Nivel!";
             ChatHandler(nullptr).SendGlobalSysMessage(msg.c_str());
         }
 
@@ -464,12 +495,25 @@ private:
         if (s_minAccountAge > 0)
         {
             uint32 const accountId = player->GetSession()->GetAccountId();
-            QueryResult result = LoginDatabase.Query(
-                "SELECT UNIX_TIMESTAMP(joindate) FROM account WHERE id = {}", accountId);
-            if (result)
+
+            uint32 joindate = 0;
+            auto cacheIt = s_accountJoinDates.find(accountId);
+            if (cacheIt != s_accountJoinDates.end())
             {
-                auto const joindate = static_cast<time_t>(result->Fetch()[0].Get<uint32>());
-                auto const ageDays  = static_cast<uint32>((std::time(nullptr) - joindate) / 86400);
+                joindate = cacheIt->second;
+            }
+            else
+            {
+                QueryResult result = LoginDatabase.Query(
+                    "SELECT UNIX_TIMESTAMP(joindate) FROM account WHERE id = {}", accountId);
+                if (result)
+                    joindate = result->Fetch()[0].Get<uint32>();
+                s_accountJoinDates[accountId] = joindate;
+            }
+
+            if (joindate)
+            {
+                auto const ageDays = static_cast<uint32>((std::time(nullptr) - static_cast<time_t>(joindate)) / 86400);
                 if (ageDays < s_minAccountAge)
                     return PromotionCheck::TooNew;
             }
@@ -515,7 +559,8 @@ public:
     {
         static Acore::ChatCommands::ChatCommandTable promotionCommandTable =
         {
-            { "reset", HandlePromotionReset, SEC_GAMEMASTER, Acore::ChatCommands::Console::No }
+            { "reset", HandlePromotionReset, SEC_GAMEMASTER, Acore::ChatCommands::Console::No  },
+            { "check", HandlePromotionCheck, SEC_GAMEMASTER, Acore::ChatCommands::Console::Yes },
         };
         static Acore::ChatCommands::ChatCommandTable commandTable =
         {
@@ -526,6 +571,13 @@ public:
 
     static bool HandlePromotionReset(ChatHandler* handler, std::string const& playerName)
     {
+        if (playerName.empty())
+        {
+            handler->SendSysMessage("Usage: .promotion reset <characterName>");
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
         std::string safeName = playerName;
         CharacterDatabase.EscapeString(safeName);
 
@@ -549,6 +601,48 @@ public:
         LOG_INFO("module", "mod_promotion: Promotion reset by GM {} for account {} (character '{}')",
             handler->GetSession() ? handler->GetSession()->GetPlayer()->GetName() : "Console",
             accountId, playerName);
+        return true;
+    }
+
+    static bool HandlePromotionCheck(ChatHandler* handler, std::string const& playerName)
+    {
+        if (playerName.empty())
+        {
+            handler->SendSysMessage("Usage: .promotion check <characterName>");
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        std::string safeName = playerName;
+        CharacterDatabase.EscapeString(safeName);
+
+        QueryResult charResult = CharacterDatabase.Query(
+            "SELECT account FROM characters WHERE name = '{}'", safeName);
+
+        if (!charResult)
+        {
+            handler->PSendSysMessage("Character '{}' not found.", playerName);
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        uint32 const accountId = charResult->Fetch()[0].Get<uint32>();
+
+        QueryResult logResult = CharacterDatabase.Query(
+            "SELECT character_name, FROM_UNIXTIME(timestamp) FROM mod_promotion_log WHERE account_id = {}",
+            accountId);
+
+        if (!logResult)
+        {
+            handler->PSendSysMessage("Account {} (character '{}') has NOT claimed a promotion.", accountId, playerName);
+            return true;
+        }
+
+        auto const* fields    = logResult->Fetch();
+        std::string claimedBy = fields[0].Get<std::string>();
+        std::string claimedAt = fields[1].Get<std::string>();
+        handler->PSendSysMessage("Account {} claimed promotion with character '{}' on {}.",
+            accountId, claimedBy, claimedAt);
         return true;
     }
 };
@@ -614,6 +708,8 @@ public:
             LOG_ERROR("module", "mod_promotion: Promotion.DKRequiredLevel {} is out of range [1-80]; using 55.", s_dkRequiredLevel);
             s_dkRequiredLevel = 55;
         }
+        if (s_dkRequiredLevel >= s_targetLevel)
+            LOG_WARN("module", "mod_promotion: Promotion.DKRequiredLevel ({}) >= LevelForPromotion ({}) — Death Knights can never claim a promotion with this config.", s_dkRequiredLevel, s_targetLevel);
 
         s_allianceMapId  = sConfigMgr->GetOption<uint32>("teleport.Alliance.MapId",  0);
         s_allianceAreaId = sConfigMgr->GetOption<uint32>("teleport.Alliance.AreaId", 1519); // Stormwind City
