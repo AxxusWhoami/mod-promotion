@@ -227,7 +227,7 @@ void LearnAllClassSpells(Player* player)
         {
             SpellInfo const* spell = cs.info;
 
-            if (spell->BaseLevel != uint32(level) && cs.isValid)
+            if (spell->BaseLevel != uint32(level) || !cs.isValid)
                 continue;
 
             if ((spell->AttributesEx7 & SPELL_ATTR7_ALLIANCE_SPECIFIC_SPELL && player->GetTeamId() != TEAM_ALLIANCE) ||

@@ -6,12 +6,14 @@
  */
 
 #include "Chat.h"
+#include "ChatCommand.h"
 #include "Config.h"
 #include "DatabaseEnv.h"
 #include "GossipDef.h"
 #include "Language.h"
 #include "LearnClassSpells.h"
 #include "mod_promotion.h"
+#include "ObjectMgr.h"
 #include "Player.h"
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
@@ -115,11 +117,12 @@ static bool   s_equippedbags;
 static bool   s_learnSpells;
 static bool   s_teleportOnPromotion;
 static bool   s_confirmationStep;
+static bool   s_announceToWorld;
 
 static uint32 s_targetLevel;
 static uint32 s_dkRequiredLevel;
 static uint32 s_minAccountAge;
-static int32  s_moneyReward;
+static int64  s_moneyReward;
 static uint32 s_bagId;
 
 static uint32 s_allianceMapId;
@@ -141,6 +144,16 @@ static std::unordered_map<std::string, std::array<uint32, kEquipSlotCount>> s_ge
 // Accounts that have already claimed their promotion (loaded at startup).
 // All gossip handling runs on the world thread — no mutex needed.
 static std::unordered_set<uint32> s_promotedAccounts;
+
+// ---------------------------------------------------------------------------
+
+static bool IsValidActionForClass(uint8 cls, uint32 action)
+{
+    auto it = kClassActions.find(cls);
+    if (it == kClassActions.end())
+        return false;
+    return std::find(it->second.begin(), it->second.end(), action) != it->second.end();
+}
 
 // ---------------------------------------------------------------------------
 
@@ -283,6 +296,22 @@ public:
             return true;
         }
 
+        // Mark the account as promoted BEFORE granting rewards.
+        // This prevents a second gossip packet (race condition / packet flood)
+        // from passing CheckEligibility while the first is still executing.
+        uint32 const accountId = player->GetSession()->GetAccountId();
+        if (!isModerator)
+        {
+            if (!s_promotedAccounts.insert(accountId).second)
+            {
+                // Another packet got here first — close silently.
+                CloseGossipMenuFor(player);
+                return true;
+            }
+        }
+
+        // ---- Grant rewards ------------------------------------------------
+
         player->SetLevel(static_cast<uint8>(s_targetLevel));
         player->InitStatsForLevel(true);
         player->InitTaxiNodesForLevel();
@@ -360,23 +389,53 @@ public:
                     player->AddItem(totem, 1);
         }
 
+        // ---- Persist & announce -------------------------------------------
+
+        std::string const playerName = player->GetName();
+
         if (!isModerator)
         {
-            uint32 const accountId = player->GetSession()->GetAccountId();
+            // EscapeString prevents a malformed name from breaking the query.
+            std::string safeName = playerName;
+            CharacterDatabase.EscapeString(safeName);
+
             CharacterDatabase.Execute(
                 "INSERT IGNORE INTO mod_promotion_log (account_id, character_guid, character_name, timestamp) VALUES ({}, {}, '{}', UNIX_TIMESTAMP())",
                 accountId,
                 player->GetGUID().GetCounter(),
-                player->GetName());
-            s_promotedAccounts.insert(accountId);
+                safeName);
+
+            LOG_INFO("module", "mod_promotion: Promotion granted — account {} character {} (guid {})",
+                accountId, playerName, player->GetGUID().GetCounter());
         }
+        else
+        {
+            LOG_INFO("module", "mod_promotion: Promotion granted by GM bypass — account {} character {} (guid {})",
+                accountId, playerName, player->GetGUID().GetCounter());
+        }
+
+        if (s_announceToWorld)
+        {
+            std::string msg = "|cffFFD700[Promocion]|r " + playerName + " ha obtenido la Promocion de Nivel!";
+            sWorld->SendServerMessage(SERVER_MSG_STRING, msg.c_str());
+        }
+
+        // ---- Teleport & homebind ------------------------------------------
 
         if (s_teleportOnPromotion)
         {
             if (player->GetTeamId() == TEAM_ALLIANCE)
-                player->TeleportTo(s_allianceMapId, s_allianceX, s_allianceY, s_allianceZ, s_allianceO);
+            {
+                WorldLocation loc(s_allianceMapId, s_allianceX, s_allianceY, s_allianceZ, s_allianceO);
+                player->SetHomebind(loc, player->GetAreaId());
+                player->TeleportTo(loc);
+            }
             else
-                player->TeleportTo(s_hordeMapId, s_hordeX, s_hordeY, s_hordeZ, s_hordeO);
+            {
+                WorldLocation loc(s_hordeMapId, s_hordeX, s_hordeY, s_hordeZ, s_hordeO);
+                player->SetHomebind(loc, player->GetAreaId());
+                player->TeleportTo(loc);
+            }
         }
 
         player->SaveToDB(false, false);
@@ -398,7 +457,7 @@ private:
         if (player->GetLevel() != (isDK ? s_dkRequiredLevel : 1u))
             return PromotionCheck::WrongLevel;
 
-        if (HasUsedPromotion(player->GetSession()->GetAccountId()))
+        if (s_promotedAccounts.count(player->GetSession()->GetAccountId()))
             return PromotionCheck::AlreadyUsed;
 
         if (s_minAccountAge > 0)
@@ -416,19 +475,6 @@ private:
         }
 
         return PromotionCheck::Ok;
-    }
-
-    static bool HasUsedPromotion(uint32 accountId)
-    {
-        return s_promotedAccounts.count(accountId) > 0;
-    }
-
-    static bool IsValidActionForClass(uint8 cls, uint32 action)
-    {
-        auto it = kClassActions.find(cls);
-        if (it == kClassActions.end())
-            return false;
-        return std::find(it->second.begin(), it->second.end(), action) != it->second.end();
     }
 
     // Equips the pre-loaded gear set for the given config prefix.
@@ -453,6 +499,62 @@ private:
             creature->Whisper("Algunos objetos no pudieron ser equipados. Notifica a un administrador.", LANG_UNIVERSAL, player);
     }
 };
+
+// ---------------------------------------------------------------------------
+// GM command: .promotion reset <name>
+// Removes the promotion record so the account can claim again (testing / support).
+// ---------------------------------------------------------------------------
+
+class cmd_promotion : public CommandScript
+{
+public:
+    cmd_promotion() : CommandScript("cmd_promotion") { }
+
+    Acore::ChatCommands::ChatCommandTable GetCommands() const override
+    {
+        static Acore::ChatCommands::ChatCommandTable promotionCommandTable =
+        {
+            { "reset", HandlePromotionReset, SEC_GAMEMASTER, Acore::ChatCommands::Console::No }
+        };
+        static Acore::ChatCommands::ChatCommandTable commandTable =
+        {
+            { "promotion", promotionCommandTable }
+        };
+        return commandTable;
+    }
+
+    static bool HandlePromotionReset(ChatHandler* handler, std::string const& playerName)
+    {
+        // Resolve player name to account ID — works whether or not the player is online.
+        uint64 guid = sObjectMgr->GetPlayerGUIDByName(playerName);
+        if (!guid)
+        {
+            handler->PSendSysMessage("Character '{}' not found.", playerName);
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        uint32 const accountId = sObjectMgr->GetPlayerAccountIdByGUID(ObjectGuid(HighGuid::Player, uint32(guid)));
+        if (!accountId)
+        {
+            handler->PSendSysMessage("Could not resolve account for character '{}'.", playerName);
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        CharacterDatabase.Execute(
+            "DELETE FROM mod_promotion_log WHERE account_id = {}", accountId);
+        s_promotedAccounts.erase(accountId);
+
+        handler->PSendSysMessage("Promotion reset for account {} (character '{}').", accountId, playerName);
+        LOG_INFO("module", "mod_promotion: Promotion reset by GM {} for account {} (character '{}')",
+            handler->GetSession() ? handler->GetSession()->GetPlayer()->GetName() : "Console",
+            accountId, playerName);
+        return true;
+    }
+};
+
+// ---------------------------------------------------------------------------
 
 class mod_promotion_conf : public WorldScript
 {
@@ -494,11 +596,12 @@ public:
         s_teleportOnPromotion = sConfigMgr->GetOption<bool>("teleport.enable",              true);
         s_learnSpells         = sConfigMgr->GetOption<bool>("learnSpells.enable",           true);
         s_confirmationStep    = sConfigMgr->GetOption<bool>("Promotion.ConfirmationStep",  false);
+        s_announceToWorld     = sConfigMgr->GetOption<bool>("Promotion.AnnounceToWorld",   false);
 
         s_targetLevel     = sConfigMgr->GetOption<uint32>("LevelForPromotion",         80);
         s_dkRequiredLevel = sConfigMgr->GetOption<uint32>("Promotion.DKRequiredLevel", 55);
         s_minAccountAge   = sConfigMgr->GetOption<uint32>("Promotion.MinAccountAge",    0);
-        s_moneyReward     = sConfigMgr->GetOption<int32> ("MoneyRewardValue",    10000000);
+        s_moneyReward     = sConfigMgr->GetOption<int64> ("MoneyRewardValue",    10000000);
         s_bagId           = sConfigMgr->GetOption<uint32>("bagReward.Id",           14156);
 
         // Clamp values to the valid WotLK level range to prevent silent overflows.
@@ -566,4 +669,5 @@ void AddSC_npc_promotion()
 {
     new npc_promotion();
     new mod_promotion_conf();
+    new cmd_promotion();
 }

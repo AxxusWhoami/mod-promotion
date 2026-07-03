@@ -120,6 +120,22 @@ Promotion.ConfirmationStep = false
 
 #
 #
+#     Promotion.AnnounceToWorld
+#
+#     Description: When enabled, a server-wide message is sent every time a player
+#                  successfully claims their promotion.
+#                  Format: [Promocion] <name> ha obtenido la Promocion de Nivel!
+#
+#     Example: true  - broadcast to all players online
+#              false - no announcement (default)
+#
+#     Default: Promotion.AnnounceToWorld = false
+#
+
+Promotion.AnnounceToWorld = false
+
+#
+#
 #     MountPromotion
 #
 #     Description: Grant a race-specific ground mount and/or flying mount on promotion.
