@@ -14,7 +14,6 @@
 #include "LearnClassSpells.h"
 #include "mod_promotion.h"
 #include "ObjectMgr.h"
-#include "TerrainMgr.h"
 #include "Player.h"
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
@@ -127,8 +126,10 @@ static int64  s_moneyReward;
 static uint32 s_bagId;
 
 static uint32 s_allianceMapId;
+static uint32 s_allianceAreaId;
 static float  s_allianceX, s_allianceY, s_allianceZ, s_allianceO;
 static uint32 s_hordeMapId;
+static uint32 s_hordeAreaId;
 static float  s_hordeX, s_hordeY, s_hordeZ, s_hordeO;
 
 // Indexed by RACE_* constants (max value = RACE_DRAENEI = 11). Index 0 and 9 are unused.
@@ -428,15 +429,13 @@ public:
             if (player->GetTeamId() == TEAM_ALLIANCE)
             {
                 WorldLocation loc(s_allianceMapId, s_allianceX, s_allianceY, s_allianceZ, s_allianceO);
-                uint32 const areaId = sTerrainMgr.GetAreaId(s_allianceMapId, s_allianceX, s_allianceY, s_allianceZ);
-                player->SetHomebind(loc, areaId);
+                player->SetHomebind(loc, s_allianceAreaId);
                 player->TeleportTo(s_allianceMapId, s_allianceX, s_allianceY, s_allianceZ, s_allianceO);
             }
             else
             {
                 WorldLocation loc(s_hordeMapId, s_hordeX, s_hordeY, s_hordeZ, s_hordeO);
-                uint32 const areaId = sTerrainMgr.GetAreaId(s_hordeMapId, s_hordeX, s_hordeY, s_hordeZ);
-                player->SetHomebind(loc, areaId);
+                player->SetHomebind(loc, s_hordeAreaId);
                 player->TeleportTo(s_hordeMapId, s_hordeX, s_hordeY, s_hordeZ, s_hordeO);
             }
         }
@@ -619,17 +618,19 @@ public:
             s_dkRequiredLevel = 55;
         }
 
-        s_allianceMapId = sConfigMgr->GetOption<uint32>("teleport.Alliance.MapId", 0);
-        s_allianceX     = sConfigMgr->GetOption<float> ("teleport.Alliance.X",    -8888.54f);
-        s_allianceY     = sConfigMgr->GetOption<float> ("teleport.Alliance.Y",     573.119f);
-        s_allianceZ     = sConfigMgr->GetOption<float> ("teleport.Alliance.Z",     92.6213f);
-        s_allianceO     = sConfigMgr->GetOption<float> ("teleport.Alliance.O",     0.731558f);
+        s_allianceMapId  = sConfigMgr->GetOption<uint32>("teleport.Alliance.MapId",  0);
+        s_allianceAreaId = sConfigMgr->GetOption<uint32>("teleport.Alliance.AreaId", 1519); // Stormwind City
+        s_allianceX      = sConfigMgr->GetOption<float> ("teleport.Alliance.X",    -8888.54f);
+        s_allianceY      = sConfigMgr->GetOption<float> ("teleport.Alliance.Y",     573.119f);
+        s_allianceZ      = sConfigMgr->GetOption<float> ("teleport.Alliance.Z",     92.6213f);
+        s_allianceO      = sConfigMgr->GetOption<float> ("teleport.Alliance.O",     0.731558f);
 
-        s_hordeMapId = sConfigMgr->GetOption<uint32>("teleport.Horde.MapId",  1);
-        s_hordeX     = sConfigMgr->GetOption<float> ("teleport.Horde.X",      1136.16f);
-        s_hordeY     = sConfigMgr->GetOption<float> ("teleport.Horde.Y",     -4385.84f);
-        s_hordeZ     = sConfigMgr->GetOption<float> ("teleport.Horde.Z",      30.2056f);
-        s_hordeO     = sConfigMgr->GetOption<float> ("teleport.Horde.O",      3.06327f);
+        s_hordeMapId  = sConfigMgr->GetOption<uint32>("teleport.Horde.MapId",  1);
+        s_hordeAreaId = sConfigMgr->GetOption<uint32>("teleport.Horde.AreaId", 1637); // Orgrimmar
+        s_hordeX      = sConfigMgr->GetOption<float> ("teleport.Horde.X",      1136.16f);
+        s_hordeY      = sConfigMgr->GetOption<float> ("teleport.Horde.Y",     -4385.84f);
+        s_hordeZ      = sConfigMgr->GetOption<float> ("teleport.Horde.Z",      30.2056f);
+        s_hordeO      = sConfigMgr->GetOption<float> ("teleport.Horde.O",      3.06327f);
 
         s_groundMount[RACE_HUMAN]         = sConfigMgr->GetOption<uint32>("mountGround.Human",    470);
         s_groundMount[RACE_DWARF]         = sConfigMgr->GetOption<uint32>("mountGround.Dwarf",    6898);

@@ -235,14 +235,16 @@ teleport.enable = true
 #
 #     Default: Stormwind Keep (Alliance) and Valley of Strength in Orgrimmar (Horde).
 #
-#     teleport.Alliance.MapId = 0
-#     teleport.Alliance.X     = -8888.54
-#     teleport.Alliance.Y     =   573.119
-#     teleport.Alliance.Z     =    92.621
-#     teleport.Alliance.O     =     0.732
+#     teleport.Alliance.MapId  = 0
+#     teleport.Alliance.AreaId = 1519
+#     teleport.Alliance.X      = -8888.54
+#     teleport.Alliance.Y      =   573.119
+#     teleport.Alliance.Z      =    92.621
+#     teleport.Alliance.O      =     0.732
 #
-#     teleport.Horde.MapId    = 1
-#     teleport.Horde.X        =  1136.16
+#     teleport.Horde.MapId     = 1
+#     teleport.Horde.AreaId    = 1637
+#     teleport.Horde.X         =  1136.16
 #     teleport.Horde.Y        = -4385.84
 #     teleport.Horde.Z        =   30.206
 #     teleport.Horde.O        =    3.063
