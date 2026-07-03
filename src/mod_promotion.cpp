@@ -18,6 +18,9 @@
 #include "ScriptMgr.h"
 #include "World.h"
 #include "WorldSession.h"
+#ifdef MODULE_PLAYERBOTS
+#include "PlayerbotAI.h"
+#endif
 #include <algorithm>
 #include <array>
 #include <unordered_map>
@@ -307,6 +310,10 @@ private:
             return PromotionCheck::Disabled;
         if (isModerator)
             return PromotionCheck::Ok;
+#ifdef MODULE_PLAYERBOTS
+        if (player->IsPlayerBot())
+            return PromotionCheck::Ok;
+#endif
 
         bool const isDK = player->getClass() == CLASS_DEATH_KNIGHT;
         if (player->GetLevel() != (isDK ? 55u : 1u))
