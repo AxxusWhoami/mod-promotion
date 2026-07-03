@@ -310,7 +310,7 @@ public:
                 player->TeleportTo(s_hordeMapId, s_hordeX, s_hordeY, s_hordeZ, s_hordeO);
         }
 
-        player->SaveToDB();
+        player->SaveToDB(false, false);
         CloseGossipMenuFor(player);
         return true;
     }
