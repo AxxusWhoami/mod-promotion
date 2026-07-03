@@ -121,6 +121,13 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature) override
     {
+#ifdef MODULE_PLAYERBOTS
+        if (player->IsPlayerBot())
+        {
+            CloseGossipMenuFor(player);
+            return true;
+        }
+#endif
         bool const isModerator = player->GetSession()->GetSecurity() >= SEC_MODERATOR;
 
         switch (CheckEligibility(player, isModerator))
@@ -183,6 +190,13 @@ public:
     {
         ClearGossipMenuFor(player);
 
+#ifdef MODULE_PLAYERBOTS
+        if (player->IsPlayerBot())
+        {
+            CloseGossipMenuFor(player);
+            return true;
+        }
+#endif
         bool const isModerator = player->GetSession()->GetSecurity() >= SEC_MODERATOR;
 
         // Guard against forged packets and edge cases that bypass OnGossipHello.
@@ -310,10 +324,6 @@ private:
             return PromotionCheck::Disabled;
         if (isModerator)
             return PromotionCheck::Ok;
-#ifdef MODULE_PLAYERBOTS
-        if (player->IsPlayerBot())
-            return PromotionCheck::Ok;
-#endif
 
         bool const isDK = player->getClass() == CLASS_DEATH_KNIGHT;
         if (player->GetLevel() != (isDK ? 55u : 1u))
