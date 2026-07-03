@@ -23,6 +23,7 @@
 #endif
 #include <algorithm>
 #include <array>
+#include <ctime>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -74,7 +75,33 @@ static const std::pair<EquipmentSlots, const char*> kEquipSlots[] =
     { EQUIPMENT_SLOT_OFFHAND,   "OFFHAND"   },
     { EQUIPMENT_SLOT_RANGED,    "RANGED"    },
 };
-static constexpr size_t kEquipSlotCount = 17;
+
+// Derived at compile time so adding/removing a slot above updates everything automatically.
+static constexpr size_t kEquipSlotCount = std::size(kEquipSlots);
+
+// ---------------------------------------------------------------------------
+// Gossip action ranges:
+//   Spec select : GOSSIP_ACTION_INFO_DEF + 1 .. +19  (one per spec)
+//   Cancel      : GOSSIP_ACTION_INFO_DEF + 20         (confirmation step cancel)
+//   Confirm     : spec_action + kConfirmOffset        (i.e. +101 .. +119)
+// ---------------------------------------------------------------------------
+static constexpr uint32 kCancelAction  = GOSSIP_ACTION_INFO_DEF + 20;
+static constexpr uint32 kConfirmOffset = 100u;
+
+// Per-class valid spec actions — at module scope to avoid re-construction on every gossip select.
+static const std::unordered_map<uint8, std::vector<uint32>> kClassActions =
+{
+    {CLASS_WARRIOR,      {GOSSIP_ACTION_INFO_DEF +  1, GOSSIP_ACTION_INFO_DEF +  2}},
+    {CLASS_WARLOCK,      {GOSSIP_ACTION_INFO_DEF +  3}},
+    {CLASS_DRUID,        {GOSSIP_ACTION_INFO_DEF +  4, GOSSIP_ACTION_INFO_DEF +  5, GOSSIP_ACTION_INFO_DEF +  6}},
+    {CLASS_HUNTER,       {GOSSIP_ACTION_INFO_DEF +  7}},
+    {CLASS_MAGE,         {GOSSIP_ACTION_INFO_DEF +  8}},
+    {CLASS_ROGUE,        {GOSSIP_ACTION_INFO_DEF +  9}},
+    {CLASS_PRIEST,       {GOSSIP_ACTION_INFO_DEF + 10, GOSSIP_ACTION_INFO_DEF + 11}},
+    {CLASS_PALADIN,      {GOSSIP_ACTION_INFO_DEF + 12, GOSSIP_ACTION_INFO_DEF + 13, GOSSIP_ACTION_INFO_DEF + 14}},
+    {CLASS_SHAMAN,       {GOSSIP_ACTION_INFO_DEF + 15, GOSSIP_ACTION_INFO_DEF + 16, GOSSIP_ACTION_INFO_DEF + 17}},
+    {CLASS_DEATH_KNIGHT, {GOSSIP_ACTION_INFO_DEF + 18, GOSSIP_ACTION_INFO_DEF + 19}},
+};
 
 // ---------------------------------------------------------------------------
 // Cached config values — refreshed in OnAfterConfigLoad on every load/reload.
@@ -87,8 +114,11 @@ static bool   s_bagEnable;
 static bool   s_equippedbags;
 static bool   s_learnSpells;
 static bool   s_teleportOnPromotion;
+static bool   s_confirmationStep;
 
 static uint32 s_targetLevel;
+static uint32 s_dkRequiredLevel;
+static uint32 s_minAccountAge;
 static int32  s_moneyReward;
 static uint32 s_bagId;
 
@@ -135,6 +165,7 @@ public:
             case PromotionCheck::Disabled:    SendGossipMenuFor(player, 80000, creature); return true;
             case PromotionCheck::WrongLevel:  SendGossipMenuFor(player, 80003, creature); return true;
             case PromotionCheck::AlreadyUsed: SendGossipMenuFor(player, 80001, creature); return true;
+            case PromotionCheck::TooNew:      SendGossipMenuFor(player, 80003, creature); return true;
             case PromotionCheck::Ok:          break;
         }
 
@@ -205,7 +236,44 @@ public:
             case PromotionCheck::Disabled:    SendGossipMenuFor(player, 80000, creature); return true;
             case PromotionCheck::WrongLevel:  CloseGossipMenuFor(player);                 return true;
             case PromotionCheck::AlreadyUsed: SendGossipMenuFor(player, 80001, creature); return true;
+            case PromotionCheck::TooNew:      CloseGossipMenuFor(player);                 return true;
             case PromotionCheck::Ok:          break;
+        }
+
+        // Confirmation step: intercept spec selection, show confirm/cancel menu, then unwrap.
+        if (s_confirmationStep)
+        {
+            if (action == kCancelAction)
+            {
+                CloseGossipMenuFor(player);
+                return true;
+            }
+
+            // First click: spec chosen but not yet confirmed — show the confirmation menu.
+            if (action > GOSSIP_ACTION_INFO_DEF && action <= GOSSIP_ACTION_INFO_DEF + 19)
+            {
+                if (!IsValidActionForClass(player->getClass(), action))
+                {
+                    CloseGossipMenuFor(player);
+                    return true;
+                }
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Si, confirmar promocion.", GOSSIP_SENDER_MAIN, action + kConfirmOffset);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "No, cancelar.",            GOSSIP_SENDER_MAIN, kCancelAction);
+                SendGossipMenuFor(player, 80004, creature);
+                return true;
+            }
+
+            // Second click: confirmed action — unwrap to original spec action.
+            if (action > GOSSIP_ACTION_INFO_DEF + kConfirmOffset &&
+                action <= GOSSIP_ACTION_INFO_DEF + kConfirmOffset + 19)
+            {
+                action -= kConfirmOffset;
+            }
+            else
+            {
+                CloseGossipMenuFor(player);
+                return true;
+            }
         }
 
         // Reject actions that don't belong to the player's class.
@@ -215,7 +283,7 @@ public:
             return true;
         }
 
-        player->SetLevel(s_targetLevel);
+        player->SetLevel(static_cast<uint8>(s_targetLevel));
         player->InitStatsForLevel(true);
         player->InitTaxiNodesForLevel();
         player->InitGlyphsForLevel();
@@ -237,16 +305,16 @@ public:
 
         if (s_mountGround)
         {
-            uint8 const race  = player->getRace();
-            uint32 const spell = (race < std::size(s_groundMount)) ? s_groundMount[race] : 0;
+            uint8  const race  = player->getRace();
+            uint32 const spell = (static_cast<size_t>(race) < std::size(s_groundMount)) ? s_groundMount[race] : 0;
             if (spell)
                 player->learnSpell(spell);
         }
 
         if (s_mountFlying)
         {
-            uint8 const race  = player->getRace();
-            uint32 const spell = (race < std::size(s_flyingMount)) ? s_flyingMount[race] : 0;
+            uint8  const race  = player->getRace();
+            uint32 const spell = (static_cast<size_t>(race) < std::size(s_flyingMount)) ? s_flyingMount[race] : 0;
             if (spell)
                 player->learnSpell(spell);
         }
@@ -296,9 +364,10 @@ public:
         {
             uint32 const accountId = player->GetSession()->GetAccountId();
             CharacterDatabase.Execute(
-                "INSERT IGNORE INTO mod_promotion_log (account_id, character_guid, timestamp) VALUES ({}, {}, UNIX_TIMESTAMP())",
+                "INSERT IGNORE INTO mod_promotion_log (account_id, character_guid, character_name, timestamp) VALUES ({}, {}, '{}', UNIX_TIMESTAMP())",
                 accountId,
-                player->GetGUID().GetCounter());
+                player->GetGUID().GetCounter(),
+                player->GetName());
             s_promotedAccounts.insert(accountId);
         }
 
@@ -316,7 +385,7 @@ public:
     }
 
 private:
-    enum class PromotionCheck { Ok, Disabled, WrongLevel, AlreadyUsed };
+    enum class PromotionCheck { Ok, Disabled, WrongLevel, AlreadyUsed, TooNew };
 
     static PromotionCheck CheckEligibility(Player* player, bool isModerator)
     {
@@ -326,11 +395,25 @@ private:
             return PromotionCheck::Ok;
 
         bool const isDK = player->getClass() == CLASS_DEATH_KNIGHT;
-        if (player->GetLevel() != (isDK ? 55u : 1u))
+        if (player->GetLevel() != (isDK ? s_dkRequiredLevel : 1u))
             return PromotionCheck::WrongLevel;
 
         if (HasUsedPromotion(player->GetSession()->GetAccountId()))
             return PromotionCheck::AlreadyUsed;
+
+        if (s_minAccountAge > 0)
+        {
+            uint32 const accountId = player->GetSession()->GetAccountId();
+            QueryResult result = LoginDatabase.Query(
+                "SELECT UNIX_TIMESTAMP(joindate) FROM account WHERE id = {}", accountId);
+            if (result)
+            {
+                auto const joindate = static_cast<time_t>(result->Fetch()[0].Get<uint32>());
+                auto const ageDays  = static_cast<uint32>((std::time(nullptr) - joindate) / 86400);
+                if (ageDays < s_minAccountAge)
+                    return PromotionCheck::TooNew;
+            }
+        }
 
         return PromotionCheck::Ok;
     }
@@ -342,19 +425,6 @@ private:
 
     static bool IsValidActionForClass(uint8 cls, uint32 action)
     {
-        static const std::unordered_map<uint8, std::vector<uint32>> kClassActions =
-        {
-            {CLASS_WARRIOR,      {GOSSIP_ACTION_INFO_DEF +  1, GOSSIP_ACTION_INFO_DEF +  2}},
-            {CLASS_WARLOCK,      {GOSSIP_ACTION_INFO_DEF +  3}},
-            {CLASS_DRUID,        {GOSSIP_ACTION_INFO_DEF +  4, GOSSIP_ACTION_INFO_DEF +  5, GOSSIP_ACTION_INFO_DEF +  6}},
-            {CLASS_HUNTER,       {GOSSIP_ACTION_INFO_DEF +  7}},
-            {CLASS_MAGE,         {GOSSIP_ACTION_INFO_DEF +  8}},
-            {CLASS_ROGUE,        {GOSSIP_ACTION_INFO_DEF +  9}},
-            {CLASS_PRIEST,       {GOSSIP_ACTION_INFO_DEF + 10, GOSSIP_ACTION_INFO_DEF + 11}},
-            {CLASS_PALADIN,      {GOSSIP_ACTION_INFO_DEF + 12, GOSSIP_ACTION_INFO_DEF + 13, GOSSIP_ACTION_INFO_DEF + 14}},
-            {CLASS_SHAMAN,       {GOSSIP_ACTION_INFO_DEF + 15, GOSSIP_ACTION_INFO_DEF + 16, GOSSIP_ACTION_INFO_DEF + 17}},
-            {CLASS_DEATH_KNIGHT, {GOSSIP_ACTION_INFO_DEF + 18, GOSSIP_ACTION_INFO_DEF + 19}},
-        };
         auto it = kClassActions.find(cls);
         if (it == kClassActions.end())
             return false;
@@ -401,23 +471,47 @@ public:
             do { s_promotedAccounts.insert(result->Fetch()[0].Get<uint32>()); }
             while (result->NextRow());
 
+        // Validate that the configured bag reward exists in the world database.
+        if (s_bagEnable && s_bagId)
+        {
+            QueryResult bagCheck = WorldDatabase.Query(
+                "SELECT 1 FROM item_template WHERE entry = {}", s_bagId);
+            if (!bagCheck)
+                LOG_ERROR("module", "mod_promotion: bagReward.Id {} does not exist in item_template — bags will not be granted!", s_bagId);
+        }
+
         // Pre-build the per-family spell index used by LearnAllClassSpells.
         InitSpellCache();
     }
 
     void OnAfterConfigLoad(bool /*reload*/) override
     {
-        s_promotionEnable     = sConfigMgr->GetOption<bool>("promotionEnable.enable", true);
-        s_mountGround         = sConfigMgr->GetOption<bool>("mountGround.enable",     true);
-        s_mountFlying         = sConfigMgr->GetOption<bool>("mountFlying.enable",     false);
-        s_bagEnable           = sConfigMgr->GetOption<bool>("bagEnable.enable",       true);
-        s_equippedbags        = sConfigMgr->GetOption<bool>("equippedbags.enable",    true);
-        s_teleportOnPromotion = sConfigMgr->GetOption<bool>("teleport.enable",        true);
-        s_learnSpells         = sConfigMgr->GetOption<bool>("learnSpells.enable",     true);
+        s_promotionEnable     = sConfigMgr->GetOption<bool>("promotionEnable.enable",      true);
+        s_mountGround         = sConfigMgr->GetOption<bool>("mountGround.enable",           true);
+        s_mountFlying         = sConfigMgr->GetOption<bool>("mountFlying.enable",          false);
+        s_bagEnable           = sConfigMgr->GetOption<bool>("bagEnable.enable",             true);
+        s_equippedbags        = sConfigMgr->GetOption<bool>("equippedbags.enable",          true);
+        s_teleportOnPromotion = sConfigMgr->GetOption<bool>("teleport.enable",              true);
+        s_learnSpells         = sConfigMgr->GetOption<bool>("learnSpells.enable",           true);
+        s_confirmationStep    = sConfigMgr->GetOption<bool>("Promotion.ConfirmationStep",  false);
 
-        s_targetLevel = sConfigMgr->GetOption<uint32>("LevelForPromotion", 80);
-        s_moneyReward = sConfigMgr->GetOption<int32> ("MoneyRewardValue",  10000000);
-        s_bagId       = sConfigMgr->GetOption<uint32>("bagReward.Id",      14156);
+        s_targetLevel     = sConfigMgr->GetOption<uint32>("LevelForPromotion",         80);
+        s_dkRequiredLevel = sConfigMgr->GetOption<uint32>("Promotion.DKRequiredLevel", 55);
+        s_minAccountAge   = sConfigMgr->GetOption<uint32>("Promotion.MinAccountAge",    0);
+        s_moneyReward     = sConfigMgr->GetOption<int32> ("MoneyRewardValue",    10000000);
+        s_bagId           = sConfigMgr->GetOption<uint32>("bagReward.Id",           14156);
+
+        // Clamp values to the valid WotLK level range to prevent silent overflows.
+        if (s_targetLevel == 0 || s_targetLevel > 80)
+        {
+            LOG_ERROR("module", "mod_promotion: LevelForPromotion {} is out of range [1-80]; using 80.", s_targetLevel);
+            s_targetLevel = 80;
+        }
+        if (s_dkRequiredLevel == 0 || s_dkRequiredLevel > 80)
+        {
+            LOG_ERROR("module", "mod_promotion: Promotion.DKRequiredLevel {} is out of range [1-80]; using 55.", s_dkRequiredLevel);
+            s_dkRequiredLevel = 55;
+        }
 
         s_allianceMapId = sConfigMgr->GetOption<uint32>("teleport.Alliance.MapId", 0);
         s_allianceX     = sConfigMgr->GetOption<float> ("teleport.Alliance.X",    -8888.54f);

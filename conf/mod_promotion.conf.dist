@@ -71,6 +71,55 @@ LevelForPromotion = 80
 
 #
 #
+#     Promotion.DKRequiredLevel
+#
+#     Description: Exact level a Death Knight must be to receive the promotion.
+#                  Death Knights start at 55, so the default matches that.
+#                  Adjust only if your server modifies the DK starting level.
+#
+#     Default: Promotion.DKRequiredLevel = 55
+#
+
+Promotion.DKRequiredLevel = 55
+
+#
+#
+#     Promotion.MinAccountAge
+#
+#     Description: Minimum account age in days required to claim a promotion.
+#                  Prevents freshly registered accounts from instantly claiming the reward.
+#                  Set to 0 to disable (any account age allowed).
+#
+#     Example: 7  - account must be at least 7 days old
+#              30 - account must be at least 30 days old
+#              0  - disabled (default)
+#
+#     Default: Promotion.MinAccountAge = 0
+#
+
+Promotion.MinAccountAge = 0
+
+#
+#
+#     Promotion.ConfirmationStep
+#
+#     Description: When enabled, the player must confirm their specialization choice
+#                  through a second gossip menu before the promotion is granted.
+#                  Prevents accidental clicks.
+#
+#     Example: true  - require confirmation (recommended for live servers)
+#              false - grant promotion immediately on spec selection (default)
+#
+#     NOTE: Requires npc_text ID 80004. Apply the following SQL before enabling:
+#           data/sql/db-world/updates/2026_07_03_add_promotion_confirmation_text.sql
+#
+#     Default: Promotion.ConfirmationStep = false
+#
+
+Promotion.ConfirmationStep = false
+
+#
+#
 #     MountPromotion
 #
 #     Description: Grant a race-specific ground mount and/or flying mount on promotion.
@@ -191,7 +240,13 @@ teleport.enable = true
 #
 #  Description: Class Armor Configuration
 #  Default: Armor Level 7 8
-#  Example: EQUIPMENT_SLOT_WARRIOR_TANK_HEAD = 41350 <-(ID Item) 
+#  Example: EQUIPMENT_SLOT_WARRIOR_TANK_HEAD = 41350 <-(Item ID)
+#
+#  NOTE: Hunter cannot equip an OFFHAND item — omit EQUIPMENT_SLOT_HUNTER_OFFHAND
+#        from this file (or leave it set to 0). Setting a value there has no effect
+#        because the Hunter gear set has no offhand slot.
+#
+#  TIP: Item IDs can be looked up at https://www.wowhead.com/wotlk/item=<ID>
 #
 ###################################################################################################
 # WARRIOR CLASS
