@@ -6,17 +6,17 @@
 -- Neutral:  Death Knight (Skip el Velocista, Acherus)
 -- ============================================================
 -- Display IDs reference:
---     383 = Human male Stormwind Knight / Marshal Windsor (full plate armor)
---   26047 = Dwarf male Ironforge Mountaineer (mail + rifle)
---   20039 = Gnome male Gnomeregan Explorer (light armor + scout gear)
---   22490 = Night Elf female sentinel/druid (leather + staff)
---   18937 = Draenei male Exodar Explorer (light armor / traveler)
---    3890 = Orc male Orgrimmar Grunt (red/black plate + axe)
---    9528 = Troll male Witch Doctor (voodoo mask + lances)
---    4883 = Tauren male High Chieftain (ceremonial chief, Cairne-type)
---    2842 = Forsaken male hooded robe (Shadow Priest Sarvis-type)
---   15394 = Blood Elf male Arcanist (arcane robes, Sunstrider Isle)
---   25278 = Death Knight (Acherus dark plate armor)
+--   10116 = Human male Argent Dawn Officer (full plate + tabard)
+--   10125 = Dwarf male Ironforge Guard (sturdy armor + shield)
+--   15880 = Gnome male Engineer (goggles + tools)
+--    3679 = Night Elf male Archdruid-style (nature robes, Fandral-type)
+--   17351 = Draenei male Aldor Vindicator (crystal plate armor, mace)
+--   21330 = Orc male Kor'kron Guard (black imposing armor + horned shoulders)
+--   10134 = Troll male Blackspear Guard (tribal armor + classic lance)
+--   14457 = Tauren male Thunderbluff Brave (leather/plate armor + totem)
+--   10136 = Undead male Deathstalker / Undercity Guard (dark armor + Sylvanas tabard)
+--   17294 = Blood Elf male Silvermoon Magister (elegant red robes)
+--   25419 = Death Knight (Ebon Blade full saronite armor, glowing eyes)
 -- Equipment item IDs:
 --   40408 = Claymore of the Prophet (2H sword, Naxx25)
 --   39388 = Dwarven Blunderbuss variant (1H axe)
@@ -40,7 +40,7 @@ SET @ENTRY_HUMAN    := 80001;
 SET @NAME_HUMAN     := 'Sir Alistar';
 SET @SUBNAME_HUMAN  := 'Level Up Master';
 SET @GOSSIP_HUMAN   := 80001;
-SET @MODEL_HUMAN    := 383;
+SET @MODEL_HUMAN    := 10116;
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_HUMAN;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
 VALUES (@ENTRY_HUMAN, 0, 0, 0, 0, 0, @NAME_HUMAN, @SUBNAME_HUMAN, NULL, @GOSSIP_HUMAN, 83, 83, 0, 1802, 1, 1, 1, 0, 0, 20, 0, 0, 0, 0, 0, 1, 1, 1, 768, 2048, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 'npc_promotion', 12340);
@@ -58,7 +58,7 @@ SET @ENTRY_DWARF    := 80002;
 SET @NAME_DWARF     := 'Thormir Barbaferro';
 SET @SUBNAME_DWARF  := 'Level Up Master';
 SET @GOSSIP_DWARF   := 80002;
-SET @MODEL_DWARF    := 26047;
+SET @MODEL_DWARF    := 10125;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_DWARF;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
@@ -77,7 +77,7 @@ SET @ENTRY_GNOME    := 80003;
 SET @NAME_GNOME     := 'Chispas Tuercarrueda';
 SET @SUBNAME_GNOME  := 'Level Up Master';
 SET @GOSSIP_GNOME   := 80003;
-SET @MODEL_GNOME    := 20039;
+SET @MODEL_GNOME    := 15880;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_GNOME;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
@@ -96,7 +96,7 @@ SET @ENTRY_NELF     := 80004;
 SET @NAME_NELF      := 'Ilythien Cantoestelar';
 SET @SUBNAME_NELF   := 'Level Up Master';
 SET @GOSSIP_NELF    := 80004;
-SET @MODEL_NELF     := 22490;
+SET @MODEL_NELF     := 3679;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_NELF;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
@@ -115,7 +115,7 @@ SET @ENTRY_DRAE     := 80005;
 SET @NAME_DRAE      := 'Vindicador Kuros';
 SET @SUBNAME_DRAE   := 'Level Up Master';
 SET @GOSSIP_DRAE    := 80005;
-SET @MODEL_DRAE     := 18937;
+SET @MODEL_DRAE     := 17351;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_DRAE;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
@@ -138,7 +138,7 @@ SET @ENTRY_ORC      := 80006;
 SET @NAME_ORC       := 'Gor\'thak el Curtido';
 SET @SUBNAME_ORC    := 'Level Up Master';
 SET @GOSSIP_ORC     := 80006;
-SET @MODEL_ORC      := 3890;
+SET @MODEL_ORC      := 21330;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_ORC;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
@@ -157,7 +157,7 @@ SET @ENTRY_TROLL    := 80007;
 SET @NAME_TROLL     := 'Jin\'zaki';
 SET @SUBNAME_TROLL  := 'Level Up Master';
 SET @GOSSIP_TROLL   := 80007;
-SET @MODEL_TROLL    := 9528;
+SET @MODEL_TROLL    := 10134;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_TROLL;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
@@ -176,7 +176,7 @@ SET @ENTRY_TAUREN   := 80008;
 SET @NAME_TAUREN    := 'Bramido Pezuñaferrea';
 SET @SUBNAME_TAUREN := 'Level Up Master';
 SET @GOSSIP_TAUREN  := 80008;
-SET @MODEL_TAUREN   := 4883;
+SET @MODEL_TAUREN   := 14457;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_TAUREN;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
@@ -195,7 +195,7 @@ SET @ENTRY_UNDEAD   := 80009;
 SET @NAME_UNDEAD    := 'Despertador Mortis';
 SET @SUBNAME_UNDEAD := 'Level Up Master';
 SET @GOSSIP_UNDEAD  := 80009;
-SET @MODEL_UNDEAD   := 2842;
+SET @MODEL_UNDEAD   := 10136;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_UNDEAD;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
@@ -214,7 +214,7 @@ SET @ENTRY_BELF     := 80010;
 SET @NAME_BELF      := 'Magister Vael\'thor';
 SET @SUBNAME_BELF   := 'Level Up Master';
 SET @GOSSIP_BELF    := 80010;
-SET @MODEL_BELF     := 15394;
+SET @MODEL_BELF     := 17294;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_BELF;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
@@ -238,7 +238,7 @@ SET @ENTRY_DK       := 80011;
 SET @NAME_DK        := 'Skip el Velocista';
 SET @SUBNAME_DK     := 'Level Up Master';
 SET @GOSSIP_DK      := 80011;
-SET @MODEL_DK       := 25278;
+SET @MODEL_DK       := 25419;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_DK;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
