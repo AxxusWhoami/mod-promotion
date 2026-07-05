@@ -100,7 +100,13 @@ All options live in `mod_promotion.conf`. The `.dist` file ships with every opti
 |---|---|---|---|
 | `promotionEnable.enable` | bool | `true` | Enable or disable the entire module |
 | `LevelForPromotion` | int | `80` | Level granted to the character |
+| `Promotion.RequiredLevel` | int | `1` | Exact level a non-DK character must be to claim |
+| `Promotion.DKRequiredLevel` | int | `55` | Exact level a Death Knight must be to claim |
+| `Promotion.MinAccountAge` | int | `0` | Minimum account age in days (0 = disabled) |
+| `Promotion.ConfirmationStep` | bool | `false` | Require a second gossip click to confirm selection |
+| `Promotion.AnnounceToWorld` | bool | `false` | Broadcast a world message when a player promotes |
 | `MoneyRewardValue` | int | `10000000` | Gold in copper (10,000,000 = 1,000g) |
+| `learnSpells.enable` | bool | `true` | Teach all trainable class spells on promotion |
 | `teleport.enable` | bool | `true` | Teleport to faction capital after promotion |
 | `mountGround.enable` | bool | `true` | Give a race-specific ground mount |
 | `mountFlying.enable` | bool | `false` | Give a race-specific flying mount |
@@ -150,8 +156,9 @@ Slots not defined in the config (value absent or 0) are skipped. This is the int
 | Condition | Behaviour |
 |---|---|
 | Module disabled (`promotionEnable.enable = false`) | NPC shows "promotion period is over" (`npc_text 80000`) |
-| Character not at starting level | NPC shows generic greeting, no options offered |
+| Character not at starting level | NPC shows "wrong level" message (`npc_text 80003`) |
 | Account already has a promotion on record | NPC shows "already claimed" message (`npc_text 80001`) |
+| Account younger than `Promotion.MinAccountAge` days | NPC shows "account too new" message (`npc_text 80005`) |
 | Account has Moderator security or higher | Bypasses level check and per-account limit |
 
 The per-account limit is tracked in the `mod_promotion_log` table in the characters database (primary key: `account_id`, so exactly one row per account can exist).
@@ -167,7 +174,7 @@ mod-promotion/
 ├── data/
 │   ├── sql/db-world/base/
 │   │   ├── promotion_race_npcs.sql         # Race NPC templates + locales
-│   │   └── text_npc.sql                    # Gossip texts (IDs 80000–80001)
+│   │   └── text_npc.sql                    # Gossip texts (IDs 80000–80005)
 │   └── sql/db-characters/base/
 │       └── mod_promotion_log.sql           # Per-account promotion tracking table
 ├── src/

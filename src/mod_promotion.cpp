@@ -212,7 +212,7 @@ public:
             case PromotionCheck::Disabled:    SendGossipMenuFor(player, 80000, creature); return true;
             case PromotionCheck::WrongLevel:  SendGossipMenuFor(player, 80003, creature); return true;
             case PromotionCheck::AlreadyUsed: SendGossipMenuFor(player, 80001, creature); return true;
-            case PromotionCheck::TooNew:      SendGossipMenuFor(player, 80003, creature); return true;
+            case PromotionCheck::TooNew:      SendGossipMenuFor(player, 80005, creature); return true;
             case PromotionCheck::Ok:          break;
         }
 
@@ -734,10 +734,10 @@ public:
 
         s_hordeMapId  = sConfigMgr->GetOption<uint32>("teleport.Horde.MapId",  1);
         s_hordeAreaId = sConfigMgr->GetOption<uint32>("teleport.Horde.AreaId", 1637); // Orgrimmar
-        s_hordeX      = sConfigMgr->GetOption<float> ("teleport.Horde.X",      1136.16f);
-        s_hordeY      = sConfigMgr->GetOption<float> ("teleport.Horde.Y",     -4385.84f);
-        s_hordeZ      = sConfigMgr->GetOption<float> ("teleport.Horde.Z",      30.2056f);
-        s_hordeO      = sConfigMgr->GetOption<float> ("teleport.Horde.O",      3.06327f);
+        s_hordeX      = sConfigMgr->GetOption<float> ("teleport.Horde.X",      1495.47f);
+        s_hordeY      = sConfigMgr->GetOption<float> ("teleport.Horde.Y",     -4415.04f);
+        s_hordeZ      = sConfigMgr->GetOption<float> ("teleport.Horde.Z",      22.9895f);
+        s_hordeO      = sConfigMgr->GetOption<float> ("teleport.Horde.O",      0.0894835f);
 
         s_groundMount[RACE_HUMAN]         = sConfigMgr->GetOption<uint32>("mountGround.Human",    470);
         s_groundMount[RACE_DWARF]         = sConfigMgr->GetOption<uint32>("mountGround.Dwarf",    6898);

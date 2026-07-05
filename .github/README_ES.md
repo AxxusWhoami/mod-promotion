@@ -100,7 +100,13 @@ Todas las opciones se encuentran en `mod_promotion.conf`. El archivo `.dist` inc
 |---|---|---|---|
 | `promotionEnable.enable` | bool | `true` | Activa o desactiva el módulo completo |
 | `LevelForPromotion` | int | `80` | Nivel otorgado al personaje |
+| `Promotion.RequiredLevel` | int | `1` | Nivel exacto que debe tener un personaje no-CdM para reclamar |
+| `Promotion.DKRequiredLevel` | int | `55` | Nivel exacto que debe tener un Caballero de la Muerte para reclamar |
+| `Promotion.MinAccountAge` | int | `0` | Antigüedad mínima de la cuenta en días (0 = desactivado) |
+| `Promotion.ConfirmationStep` | bool | `false` | Exigir un segundo clic de confirmación antes de conceder la promoción |
+| `Promotion.AnnounceToWorld` | bool | `false` | Enviar un mensaje global cuando un jugador obtenga la promoción |
 | `MoneyRewardValue` | int | `10000000` | Oro en cobre (10.000.000 = 1.000g) |
+| `learnSpells.enable` | bool | `true` | Enseñar todos los hechizos entrenables de la clase al promover |
 | `teleport.enable` | bool | `true` | Teletransportar a la capital de facción tras la promoción |
 | `mountGround.enable` | bool | `true` | Otorgar una montura terrestre según la raza |
 | `mountFlying.enable` | bool | `false` | Otorgar una montura de vuelo según la raza |
@@ -150,8 +156,9 @@ Las ranuras no definidas en la configuración (clave ausente o valor 0) se omite
 | Condición | Comportamiento |
 |---|---|
 | Módulo desactivado (`promotionEnable.enable = false`) | El NPC muestra "el período de promoción ha terminado" (`npc_text 80000`) |
-| El personaje no está en el nivel inicial | El NPC muestra un saludo genérico sin opciones |
+| El personaje no está en el nivel inicial | El NPC muestra el mensaje de nivel incorrecto (`npc_text 80003`) |
 | La cuenta ya tiene una promoción registrada | El NPC muestra "ya reclamada" (`npc_text 80001`) |
+| La cuenta es más nueva que `Promotion.MinAccountAge` días | El NPC muestra "cuenta demasiado nueva" (`npc_text 80005`) |
 | La cuenta tiene seguridad de Moderador o superior | Omite la comprobación de nivel y el límite por cuenta |
 
 El límite por cuenta se registra en la tabla `mod_promotion_log` de la base de datos de personajes (clave primaria: `account_id`, por lo que solo puede existir una fila por cuenta).
@@ -167,7 +174,7 @@ mod-promotion/
 ├── data/
 │   ├── sql/db-world/base/
 │   │   ├── promotion_race_npcs.sql         # Plantillas de NPCs de raza + locales
-│   │   └── text_npc.sql                    # Textos de gossip (IDs 80000–80001)
+│   │   └── text_npc.sql                    # Textos de gossip (IDs 80000–80005)
 │   └── sql/db-characters/base/
 │       └── mod_promotion_log.sql           # Tabla de seguimiento de promociones por cuenta
 ├── src/
