@@ -1,7 +1,5 @@
 # ![logo](https://raw.githubusercontent.com/azerothcore/azerothcore.github.io/master/images/logo-github.png) AzerothCore — mod-promotion
 
-[![Build Status](https://github.com/azerothcore/mod-promotion-AzerothCore-/workflows/core-build/badge.svg?branch=master&event=push)](https://github.com/azerothcore/mod-promotion-AzerothCore-)
-
 [English](README.md) | [Español](README_ES.md)
 
 ---
