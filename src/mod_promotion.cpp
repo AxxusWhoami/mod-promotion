@@ -144,9 +144,13 @@ static std::unordered_map<std::string, std::array<uint32, kEquipSlotCount>> s_ge
 // Runtime state
 // ---------------------------------------------------------------------------
 
-// Accounts that have already claimed their promotion (loaded at startup).
+// Promotion use counts: account_id -> number of promotions already claimed.
 // All gossip handling runs on the world thread — no mutex needed.
-static std::unordered_set<uint32> s_promotedAccounts;
+static std::unordered_map<uint32, uint32> s_promotionUseCounts;
+
+// Bonus promotion grants: account_id -> total extra uses granted by GMs.
+// Loaded at startup from mod_promotion_bonus.
+static std::unordered_map<uint32, uint32> s_promotionBonus;
 
 // Cached account join dates: account_id -> UNIX timestamp of joindate.
 // Populated on first gossip open; never changes, so no eviction needed.
@@ -330,18 +334,22 @@ public:
             return true;
         }
 
-        // Mark the account as promoted BEFORE granting rewards.
+        // Atomically claim a promotion use BEFORE granting rewards.
         // This prevents a second gossip packet (race condition / packet flood)
         // from passing CheckEligibility while the first is still executing.
         uint32 const accountId = player->GetSession()->GetAccountId();
         if (!isModerator)
         {
-            if (!s_promotedAccounts.insert(accountId).second)
+            uint32 const used  = s_promotionUseCounts[accountId];
+            uint32 const bonus = s_promotionBonus.count(accountId) ? s_promotionBonus[accountId] : 0u;
+            uint32 const allowed = 1 + bonus;
+            if (used >= allowed)
             {
-                // Another packet got here first — close silently.
+                // No uses remaining — close silently.
                 CloseGossipMenuFor(player);
                 return true;
             }
+            s_promotionUseCounts[accountId] = used + 1;
         }
 
         // ---- Grant rewards ------------------------------------------------
@@ -434,7 +442,7 @@ public:
             CharacterDatabase.EscapeString(safeName);
 
             CharacterDatabase.Execute(
-                "INSERT IGNORE INTO mod_promotion_log (account_id, character_guid, character_name, timestamp) VALUES ({}, {}, '{}', UNIX_TIMESTAMP())",
+                "INSERT INTO mod_promotion_log (account_id, character_guid, character_name, timestamp) VALUES ({}, {}, '{}', UNIX_TIMESTAMP())",
                 accountId,
                 player->GetGUID().GetCounter(),
                 safeName);
@@ -491,8 +499,15 @@ private:
         if (player->GetLevel() != (isDK ? s_dkRequiredLevel : s_requiredLevel))
             return PromotionCheck::WrongLevel;
 
-        if (s_promotedAccounts.count(player->GetSession()->GetAccountId()))
-            return PromotionCheck::AlreadyUsed;
+        if (s_promotionUseCounts.count(player->GetSession()->GetAccountId()))
+        {
+            uint32 const used  = s_promotionUseCounts[player->GetSession()->GetAccountId()];
+            uint32 const bonus = s_promotionBonus.count(player->GetSession()->GetAccountId())
+                ? s_promotionBonus[player->GetSession()->GetAccountId()] : 0u;
+            uint32 const allowed = 1 + bonus;
+            if (used >= allowed)
+                return PromotionCheck::AlreadyUsed;
+        }
 
         if (s_minAccountAge > 0)
         {
@@ -567,6 +582,7 @@ public:
         {
             { "reset", HandlePromotionReset, SEC_GAMEMASTER, Acore::ChatCommands::Console::No  },
             { "check", HandlePromotionCheck, SEC_GAMEMASTER, Acore::ChatCommands::Console::Yes },
+            { "add",   HandlePromotionAdd,   SEC_ADMINISTRATOR, Acore::ChatCommands::Console::Yes },
         };
         static Acore::ChatCommands::ChatCommandTable commandTable =
         {
@@ -601,7 +617,10 @@ public:
 
         CharacterDatabase.Execute(
             "DELETE FROM mod_promotion_log WHERE account_id = {}", accountId);
-        s_promotedAccounts.erase(accountId);
+        CharacterDatabase.Execute(
+            "DELETE FROM mod_promotion_bonus WHERE account_id = {}", accountId);
+        s_promotionUseCounts.erase(accountId);
+        s_promotionBonus.erase(accountId);
 
         handler->PSendSysMessage("Promotion reset for account {} (character '{}').", accountId, playerName);
         LOG_INFO("module", "mod_promotion: Promotion reset by GM {} for account {} (character '{}')",
@@ -634,21 +653,74 @@ public:
 
         uint32 const accountId = charResult->Fetch()[0].Get<uint32>();
 
-        QueryResult logResult = CharacterDatabase.Query(
-            "SELECT character_name, FROM_UNIXTIME(timestamp) FROM mod_promotion_log WHERE account_id = {}",
-            accountId);
+        uint32 const used  = s_promotionUseCounts.count(accountId) ? s_promotionUseCounts[accountId] : 0u;
+        uint32 const bonus = s_promotionBonus.count(accountId) ? s_promotionBonus[accountId] : 0u;
+        uint32 const allowed = 1 + bonus;
+        uint32 const remaining = (used >= allowed) ? 0u : (allowed - used);
 
-        if (!logResult)
+        handler->PSendSysMessage("Account {} (character '{}'): {} used / {} allowed ({} remaining).",
+            accountId, playerName, used, allowed, remaining);
+
+        if (bonus > 0)
         {
-            handler->PSendSysMessage("Account {} (character '{}') has NOT claimed a promotion.", accountId, playerName);
-            return true;
+            QueryResult bonusResult = CharacterDatabase.Query(
+                "SELECT bonus_count, FROM_UNIXTIME(added_at), added_by FROM mod_promotion_bonus WHERE account_id = {}",
+                accountId);
+            if (bonusResult)
+            {
+                auto const* bf       = bonusResult->Fetch();
+                uint32 const count   = bf[0].Get<uint32>();
+                std::string addedAt  = bf[1].Get<std::string>();
+                std::string addedBy  = bf[2].Get<std::string>();
+                handler->PSendSysMessage("  Bonus grants: +{} (added on {} by '{}').", count, addedAt, addedBy);
+            }
         }
 
-        auto const* fields    = logResult->Fetch();
-        std::string claimedBy = fields[0].Get<std::string>();
-        std::string claimedAt = fields[1].Get<std::string>();
-        handler->PSendSysMessage("Account {} claimed promotion with character '{}' on {}.",
-            accountId, claimedBy, claimedAt);
+        QueryResult logResult = CharacterDatabase.Query(
+            "SELECT character_name, FROM_UNIXTIME(timestamp) FROM mod_promotion_log WHERE account_id = {} ORDER BY timestamp",
+            accountId);
+
+        if (logResult)
+        {
+            do
+            {
+                auto const* fields    = logResult->Fetch();
+                std::string claimedBy = fields[0].Get<std::string>();
+                std::string claimedAt = fields[1].Get<std::string>();
+                handler->PSendSysMessage("  Claimed by '{}' on {}.", claimedBy, claimedAt);
+            }
+            while (logResult->NextRow());
+        }
+
+        return true;
+    }
+
+    static bool HandlePromotionAdd(ChatHandler* handler, uint32 accountId, uint32 count)
+    {
+        if (count == 0)
+        {
+            handler->SendSysMessage("Usage: .promotion add <accountId> <count>");
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        std::string gmName = handler->GetSession() ? handler->GetSession()->GetPlayer()->GetName() : "Console";
+        CharacterDatabase.EscapeString(gmName);
+
+        CharacterDatabase.Execute(
+            "INSERT INTO mod_promotion_bonus (account_id, bonus_count, added_at, added_by) \
+             VALUES ({}, {}, UNIX_TIMESTAMP(), '{}') \
+             ON DUPLICATE KEY UPDATE bonus_count = bonus_count + VALUES(bonus_count), added_at = VALUES(added_at), added_by = VALUES(added_by)",
+            accountId, count, gmName);
+
+        s_promotionBonus[accountId] += count;
+
+        handler->PSendSysMessage("Added {} bonus promotion(s) to account {}. Total bonus: {} (allowed: {}).",
+            count, accountId, s_promotionBonus[accountId], 1 + s_promotionBonus[accountId]);
+
+        LOG_INFO("module", "mod_promotion: GM {} added {} bonus promotion(s) to account {} (total bonus: {})",
+            gmName, count, accountId, s_promotionBonus[accountId]);
+
         return true;
     }
 };
@@ -665,12 +737,29 @@ public:
 
     void OnStartup() override
     {
-        // Populate the in-memory set from existing log rows.
-        QueryResult result = CharacterDatabase.Query(
-            "SELECT DISTINCT account_id FROM mod_promotion_log");
-        if (result)
-            do { s_promotedAccounts.insert(result->Fetch()[0].Get<uint32>()); }
-            while (result->NextRow());
+        // Load promotion use counts: account_id -> COUNT(*) from mod_promotion_log.
+        s_promotionUseCounts.clear();
+        QueryResult logResult = CharacterDatabase.Query(
+            "SELECT account_id, COUNT(*) FROM mod_promotion_log GROUP BY account_id");
+        if (logResult)
+            do
+            {
+                auto const* fields = logResult->Fetch();
+                s_promotionUseCounts[fields[0].Get<uint32>()] = fields[1].Get<uint32>();
+            }
+            while (logResult->NextRow());
+
+        // Load bonus promotion grants: account_id -> bonus_count from mod_promotion_bonus.
+        s_promotionBonus.clear();
+        QueryResult bonusResult = CharacterDatabase.Query(
+            "SELECT account_id, bonus_count FROM mod_promotion_bonus");
+        if (bonusResult)
+            do
+            {
+                auto const* fields = bonusResult->Fetch();
+                s_promotionBonus[fields[0].Get<uint32>()] = fields[1].Get<uint32>();
+            }
+            while (bonusResult->NextRow());
 
         // Validate that the configured bag reward exists in the world database.
         if (s_bagEnable && s_bagId)

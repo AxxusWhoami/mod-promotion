@@ -1,4 +1,5 @@
-DELETE FROM `command` WHERE `name` IN ('promotion reset', 'promotion check');
+DELETE FROM `command` WHERE `name` IN ('promotion reset', 'promotion check', 'promotion add');
 INSERT INTO `command` (`name`, `security`, `help`) VALUES
-  ('promotion reset', 2, 'Syntax: .promotion reset $characterName\n\nRemoves the promotion record for the account linked to $characterName, allowing that account to claim the promotion again. Useful for testing or GM support cases.'),
-  ('promotion check', 2, 'Syntax: .promotion check $characterName\n\nReports whether the account linked to $characterName has already claimed a promotion, and if so, which character claimed it and when.');
+  ('promotion reset', 2, 'Syntax: .promotion reset $characterName\n\nRemoves all promotion records (claims + bonus grants) for the account linked to $characterName, restoring the account to its default state of 1 available promotion. Useful for testing or GM support cases.'),
+  ('promotion check', 2, 'Syntax: .promotion check $characterName\n\nReports the promotion status for the account linked to $characterName: total allowed (1 + bonus), total used, remaining uses, and details of bonus grants.'),
+  ('promotion add',   2, 'Syntax: .promotion add $accountId $count\n\nGrants $count additional promotion uses to $accountId (additive — stacks with any existing bonus). Records the GM name and timestamp. Players can then claim extra promotions up to the new total.');

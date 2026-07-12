@@ -262,6 +262,33 @@ teleport.Horde.O         =     0.0894835
 
 ###################################################################################################
 #
+#  BONUS PROMOTION USES
+#
+#  Description: By default, each account may claim the promotion exactly once.
+#               GMs can grant additional promotion uses to specific accounts
+#               via the ".promotion add" command. The bonus is additive —
+#               each call adds to the account's existing total.
+#
+#  Command:     .promotion add <accountId> <count>
+#               Adds <count> extra promotion uses to <accountId>.
+#               Records the GM name and timestamp in mod_promotion_bonus.
+#
+#  Command:     .promotion reset <characterName>
+#               Clears ALL promotion records (claims + bonus grants) for the
+#               account linked to <characterName>, restoring it to the default
+#               state of 1 available promotion.
+#
+#  Command:     .promotion check <characterName>
+#               Reports total allowed (1 + bonus), total used, remaining uses,
+#               and details of bonus grants and individual claims.
+#
+#  Tables:      mod_promotion_bonus  (db-characters) — one row per account with bonus
+#               mod_promotion_log    (db-characters) — one row per claim (default + bonus)
+#
+###################################################################################################
+
+###################################################################################################
+#
 #  CLASS CONFIG
 #
 #  Description: Class Armor Configuration
