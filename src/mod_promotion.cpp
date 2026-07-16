@@ -268,6 +268,63 @@ public:
         return true;
     }
 
+    static void SkipDKStartingArea(Player* player)
+    {
+        // Area 4342 = Acherus: The Ebon Hold (DK starting area).
+        if (player->GetAreaId() != 4342)
+            return;
+
+        if (!player->HasItemCount(6948))
+            player->AddItem(6948, true); // Hearthstone
+
+        // All DK starting quests that award talent points, quest items, or spells.
+        // Index 22 is the race-specific "A Special Surprise" quest (set below).
+        // Index 32 is the team-specific final quest (set below).
+        uint32 quests[33] = {
+            12593, 12619, 12842, 12848, 12636, 12641, 12657, 12678, 12679, 12680,
+            12687, 12698, 12701, 12706, 12716, 12719, 12720, 12722, 12724, 12725,
+            12727, 12733,     0, 12751, 12754, 12755, 12756, 12757, 12779, 12801,
+            13165, 13166,     0
+        };
+
+        switch (player->getRace())
+        {
+            case RACE_TAUREN:        quests[22] = 12739; break;
+            case RACE_HUMAN:         quests[22] = 12742; break;
+            case RACE_NIGHTELF:      quests[22] = 12743; break;
+            case RACE_DWARF:         quests[22] = 12744; break;
+            case RACE_GNOME:         quests[22] = 12745; break;
+            case RACE_DRAENEI:       quests[22] = 12746; break;
+            case RACE_BLOODELF:      quests[22] = 12747; break;
+            case RACE_ORC:           quests[22] = 12748; break;
+            case RACE_TROLL:         quests[22] = 12749; break;
+            case RACE_UNDEAD_PLAYER: quests[22] = 12750; break;
+            default: break;
+        }
+
+        quests[32] = (player->GetTeamId() == TEAM_ALLIANCE) ? 13188u : 13189u;
+
+        for (uint32 questId : quests)
+        {
+            if (!questId)
+                continue;
+            if (player->GetQuestStatus(questId) == QUEST_STATUS_NONE)
+            {
+                Quest const* quest = sObjectMgr->GetQuestTemplate(questId);
+                if (quest)
+                {
+                    player->AddQuest(quest, nullptr);
+                    player->RewardQuest(quest, 0, player, false);
+                }
+            }
+        }
+
+        // Alternate reward items not selected by default from the starting quests.
+        player->AddItem(38664, true); // Sky Darkener's Shroud of the Unholy (quest 12679 alt)
+        player->AddItem(39322, true); // Shroud of the North Wind (quest 12679 alt)
+        player->AddItem(38632, true); // Greatsword of the Ebon Blade (quest 12801 alt)
+    }
+
     bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
     {
         ClearGossipMenuFor(player);
@@ -430,6 +487,9 @@ public:
                 if (!player->HasItemCount(totem))
                     player->AddItem(totem, 1);
         }
+
+        if (player->getClass() == CLASS_DEATH_KNIGHT)
+            SkipDKStartingArea(player);
 
         // ---- Persist & announce -------------------------------------------
 
