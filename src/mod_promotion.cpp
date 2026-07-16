@@ -498,7 +498,7 @@ private:
         bool const isDK = player->getClass() == CLASS_DEATH_KNIGHT;
         bool const wrongLevel = isDK
             ? player->GetLevel() < s_dkRequiredLevel
-            : player->GetLevel() != s_requiredLevel;
+            : player->GetLevel() < s_requiredLevel;
         if (wrongLevel)
             return PromotionCheck::WrongLevel;
 
