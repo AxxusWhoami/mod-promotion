@@ -496,7 +496,10 @@ private:
             return PromotionCheck::Ok;
 
         bool const isDK = player->getClass() == CLASS_DEATH_KNIGHT;
-        if (player->GetLevel() != (isDK ? s_dkRequiredLevel : s_requiredLevel))
+        bool const wrongLevel = isDK
+            ? player->GetLevel() < s_dkRequiredLevel
+            : player->GetLevel() != s_requiredLevel;
+        if (wrongLevel)
             return PromotionCheck::WrongLevel;
 
         if (s_promotionUseCounts.count(player->GetSession()->GetAccountId()))
