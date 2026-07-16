@@ -81,8 +81,8 @@ NPC locale translations (koKR, frFR, deDE, zhCN, zhTW, esES, esMX, ruRU) are inc
      data/sql/db-world/base/      → world database
      data/sql/db-characters/base/ → characters database
    Use db_assembler.sh (include.sh provided) or import manually.
-4. Copy conf/mod_promotion.conf.dist to your server config folder and rename it
-   to mod_promotion.conf. Edit the values as needed.
+4. Copy conf/mod-promotion.conf.dist to your server config folder and rename it
+   to mod-promotion.conf. Edit the values as needed.
 5. Start worldserver — the module loads automatically.
 ```
 
@@ -90,7 +90,7 @@ NPC locale translations (koKR, frFR, deDE, zhCN, zhTW, esES, esMX, ruRU) are inc
 
 ## Configuration reference
 
-All options live in `mod_promotion.conf`. The `.dist` file ships with every option documented and its default value.
+All options live in `mod-promotion.conf`. The `.dist` file ships with every option documented and its default value.
 
 ### Module settings
 
@@ -168,7 +168,7 @@ The per-account limit is tracked in the `mod_promotion_log` table in the charact
 ```
 mod-promotion/
 ├── conf/
-│   └── mod_promotion.conf.dist             # Configuration template
+│   └── mod-promotion.conf.dist             # Configuration template
 ├── data/
 │   ├── sql/db-world/base/
 │   │   ├── promotion_race_npcs.sql         # Race NPC templates + locales
