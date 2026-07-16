@@ -176,7 +176,7 @@ SET @ENTRY_TAUREN   := 80008;
 SET @NAME_TAUREN    := 'Bramido Pezuñaferrea';
 SET @SUBNAME_TAUREN := 'Level Up Master';
 SET @GOSSIP_TAUREN  := 80008;
-SET @MODEL_TAUREN   := 14457;
+SET @MODEL_TAUREN   := 3798;
 
 DELETE FROM `creature_template` WHERE `entry` = @ENTRY_TAUREN;
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`, `VerifiedBuild`)
