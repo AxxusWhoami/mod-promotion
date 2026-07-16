@@ -81,8 +81,8 @@ Las traducciones de los NPCs (koKR, frFR, deDE, zhCN, zhTW, esES, esMX, ruRU) es
      data/sql/db-world/base/      → base de datos world
      data/sql/db-characters/base/ → base de datos characters
    Usa db_assembler.sh (se incluye include.sh) o impórtalos manualmente.
-4. Copia conf/mod-promotion.conf.dist a la carpeta de configuración del servidor
-   y renómbralo como mod-promotion.conf. Edita los valores según necesites.
+4. Copia conf/mod_promotion.conf.dist a la carpeta de configuración del servidor
+   y renómbralo como mod_promotion.conf. Edita los valores según necesites.
 5. Inicia el worldserver — el módulo se carga automáticamente.
 ```
 
@@ -90,7 +90,7 @@ Las traducciones de los NPCs (koKR, frFR, deDE, zhCN, zhTW, esES, esMX, ruRU) es
 
 ## Referencia de configuración
 
-Todas las opciones se encuentran en `mod-promotion.conf`. El archivo `.dist` incluye cada opción documentada con su valor predeterminado.
+Todas las opciones se encuentran en `mod_promotion.conf`. El archivo `.dist` incluye cada opción documentada con su valor predeterminado.
 
 ### Configuración del módulo
 
@@ -168,7 +168,7 @@ El límite por cuenta se registra en la tabla `mod_promotion_log` de la base de 
 ```
 mod-promotion/
 ├── conf/
-│   └── mod-promotion.conf.dist             # Plantilla de configuración
+│   └── mod_promotion.conf.dist             # Plantilla de configuración
 ├── data/
 │   ├── sql/db-world/base/
 │   │   ├── promotion_race_npcs.sql         # Plantillas de NPCs de raza + locales

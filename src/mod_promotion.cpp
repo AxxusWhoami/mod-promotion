@@ -793,7 +793,7 @@ public:
 class mod_promotion_conf : public WorldScript
 {
 public:
-    mod_promotion_conf() : WorldScript("mod-promotion.conf", {
+    mod_promotion_conf() : WorldScript("mod_promotion.conf", {
         WORLDHOOK_ON_AFTER_CONFIG_LOAD,
         WORLDHOOK_ON_STARTUP
     }) { }
