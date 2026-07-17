@@ -17,18 +17,6 @@
 --   10136 = Undead male Deathstalker / Undercity Guard (dark armor + Sylvanas tabard)
 --   17294 = Blood Elf male Silvermoon Magister (elegant red robes)
 --   25419 = Death Knight (Ebon Blade full saronite armor, glowing eyes)
--- Equipment item IDs:
---   40408 = Claymore of the Prophet (2H sword, Naxx25)
---   39388 = Dwarven Blunderbuss variant (1H axe)
---   34481 = Arcanite Rifle (ranged)
---   35078 = Engineer's Gnomish Wrench proxy (mace)
---   11902 = Staff of Jordan (2H staff)
---   45282 = Hammer of Wrath proxy (2H mace)
---   30021 = Axe of the Gronn Lords (2H axe)
---   29956 = Trollbane (polearm)
---   29684 = Earthwarden (2H mace, druid/shaman)
---   33294 = Black Planar Edge (1H sword, dark)
---   34065 = Terokk's Shadowstaff (2H staff)
 -- ============================================================
 
 -- ----------------------------
@@ -50,8 +38,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_HUMAN, 0, @MODEL_HUMAN, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_HUMAN;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_HUMAN, 1, 40408, 0, 0);
 
 -- Dwarf: Thormir Barbaferro (Valle de los Fríos)
 SET @ENTRY_DWARF    := 80002;
@@ -69,8 +55,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_DWARF, 0, @MODEL_DWARF, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_DWARF;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_DWARF, 1, 39388, 0, 34481);
 
 -- Gnome: Chispas Tuercarrueda (Valle de los Fríos)
 SET @ENTRY_GNOME    := 80003;
@@ -88,8 +72,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_GNOME, 0, @MODEL_GNOME, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_GNOME;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_GNOME, 1, 35078, 0, 0);
 
 -- Night Elf: Ilythien Cantoestelar (Cañada Umbría)
 SET @ENTRY_NELF     := 80004;
@@ -107,8 +89,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_NELF, 0, @MODEL_NELF, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_NELF;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_NELF, 1, 11902, 0, 0);
 
 -- Draenei: Vindicador Kuros (Valle Ammen)
 SET @ENTRY_DRAE     := 80005;
@@ -126,8 +106,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_DRAE, 0, @MODEL_DRAE, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_DRAE;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_DRAE, 1, 45282, 0, 0);
 
 -- ----------------------------
 -- HORDE
@@ -149,8 +127,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_ORC, 0, @MODEL_ORC, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_ORC;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_ORC, 1, 30021, 0, 0);
 
 -- Troll: Jin'zaki (Valle de los Retos)
 SET @ENTRY_TROLL    := 80007;
@@ -168,8 +144,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_TROLL, 0, @MODEL_TROLL, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_TROLL;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_TROLL, 1, 29956, 0, 0);
 
 -- Tauren: Bramido Pezuñaferrea (Campamento Narache)
 SET @ENTRY_TAUREN   := 80008;
@@ -187,8 +161,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_TAUREN, 0, @MODEL_TAUREN, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_TAUREN;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_TAUREN, 1, 29684, 0, 0);
 
 -- Undead: Despertador Mortis (Camposanto)
 SET @ENTRY_UNDEAD   := 80009;
@@ -206,8 +178,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_UNDEAD, 0, @MODEL_UNDEAD, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_UNDEAD;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_UNDEAD, 1, 33294, 0, 0);
 
 -- Blood Elf: Magister Vael'thor (Isla Caminante del Sol)
 SET @ENTRY_BELF     := 80010;
@@ -225,8 +195,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_BELF, 0, @MODEL_BELF, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_BELF;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_BELF, 1, 34065, 0, 0);
 
 -- ----------------------------
 -- NEUTRAL (Death Knight)
@@ -249,8 +217,6 @@ INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`,
 VALUES (@ENTRY_DK, 0, @MODEL_DK, 1, 1, 0);
 
 DELETE FROM `creature_equip_template` WHERE `CreatureID` = @ENTRY_DK;
-INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`)
-VALUES (@ENTRY_DK, 1, 37108, 0, 0);
 
 -- ----------------------------
 -- LOCALES: koKR, frFR, deDE, zhCN, zhTW, esES, esMX, ruRU
