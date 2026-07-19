@@ -339,4 +339,4 @@ VALUES
 -- Remove equipment references from spawns (equipment templates were dropped)
 UPDATE `creature`
    SET `equipment_id` = 0
- WHERE `id1` IN (80001, 80002, 80003, 80004, 80005, 80006, 80007, 80008, 80009, 80010, 80011);
+ WHERE `id` IN (80001, 80002, 80003, 80004, 80005, 80006, 80007, 80008, 80009, 80010, 80011);
