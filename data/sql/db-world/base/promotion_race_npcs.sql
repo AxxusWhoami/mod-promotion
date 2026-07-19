@@ -335,3 +335,8 @@ VALUES
   (80011, 'esES', 'Skip el Velocista',       'Maestro de subida de nivel',      0),
   (80011, 'esMX', 'Skip el Velocista',       'Maestro de subida de nivel',      0),
   (80011, 'ruRU', 'Скип Быстроног',         'Мастер Повышения',        0);
+
+-- Remove equipment references from spawns (equipment templates were dropped)
+UPDATE `creature`
+   SET `equipment_id` = 0
+ WHERE `id1` IN (80001, 80002, 80003, 80004, 80005, 80006, 80007, 80008, 80009, 80010, 80011);
