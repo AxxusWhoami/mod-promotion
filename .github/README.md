@@ -21,6 +21,7 @@
 | All weapon skills | Maxed for class | No |
 | Riding skills | Ground + flying (Artisan) | No |
 | Teleport to capital | Yes (Stormwind / Orgrimmar) | Yes (`teleport.enable`) |
+| Optimal talent build | Yes (auto-assigned per spec) | Yes (`talentTemplate.enable`) |
 
 The promotion is limited to **one per account** and can only be used on a character at their starting level (level 1 for all classes; level 55 for Death Knights). Accounts with Moderator security or above can promote any character regardless of level or previous claims.
 
@@ -105,6 +106,7 @@ All options live in `mod_promotion.conf`. The `.dist` file ships with every opti
 | `Promotion.AnnounceToWorld` | bool | `false` | Broadcast a world message when a player promotes |
 | `MoneyRewardValue` | int | `10000000` | Gold in copper (10,000,000 = 1,000g) |
 | `learnSpells.enable` | bool | `true` | Teach all trainable class spells on promotion |
+| `talentTemplate.enable` | bool | `true` | Auto-assign an optimal talent build for the selected spec |
 | `teleport.enable` | bool | `true` | Teleport to faction capital after promotion |
 | `mountGround.enable` | bool | `true` | Give a race-specific ground mount |
 | `mountFlying.enable` | bool | `false` | Give a race-specific flying mount |
@@ -147,6 +149,24 @@ EQUIPMENT_SLOT_DK_DPS_MAINHAND    = 37108
 
 Slots not defined in the config (value absent or 0) are skipped. This is the intended way to leave optional slots (e.g. off-hand for casters) empty.
 
+### Talent templates
+
+When `talentTemplate.enable` is `true` (default), the promotion automatically assigns a competitive level 80 talent build for the selected spec. The builds are stored in the `mod_promotion_talents` table in the **world** database:
+
+```sql
+CREATE TABLE `mod_promotion_talents` (
+  `playerSpec`  VARCHAR(50)  NOT NULL DEFAULT '',
+  `talentId`    INT UNSIGNED  NOT NULL DEFAULT 0,
+  PRIMARY KEY (`playerSpec`, `talentId`)
+);
+```
+
+Each row is one talent (by spell ID) to learn for the given spec. The spec names match the internal `kGearSets` entries (e.g. `WARRIOR_DPS`, `PALADIN_TANK`, `DRUID_TANK`). The module ships with pre-configured builds for all 19 specs, sourced from the [mod-npc-talent-template](https://github.com/azerothcore/mod-npc-talent-template) project.
+
+To customize a build, edit the rows in `mod_promotion_talents` for that spec and restart the server. When the feature is disabled, players receive unspent talent points to allocate manually.
+
+For Feral Druids (`DRUID_TANK`), the Mangle talent also teaches the associated Mangle (Cat) and Mangle (Bear) spells automatically, since the game does not grant them from the talent alone.
+
 ---
 
 ## Promotion eligibility
@@ -172,7 +192,8 @@ mod-promotion/
 ├── data/
 │   ├── sql/db-world/base/
 │   │   ├── promotion_race_npcs.sql         # Race NPC templates + locales
-│   │   └── text_npc.sql                    # Gossip texts (IDs 80000–80005)
+│   │   ├── text_npc.sql                    # Gossip texts (IDs 80000–80005)
+│   │   └── mod_promotion_talents.sql       # Talent template builds for all specs
 │   └── sql/db-characters/base/
 │       └── mod_promotion_log.sql           # Per-account promotion tracking table
 ├── src/

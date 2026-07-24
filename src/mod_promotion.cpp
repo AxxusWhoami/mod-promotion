@@ -18,6 +18,8 @@
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
 #include "ScriptMgr.h"
+#include "SpellInfo.h"
+#include "SpellMgr.h"
 #include "WorldSession.h"
 #ifdef MODULE_PLAYERBOTS
 #include "PlayerbotAI.h"
@@ -118,6 +120,7 @@ static bool   s_learnSpells;
 static bool   s_teleportOnPromotion;
 static bool   s_confirmationStep;
 static bool   s_announceToWorld;
+static bool   s_talentTemplateEnable;
 
 static uint32 s_targetLevel;
 static uint32 s_requiredLevel;
@@ -156,7 +159,52 @@ static std::unordered_map<uint32, uint32> s_promotionBonus;
 // Populated on first gossip open; never changes, so no eviction needed.
 static std::unordered_map<uint32, uint32> s_accountJoinDates;
 
+// Talent templates: spec name -> list of talent spell IDs.
+// Loaded at startup from mod_promotion_talents (world DB).
+static std::unordered_map<std::string, std::vector<uint32>> s_talentTemplates;
+
+// Mangle talent + associated spells (Feral Druid workaround).
+static constexpr uint32 TALENT_MANGLE      = 33917;
+static constexpr uint32 SPELL_MANGLE_CAT    = 33876;
+static constexpr uint32 SPELL_MANGLE_BEAR   = 33878;
+
 // ---------------------------------------------------------------------------
+
+static void ApplyTalentTemplate(Player* player, const std::string& spec)
+{
+    auto it = s_talentTemplates.find(spec);
+    if (it == s_talentTemplates.end())
+    {
+        LOG_WARN("module", "mod_promotion: No talent template found for spec '{}'. Talents left unspent.", spec);
+        return;
+    }
+
+    for (uint32 talentId : it->second)
+    {
+        player->learnSpellHighRank(talentId);
+        player->addTalent(talentId, player->GetActiveSpecMask(), 0);
+
+        if (talentId == TALENT_MANGLE)
+        {
+            player->CastSpell(player, TALENT_MANGLE, true);
+
+            auto LearnHighestRankForLevel = [player](uint32 baseRankId)
+            {
+                for (uint32 id = baseRankId; id; id = sSpellMgr->GetNextSpellInChain(id))
+                {
+                    SpellInfo const* info = sSpellMgr->GetSpellInfo(id);
+                    if (!info || info->BaseLevel > player->GetLevel())
+                        break;
+                    player->learnSpell(id);
+                }
+            };
+            LearnHighestRankForLevel(SPELL_MANGLE_CAT);
+            LearnHighestRankForLevel(SPELL_MANGLE_BEAR);
+        }
+    }
+
+    player->InitTalentForLevel();
+}
 
 static bool IsValidActionForClass(uint8 cls, uint32 action)
 {
@@ -416,6 +464,19 @@ public:
         player->InitTaxiNodesForLevel();
         player->InitGlyphsForLevel();
         player->InitTalentForLevel();
+
+        if (s_talentTemplateEnable)
+        {
+            for (auto const& gs : kGearSets)
+            {
+                if (action == gs.first)
+                {
+                    ApplyTalentTemplate(player, gs.second);
+                    break;
+                }
+            }
+        }
+
         player->SetUInt32Value(PLAYER_XP, 0);
 
         player->ModifyMoney(s_moneyReward);
@@ -835,6 +896,30 @@ public:
 
         // Pre-build the per-family spell index used by LearnAllClassSpells.
         InitSpellCache();
+
+        // Load talent templates from the world database.
+        s_talentTemplates.clear();
+        QueryResult talentResult = WorldDatabase.Query(
+            "SELECT `playerSpec`, `talentId` FROM `mod_promotion_talents`");
+        if (talentResult)
+        {
+            do
+            {
+                auto const* fields = talentResult->Fetch();
+                std::string spec = fields[0].Get<std::string>();
+                uint32 talentId = fields[1].Get<uint32>();
+                s_talentTemplates[spec].push_back(talentId);
+            }
+            while (talentResult->NextRow());
+        }
+
+        // Warn about any configured spec that has no talent template.
+        for (auto const& gs : kGearSets)
+        {
+            if (s_talentTemplates.find(gs.second) == s_talentTemplates.end())
+                LOG_WARN("module", "mod_promotion: No talent template found for spec '{}' in `mod_promotion_talents`. "
+                    "Players selecting this spec will receive unspent talent points.", gs.second);
+        }
     }
 
     void OnAfterConfigLoad(bool /*reload*/) override
@@ -848,6 +933,7 @@ public:
         s_learnSpells         = sConfigMgr->GetOption<bool>("learnSpells.enable",           true);
         s_confirmationStep    = sConfigMgr->GetOption<bool>("Promotion.ConfirmationStep",  false);
         s_announceToWorld     = sConfigMgr->GetOption<bool>("Promotion.AnnounceToWorld",   false);
+        s_talentTemplateEnable = sConfigMgr->GetOption<bool>("talentTemplate.enable",      true);
 
         s_targetLevel     = sConfigMgr->GetOption<uint32>("LevelForPromotion",           80);
         s_requiredLevel   = sConfigMgr->GetOption<uint32>("Promotion.RequiredLevel",       1);

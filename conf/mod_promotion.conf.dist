@@ -43,6 +43,23 @@ learnSpells.enable = true
 
 #
 #
+#     TalentTemplate
+#
+#     Description: When enabled, the promotion automatically applies a pre-configured
+#                  optimal talent build for the selected spec (from the
+#                  `mod_promotion_talents` world DB table). When disabled, the player
+#                  receives unspent talent points to allocate manually.
+#
+#     Example: true  - auto-assign talents (default)
+#              false - leave talent points unspent
+#
+#     Default: talentTemplate.enable = true
+#
+
+talentTemplate.enable = true
+
+#
+#
 #     MoneyRewardPromotion
 #
 #     Description: Amount of promotion for character

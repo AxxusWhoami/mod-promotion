@@ -21,6 +21,7 @@
 | Habilidades de arma | Máximas para la clase | No |
 | Habilidades de montar | Terrestre + vuelo (Artesano) | No |
 | Teletransporte a capital | Sí (Fortaleza de Tormenta / Orgrimmar) | Sí (`teleport.enable`) |
+| Build de talentos óptima | Sí (auto-asignada por spec) | Sí (`talentTemplate.enable`) |
 
 La promoción se limita a **una por cuenta** y solo puede usarse en un personaje de nivel inicial (nivel 1 para todas las clases; nivel 55 para los Caballeros de la Muerte). Las cuentas con seguridad de Moderador o superior pueden promover cualquier personaje independientemente del nivel o del historial previo.
 
@@ -42,6 +43,24 @@ Cada ranura (cabeza, cuello, hombros, espalda, pecho, muñecas, manos, cintura, 
 | Druida | Tanque (Guardián), Healer (Restauración), Lanzador (Equilibrio) |
 
 Las ranuras sin objeto definido (p. ej., mano secundaria para cazadores) se omiten silenciosamente; no es necesario establecerlas en 0.
+
+### Plantillas de talentos
+
+Cuando `talentTemplate.enable` es `true` (predeterminado), la promoción asigna automáticamente una build de talentos competitiva de nivel 80 para el spec seleccionado. Las builds se almacenan en la tabla `mod_promotion_talents` de la base de datos **world**:
+
+```sql
+CREATE TABLE `mod_promotion_talents` (
+  `playerSpec`  VARCHAR(50)  NOT NULL DEFAULT '',
+  `talentId`    INT UNSIGNED  NOT NULL DEFAULT 0,
+  PRIMARY KEY (`playerSpec`, `talentId`)
+);
+```
+
+Cada fila es un talento (por ID de hechizo) a aprender para el spec indicado. Los nombres de spec coinciden con las entradas internas de `kGearSets` (p. ej., `WARRIOR_DPS`, `PALADIN_TANK`, `DRUID_TANK`). El módulo incluye builds preconfiguradas para los 19 specs, obtenidas del proyecto [mod-npc-talent-template](https://github.com/azerothcore/mod-npc-talent-template).
+
+Para personalizar una build, edita las filas en `mod_promotion_talents` para ese spec y reinicia el servidor. Cuando la función está desactivada, los jugadores reciben puntos de talento sin gastar para asignarlos manualmente.
+
+Para Druidas Ferales (`DRUID_TANK`), el talento Mangle también enseña automáticamente los hechizos asociados Mangle (Cat) y Mangle (Bear), ya que el juego no los otorga desde el talento por sí solo.
 
 ### NPCs de raza
 
@@ -105,6 +124,7 @@ Todas las opciones se encuentran en `mod_promotion.conf`. El archivo `.dist` inc
 | `Promotion.AnnounceToWorld` | bool | `false` | Enviar un mensaje global cuando un jugador obtenga la promoción |
 | `MoneyRewardValue` | int | `10000000` | Oro en cobre (10.000.000 = 1.000g) |
 | `learnSpells.enable` | bool | `true` | Enseñar todos los hechizos entrenables de la clase al promover |
+| `talentTemplate.enable` | bool | `true` | Asignar automáticamente una build de talentos óptima para el spec seleccionado |
 | `teleport.enable` | bool | `true` | Teletransportar a la capital de facción tras la promoción |
 | `mountGround.enable` | bool | `true` | Otorgar una montura terrestre según la raza |
 | `mountFlying.enable` | bool | `false` | Otorgar una montura de vuelo según la raza |
@@ -172,7 +192,8 @@ mod-promotion/
 ├── data/
 │   ├── sql/db-world/base/
 │   │   ├── promotion_race_npcs.sql         # Plantillas de NPCs de raza + locales
-│   │   └── text_npc.sql                    # Textos de gossip (IDs 80000–80005)
+│   │   ├── text_npc.sql                    # Textos de gossip (IDs 80000–80005)
+│   │   └── mod_promotion_talents.sql       # Builds de talentos para todos los specs
 │   └── sql/db-characters/base/
 │       └── mod_promotion_log.sql           # Tabla de seguimiento de promociones por cuenta
 ├── src/
