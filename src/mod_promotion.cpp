@@ -155,6 +155,10 @@ static std::unordered_map<uint32, uint32> s_promotionUseCounts;
 // Loaded at startup from mod_promotion_bonus.
 static std::unordered_map<uint32, uint32> s_promotionBonus;
 
+// Accounts currently executing the promotion grant path.
+// Guards against two characters from the same account claiming concurrently.
+static std::unordered_set<uint32> s_promotionInProgress;
+
 // Cached account join dates: account_id -> UNIX timestamp of joindate.
 // Populated on first gossip open; never changes, so no eviction needed.
 static std::unordered_map<uint32, uint32> s_accountJoinDates;
@@ -440,20 +444,25 @@ public:
         }
 
         // Atomically claim a promotion use BEFORE granting rewards.
-        // This prevents a second gossip packet (race condition / packet flood)
-        // from passing CheckEligibility while the first is still executing.
+        // The in-progress set also blocks a second character on the same account
+        // from slipping through CheckEligibility while the first grant is executing.
         uint32 const accountId = player->GetSession()->GetAccountId();
         if (!isModerator)
         {
+            if (s_promotionInProgress.count(accountId))
+            {
+                CloseGossipMenuFor(player);
+                return true;
+            }
             uint32 const used  = s_promotionUseCounts[accountId];
             uint32 const bonus = s_promotionBonus.count(accountId) ? s_promotionBonus[accountId] : 0u;
             uint32 const allowed = 1 + bonus;
             if (used >= allowed)
             {
-                // No uses remaining — close silently.
                 CloseGossipMenuFor(player);
                 return true;
             }
+            s_promotionInProgress.insert(accountId);
             s_promotionUseCounts[accountId] = used + 1;
         }
 
@@ -602,6 +611,8 @@ public:
         }
 
         player->SaveToDB(false, false);
+        if (!isModerator)
+            s_promotionInProgress.erase(accountId);
         CloseGossipMenuFor(player);
         return true;
     }
@@ -831,7 +842,9 @@ public:
         std::string gmName = handler->GetSession() ? handler->GetSession()->GetPlayer()->GetName() : "Console";
         CharacterDatabase.EscapeString(gmName);
 
-        CharacterDatabase.Execute(
+        // DirectExecute so the DB row is committed before the in-memory counter is updated.
+        // A plain async Execute could leave the DB behind on a crash, causing the bonus to vanish on next restart.
+        CharacterDatabase.DirectExecute(
             "INSERT INTO mod_promotion_bonus (account_id, bonus_count, added_at, added_by) \
              VALUES ({}, {}, UNIX_TIMESTAMP(), '{}') \
              ON DUPLICATE KEY UPDATE bonus_count = bonus_count + VALUES(bonus_count), added_at = VALUES(added_at), added_by = VALUES(added_by)",
@@ -929,6 +942,10 @@ public:
         s_mountFlying         = sConfigMgr->GetOption<bool>("mountFlying.enable",          false);
         s_bagEnable           = sConfigMgr->GetOption<bool>("bagEnable.enable",             true);
         s_equippedbags        = sConfigMgr->GetOption<bool>("equippedbags.enable",          true);
+        // Clear the join-date cache on every reload so MinAccountAge changes take effect
+        // immediately without requiring a server restart.
+        s_accountJoinDates.clear();
+
         s_teleportOnPromotion = sConfigMgr->GetOption<bool>("teleport.enable",              true);
         s_learnSpells         = sConfigMgr->GetOption<bool>("learnSpells.enable",           true);
         s_confirmationStep    = sConfigMgr->GetOption<bool>("Promotion.ConfirmationStep",  false);
@@ -962,6 +979,8 @@ public:
         }
         if (s_dkRequiredLevel >= s_targetLevel)
             LOG_WARN("module", "mod_promotion: Promotion.DKRequiredLevel ({}) >= LevelForPromotion ({}) — Death Knights can never claim a promotion with this config.", s_dkRequiredLevel, s_targetLevel);
+        if (s_dkRequiredLevel < s_requiredLevel)
+            LOG_WARN("module", "mod_promotion: Promotion.DKRequiredLevel ({}) < Promotion.RequiredLevel ({}) — Death Knights can bypass the required-level gate that applies to all other classes. Set DKRequiredLevel >= RequiredLevel to close this gap.", s_dkRequiredLevel, s_requiredLevel);
 
         s_allianceMapId  = sConfigMgr->GetOption<uint32>("teleport.Alliance.MapId",  0);
         s_allianceAreaId = sConfigMgr->GetOption<uint32>("teleport.Alliance.AreaId", 1519); // Stormwind City

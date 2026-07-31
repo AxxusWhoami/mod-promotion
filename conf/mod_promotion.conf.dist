@@ -146,10 +146,14 @@ Promotion.MinAccountAge = 0
 #     NOTE: Requires npc_text ID 80004. Apply the following SQL before enabling:
 #           data/sql/db-world/updates/2026_07_03_add_promotion_confirmation_text.sql
 #
-#     Default: Promotion.ConfirmationStep = false
+#     Default: Promotion.ConfirmationStep = true
+#
+#     SECURITY: Disabled (false) means a single gossip packet is enough to consume
+#     the promotion permanently, with no chance to cancel. Keep this enabled unless
+#     you have a specific reason to remove the confirmation step.
 #
 
-Promotion.ConfirmationStep = false
+Promotion.ConfirmationStep = true
 
 #
 #
