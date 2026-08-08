@@ -7,6 +7,7 @@
 
 #include "Chat.h"
 #include "ChatCommand.h"
+#include "CharacterCache.h"
 #include "Config.h"
 #include "DatabaseEnv.h"
 #include "GossipDef.h"
@@ -845,7 +846,15 @@ public:
             return false;
         }
 
-        Player* player = ObjectAccessor::FindConnectedPlayerByName(playerName);
+        ObjectGuid playerGuid = sCharacterCache->GetCharacterGuidByName(playerName);
+        if (!playerGuid)
+        {
+            handler->PSendSysMessage("Player '{}' not found.", playerName);
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        Player* player = ObjectAccessor::FindConnectedPlayer(playerGuid);
         if (!player)
         {
             handler->PSendSysMessage("Player '{}' is not online. Offline players are fixed automatically on next login.", playerName);
