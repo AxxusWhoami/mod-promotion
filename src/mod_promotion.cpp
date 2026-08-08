@@ -15,6 +15,7 @@
 #include "LearnClassSpells.h"
 #include "LFGMgr.h"
 #include "mod_promotion.h"
+#include "RBAC.h"
 #include "ObjectAccessor.h"
 #include "ObjectMgr.h"
 #include "Player.h"
@@ -860,6 +861,14 @@ public:
             handler->PSendSysMessage("Player '{}' is not online. Offline players are fixed automatically on next login.", playerName);
             handler->SetSentErrorMessage(true);
             return false;
+        }
+
+        // The root cause of LFG locks after promotion is a missing RBAC permission,
+        // not stale level data. Grant it before recalculating.
+        WorldSession* session = player->GetSession();
+        if (!session->HasPermission(rbac::RBAC_PERM_JOIN_DUNGEON_FINDER))
+        {
+            session->GetRBACData()->GrantPermission(rbac::RBAC_PERM_JOIN_DUNGEON_FINDER, realm.Id.Realm);
         }
 
         sLFGMgr->InitializeLockedDungeons(player, player->GetGroup());
