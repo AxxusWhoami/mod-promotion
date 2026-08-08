@@ -468,7 +468,10 @@ public:
 
         // ---- Grant rewards ------------------------------------------------
 
-        player->SetLevel(static_cast<uint8>(s_targetLevel));
+        // GiveLevel (not SetLevel) so the LFG/dungeon-finder system and all
+        // internal bookkeeping are notified of the level change. SetLevel is a
+        // raw field setter that leaves LFG dungeon access stale and locked.
+        player->GiveLevel(static_cast<uint8>(s_targetLevel));
         player->InitStatsForLevel(true);
         player->InitTaxiNodesForLevel();
         player->InitGlyphsForLevel();
