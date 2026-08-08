@@ -1,5 +1,6 @@
-DELETE FROM `command` WHERE `name` IN ('promotion reset', 'promotion check', 'promotion add');
+DELETE FROM `command` WHERE `name` IN ('promotion reset', 'promotion check', 'promotion add', 'promotion unlock');
 INSERT INTO `command` (`name`, `security`, `help`) VALUES
   ('promotion reset', 2, 'Syntax: .promotion reset $characterName\n\nRemoves all promotion records (claims + bonus grants) for the account linked to $characterName, restoring the account to its default state of 1 available promotion. Useful for testing or GM support cases.'),
   ('promotion check', 2, 'Syntax: .promotion check $characterName\n\nReports the promotion status for the account linked to $characterName: total allowed (1 + bonus), total used, remaining uses, and details of bonus grants.'),
-  ('promotion add',   2, 'Syntax: .promotion add $accountId $count\n\nGrants $count additional promotion uses to $accountId (additive — stacks with any existing bonus). Records the GM name and timestamp. Players can then claim extra promotions up to the new total.');
+  ('promotion add',   2, 'Syntax: .promotion add $accountId $count\n\nGrants $count additional promotion uses to $accountId (additive — stacks with any existing bonus). Records the GM name and timestamp. Players can then claim extra promotions up to the new total.'),
+  ('promotion unlock', 2, 'Syntax: .promotion unlock $characterName\n\nRecalculates dungeon-finder lock status for $characterName, clearing stale LFG restrictions left by the old SetLevel promotion bug. The player must be online. Offline players are fixed automatically on next login.');

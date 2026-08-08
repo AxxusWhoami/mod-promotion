@@ -12,7 +12,9 @@
 #include "GossipDef.h"
 #include "Language.h"
 #include "LearnClassSpells.h"
+#include "LFGMgr.h"
 #include "mod_promotion.h"
+#include "ObjectAccessor.h"
 #include "ObjectMgr.h"
 #include "Player.h"
 #include "ScriptedCreature.h"
@@ -718,9 +720,10 @@ public:
     {
         static Acore::ChatCommands::ChatCommandTable promotionCommandTable =
         {
-            { "reset", HandlePromotionReset, SEC_GAMEMASTER, Acore::ChatCommands::Console::No  },
-            { "check", HandlePromotionCheck, SEC_GAMEMASTER, Acore::ChatCommands::Console::Yes },
-            { "add",   HandlePromotionAdd,   SEC_ADMINISTRATOR, Acore::ChatCommands::Console::Yes },
+            { "reset",   HandlePromotionReset,   SEC_GAMEMASTER,    Acore::ChatCommands::Console::No  },
+            { "check",   HandlePromotionCheck,   SEC_GAMEMASTER,    Acore::ChatCommands::Console::Yes },
+            { "add",     HandlePromotionAdd,     SEC_ADMINISTRATOR, Acore::ChatCommands::Console::Yes },
+            { "unlock",  HandlePromotionUnlock,  SEC_GAMEMASTER,    Acore::ChatCommands::Console::No  },
         };
         static Acore::ChatCommands::ChatCommandTable commandTable =
         {
@@ -830,6 +833,31 @@ public:
             while (logResult->NextRow());
         }
 
+        return true;
+    }
+
+    static bool HandlePromotionUnlock(ChatHandler* handler, std::string const& playerName)
+    {
+        if (playerName.empty())
+        {
+            handler->SendSysMessage("Usage: .promotion unlock <characterName>");
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        Player* player = ObjectAccessor::FindConnectedPlayerByName(playerName);
+        if (!player)
+        {
+            handler->PSendSysMessage("Player '{}' is not online. Offline players are fixed automatically on next login.", playerName);
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        sLFGMgr->InitializeLockedDungeons(player, player->GetGroup());
+
+        std::string gmName = handler->GetSession() ? handler->GetSession()->GetPlayer()->GetName() : "Console";
+        handler->PSendSysMessage("LFG dungeon restrictions unlocked for '{}'. The dungeon finder should now show all available instances.", playerName);
+        LOG_INFO("module", "mod_promotion: LFG unlock applied by GM {} for player '{}'", gmName, playerName);
         return true;
     }
 
