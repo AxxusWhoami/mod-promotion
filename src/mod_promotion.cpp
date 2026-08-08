@@ -481,6 +481,15 @@ public:
         player->InitGlyphsForLevel();
         player->InitTalentForLevel();
 
+        // Recalculate LFG dungeon locks after the level change so the dungeon
+        // finder reflects the new level immediately. Also ensure the RBAC
+        // permission to join the dungeon finder is present — without it every
+        // dungeon shows as locked regardless of level.
+        WorldSession* session = player->GetSession();
+        if (!session->HasPermission(rbac::RBAC_PERM_JOIN_DUNGEON_FINDER))
+            session->GetRBACData()->GrantPermission(rbac::RBAC_PERM_JOIN_DUNGEON_FINDER, -1);
+        sLFGMgr->InitializeLockedDungeons(player, player->GetGroup());
+
         if (s_talentTemplateEnable)
         {
             for (auto const& gs : kGearSets)
