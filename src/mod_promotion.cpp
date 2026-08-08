@@ -868,7 +868,7 @@ public:
         WorldSession* session = player->GetSession();
         if (!session->HasPermission(rbac::RBAC_PERM_JOIN_DUNGEON_FINDER))
         {
-            session->GetRBACData()->GrantPermission(rbac::RBAC_PERM_JOIN_DUNGEON_FINDER, realm.Id.Realm);
+            session->GetRBACData()->GrantPermission(rbac::RBAC_PERM_JOIN_DUNGEON_FINDER, -1);
         }
 
         sLFGMgr->InitializeLockedDungeons(player, player->GetGroup());
