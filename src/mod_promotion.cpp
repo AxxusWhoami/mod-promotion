@@ -581,9 +581,9 @@ public:
 
         std::string const playerName = player->GetName();
 
-        if (!isModerator)
+        // Always log the promotion — even GM bypasses — so the log table is
+        // never empty and there is an audit trail of every grant.
         {
-            // EscapeString prevents a malformed name from breaking the query.
             std::string safeName = playerName;
             CharacterDatabase.EscapeString(safeName);
 
@@ -592,7 +592,10 @@ public:
                 accountId,
                 player->GetGUID().GetCounter(),
                 safeName);
+        }
 
+        if (!isModerator)
+        {
             LOG_INFO("module", "mod_promotion: Promotion granted — account {} character {} (guid {})",
                 accountId, playerName, player->GetGUID().GetCounter());
         }
