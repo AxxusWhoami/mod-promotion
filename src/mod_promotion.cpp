@@ -10,6 +10,8 @@
 #include "CharacterCache.h"
 #include "Config.h"
 #include "DatabaseEnv.h"
+#include "DBCStores.h"
+#include "DBCStructure.h"
 #include "GossipDef.h"
 #include "Language.h"
 #include "LearnClassSpells.h"
@@ -121,6 +123,7 @@ static bool   s_mountFlying;
 static bool   s_bagEnable;
 static bool   s_equippedbags;
 static bool   s_learnSpells;
+static bool   s_learnAllFlightPaths;
 static bool   s_teleportOnPromotion;
 static bool   s_confirmationStep;
 static bool   s_announceToWorld;
@@ -177,6 +180,19 @@ static constexpr uint32 SPELL_MANGLE_CAT    = 33876;
 static constexpr uint32 SPELL_MANGLE_BEAR   = 33878;
 
 // ---------------------------------------------------------------------------
+
+static void LearnAllFlightPaths(Player* player)
+{
+    // Eastern Kingdoms (0), Kalimdor (1), Outland (530), Northrend (571)
+    for (uint32 i = 0; i < sTaxiNodesStore.GetNumRows(); ++i)
+    {
+        TaxiNodesEntry const* node = sTaxiNodesStore.LookupEntry(i);
+        if (!node)
+            continue;
+        if (node->map_id == 0 || node->map_id == 1 || node->map_id == 530 || node->map_id == 571)
+            player->SetTaximaskNode(node->ID);
+    }
+}
 
 static void ApplyTalentTemplate(Player* player, const std::string& spec)
 {
@@ -478,6 +494,8 @@ public:
         player->GiveLevel(static_cast<uint8>(s_targetLevel));
         player->InitStatsForLevel(true);
         player->InitTaxiNodesForLevel();
+        if (s_learnAllFlightPaths)
+            LearnAllFlightPaths(player);
         player->InitGlyphsForLevel();
         player->InitTalentForLevel();
 
@@ -1009,6 +1027,7 @@ public:
 
         s_teleportOnPromotion = sConfigMgr->GetOption<bool>("teleport.enable",              true);
         s_learnSpells         = sConfigMgr->GetOption<bool>("learnSpells.enable",           true);
+        s_learnAllFlightPaths = sConfigMgr->GetOption<bool>("learnAllFlightPaths.enable",   true);
         s_confirmationStep    = sConfigMgr->GetOption<bool>("Promotion.ConfirmationStep",  false);
         s_announceToWorld     = sConfigMgr->GetOption<bool>("Promotion.AnnounceToWorld",   false);
         s_talentTemplateEnable = sConfigMgr->GetOption<bool>("talentTemplate.enable",      true);

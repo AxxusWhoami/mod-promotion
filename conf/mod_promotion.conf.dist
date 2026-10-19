@@ -43,6 +43,23 @@ learnSpells.enable = true
 
 #
 #
+#     LearnAllFlightPaths
+#
+#     Description: Teach every flight path on all four continents
+#                  (Eastern Kingdoms, Kalimdor, Outland, Northrend)
+#                  during the promotion so the character can fly anywhere
+#                  from any flight master without discovering nodes first.
+#
+#     Example: true  - learn all flight paths (default)
+#              false - skip flight path learning
+#
+#     Default: learnAllFlightPaths.enable = true
+#
+
+learnAllFlightPaths.enable = true
+
+#
+#
 #     TalentTemplate
 #
 #     Description: When enabled, the promotion automatically applies a pre-configured
