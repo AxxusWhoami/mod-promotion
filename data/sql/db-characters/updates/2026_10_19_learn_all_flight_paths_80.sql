@@ -8,6 +8,17 @@
 -- Rascanorte). Los bits de la facción contraria son inofensivos: el servidor
 -- los ignora al usar el maestro de vuelo, así que la misma máscara sirve para
 -- Horda y Alianza.
+--
+-- NOTA: Los personajes deben estar desconectados al ejecutar este SQL.
+-- Si un personaje nivel 80 está en línea, su taximask en memoria sobreescribirá
+-- este cambio al guardar al desloguear. Reinicia el servidor o pide a esos
+-- jugadores que relogueen para que el cambio tome efecto.
+
+-- Vista previa: cuántos personajes nivel 80 se verán afectados.
+SELECT COUNT(*) AS personajes_nivel_80 FROM `characters` WHERE `level` = 80;
+
+-- Listado detallado (opcional, quita el comentario para revisar antes).
+-- SELECT `guid`, `name`, `race`, `class`, `level` FROM `characters` WHERE `level` = 80 ORDER BY `name`;
 
 UPDATE `characters`
    SET `taximask` = '4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 '
