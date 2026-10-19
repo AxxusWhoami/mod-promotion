@@ -13,6 +13,7 @@
 #include "DBCStores.h"
 #include "DBCStructure.h"
 #include "GossipDef.h"
+#include "Item.h"
 #include "Language.h"
 #include "LearnClassSpells.h"
 #include "LFGMgr.h"
@@ -142,6 +143,10 @@ static float  s_allianceX, s_allianceY, s_allianceZ, s_allianceO;
 static uint32 s_hordeMapId;
 static uint32 s_hordeAreaId;
 static float  s_hordeX, s_hordeY, s_hordeZ, s_hordeO;
+
+// DK starting 2H weapon rune enchantment (EffectMiscValueA of SPELL_EFFECT_ENCHANT_ITEM).
+// 3369 = Rune of Cinderglacier, 3370 = Rune of Razorice, 0 = disabled.
+static uint32 s_dkWeaponEnchant;
 
 // Indexed by RACE_* constants (max value = RACE_DRAENEI = 11). Index 0 and 9 are unused.
 static uint32 s_groundMount[12];
@@ -395,6 +400,23 @@ public:
         player->AddItem(38664, true); // Sky Darkener's Shroud of the Unholy (quest 12679 alt)
         player->AddItem(39322, true); // Shroud of the North Wind (quest 12679 alt)
         player->AddItem(38632, true); // Greatsword of the Ebon Blade (quest 12801 alt)
+
+        // Apply a rune enchantment to the DK starting 2H weapons, mirroring the
+        // runeforging the player would normally do at the Ebon Hold forge.
+        if (s_dkWeaponEnchant)
+        {
+            for (uint32 itemId : {38632u, 38633u, 38707u}) // Greatsword/Greataxe of the Ebon Blade, Runed Soulblade
+            {
+                if (Item* item = player->GetItemByEntry(itemId))
+                {
+                    uint32 base = ITEM_FIELD_ENCHANTMENT_1_1 + PERM_ENCHANTMENT_SLOT * MAX_ENCHANTMENT_OFFSET;
+                    item->SetUInt32Value(base + ENCHANTMENT_ID_OFFSET, s_dkWeaponEnchant);
+                    item->SetUInt32Value(base + ENCHANTMENT_DURATION_OFFSET, 0);
+                    item->SetUInt32Value(base + ENCHANTMENT_CHARGES_OFFSET, 0);
+                    item->SetState(ITEM_CHANGED, player);
+                }
+            }
+        }
     }
 
     bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
@@ -1035,6 +1057,7 @@ public:
         s_targetLevel     = sConfigMgr->GetOption<uint32>("LevelForPromotion",           80);
         s_requiredLevel   = sConfigMgr->GetOption<uint32>("Promotion.RequiredLevel",       1);
         s_dkRequiredLevel = sConfigMgr->GetOption<uint32>("Promotion.DKRequiredLevel",    55);
+        s_dkWeaponEnchant = sConfigMgr->GetOption<uint32>("Promotion.DKWeaponEnchant",    3369);
         s_minAccountAge   = sConfigMgr->GetOption<uint32>("Promotion.MinAccountAge",    0);
         s_moneyReward     = sConfigMgr->GetOption<int32> ("MoneyRewardValue",    10000000);
         s_bagId           = sConfigMgr->GetOption<uint32>("bagReward.Id",           14156);

@@ -134,6 +134,25 @@ Promotion.DKRequiredLevel = 55
 
 #
 #
+#     Promotion.DKWeaponEnchant
+#
+#     Description: Rune enchantment ID applied to the Death Knight starting 2H
+#                  weapons during the DK starting-area skip. This mirrors the
+#                  runeforging the player would normally do at the Ebon Hold forge.
+#                  The value is the EffectMiscValueA of SPELL_EFFECT_ENCHANT_ITEM.
+#                  Set to 0 to disable.
+#
+#     Example: 3369 - Rune of Cinderglacier (default)
+#              3370 - Rune of Razorice
+#              0    - no enchantment
+#
+#     Default: Promotion.DKWeaponEnchant = 3369
+#
+
+Promotion.DKWeaponEnchant = 3369
+
+#
+#
 #     Promotion.MinAccountAge
 #
 #     Description: Minimum account age in days required to claim a promotion.
