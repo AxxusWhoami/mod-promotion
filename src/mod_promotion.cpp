@@ -195,7 +195,7 @@ static void LearnAllFlightPaths(Player* player)
         if (!node)
             continue;
         if (node->map_id == 0 || node->map_id == 1 || node->map_id == 530 || node->map_id == 571)
-            player->SetTaximaskNode(node->ID);
+            player->m_taxi.SetTaximaskNode(node->ID);
     }
 }
 
