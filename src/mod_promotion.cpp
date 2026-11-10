@@ -745,6 +745,16 @@ private:
             return;
         }
 
+        // Destroy all currently equipped items before equipping the new gear set.
+        // Without this, swapped items land in the player's bags (or get orphaned
+        // in the database if bags are full) instead of being removed cleanly.
+        for (size_t i = 0; i < kEquipSlotCount; ++i)
+        {
+            EquipmentSlots const slot = kEquipSlots[i].first;
+            if (Item const* old = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
+                player->DestroyItem(INVENTORY_SLOT_BAG_0, slot, true);
+        }
+
         bool anyFailed = false;
         for (size_t i = 0; i < kEquipSlotCount; ++i)
         {
