@@ -694,14 +694,9 @@ private:
 #ifdef MOD_PROMOTION_HAS_CHALLENGE_MODES
         if (sChallengeModes->enabled())
         {
-            ChallengeModeSettings const challenges[] = {
-                SETTING_HARDCORE, SETTING_SEMI_HARDCORE, SETTING_SELF_CRAFTED,
-                SETTING_ITEM_QUALITY_LEVEL, SETTING_SLOW_XP_GAIN,
-                SETTING_VERY_SLOW_XP_GAIN, SETTING_QUEST_XP_ONLY, SETTING_IRON_MAN
-            };
-            for (ChallengeModeSettings setting : challenges)
+            for (uint8 setting = SETTING_HARDCORE; setting <= SETTING_IRON_MAN; ++setting)
             {
-                if (sChallengeModes->challengeEnabledForPlayer(setting, player))
+                if (player->GetPlayerSetting("mod-challenge-modes", setting).value)
                     return PromotionCheck::ChallengeActive;
             }
         }
