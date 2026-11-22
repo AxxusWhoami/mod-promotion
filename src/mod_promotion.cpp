@@ -28,6 +28,11 @@
 #include "SpellInfo.h"
 #include "SpellMgr.h"
 #include "WorldSession.h"
+
+#if __has_include("ChallengeModes.h")
+#include "ChallengeModes.h"
+#define MOD_PROMOTION_HAS_CHALLENGE_MODES 1
+#endif
 #ifdef MODULE_PLAYERBOTS
 #include "PlayerbotAI.h"
 #endif
@@ -290,11 +295,12 @@ public:
 
         switch (CheckEligibility(player, isModerator))
         {
-            case PromotionCheck::Disabled:    SendGossipMenuFor(player, 80000, creature); return true;
-            case PromotionCheck::WrongLevel:  SendGossipMenuFor(player, 80003, creature); return true;
-            case PromotionCheck::AlreadyUsed: SendGossipMenuFor(player, 80001, creature); return true;
-            case PromotionCheck::TooNew:      SendGossipMenuFor(player, 80005, creature); return true;
-            case PromotionCheck::Ok:          break;
+            case PromotionCheck::Disabled:       SendGossipMenuFor(player, 80000, creature); return true;
+            case PromotionCheck::WrongLevel:     SendGossipMenuFor(player, 80003, creature); return true;
+            case PromotionCheck::AlreadyUsed:    SendGossipMenuFor(player, 80001, creature); return true;
+            case PromotionCheck::TooNew:         SendGossipMenuFor(player, 80005, creature); return true;
+            case PromotionCheck::ChallengeActive: ChatHandler(player->GetSession()).SendSysMessage("No puedes solicitar una promocion mientras tengas un modo de desafio activo."); CloseGossipMenuFor(player); return true;
+            case PromotionCheck::Ok:             break;
         }
 
         switch (player->getClass())
@@ -435,11 +441,12 @@ public:
         // Guard against forged packets and edge cases that bypass OnGossipHello.
         switch (CheckEligibility(player, isModerator))
         {
-            case PromotionCheck::Disabled:    SendGossipMenuFor(player, 80000, creature); return true;
-            case PromotionCheck::WrongLevel:  CloseGossipMenuFor(player);                 return true;
-            case PromotionCheck::AlreadyUsed: SendGossipMenuFor(player, 80001, creature); return true;
-            case PromotionCheck::TooNew:      CloseGossipMenuFor(player);                 return true;
-            case PromotionCheck::Ok:          break;
+            case PromotionCheck::Disabled:       SendGossipMenuFor(player, 80000, creature); return true;
+            case PromotionCheck::WrongLevel:     CloseGossipMenuFor(player);                 return true;
+            case PromotionCheck::AlreadyUsed:    SendGossipMenuFor(player, 80001, creature); return true;
+            case PromotionCheck::TooNew:         CloseGossipMenuFor(player);                 return true;
+            case PromotionCheck::ChallengeActive: CloseGossipMenuFor(player);                 return true;
+            case PromotionCheck::Ok:             break;
         }
 
         // Confirmation step: intercept spec selection, show confirm/cancel menu, then unwrap.
@@ -677,12 +684,18 @@ public:
     }
 
 private:
-    enum class PromotionCheck { Ok, Disabled, WrongLevel, AlreadyUsed, TooNew };
+    enum class PromotionCheck { Ok, Disabled, WrongLevel, AlreadyUsed, TooNew, ChallengeActive };
 
     static PromotionCheck CheckEligibility(Player* player, bool isModerator)
     {
         if (!s_promotionEnable)
             return PromotionCheck::Disabled;
+
+#ifdef MOD_PROMOTION_HAS_CHALLENGE_MODES
+        if (sChallengeModes->IsEnable() && sChallengeModes->HasAnyChallengeActive(player))
+            return PromotionCheck::ChallengeActive;
+#endif
+
         if (isModerator)
             return PromotionCheck::Ok;
 
