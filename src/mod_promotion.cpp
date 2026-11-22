@@ -692,8 +692,19 @@ private:
             return PromotionCheck::Disabled;
 
 #ifdef MOD_PROMOTION_HAS_CHALLENGE_MODES
-        if (sChallengeModes->IsEnable() && sChallengeModes->HasAnyChallengeActive(player))
-            return PromotionCheck::ChallengeActive;
+        if (sChallengeModes->enabled())
+        {
+            ChallengeModeSettings const challenges[] = {
+                SETTING_HARDCORE, SETTING_SEMI_HARDCORE, SETTING_SELF_CRAFTED,
+                SETTING_ITEM_QUALITY_LEVEL, SETTING_SLOW_XP_GAIN,
+                SETTING_VERY_SLOW_XP_GAIN, SETTING_QUEST_XP_ONLY, SETTING_IRON_MAN
+            };
+            for (ChallengeModeSettings setting : challenges)
+            {
+                if (sChallengeModes->challengeEnabledForPlayer(setting, player))
+                    return PromotionCheck::ChallengeActive;
+            }
+        }
 #endif
 
         if (isModerator)
